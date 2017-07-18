@@ -1,0 +1,58 @@
+-----------------------------------------------------------------------
+Clustering example : 
+  - birds other dataset (qualitative data)
+  - default options
+-----------------------------------------------------------------------
+
+-----------------------------------------------------------------------
+ Input : 
+-----------------------------------------------------------------------
+
+Models : 
+Binary_pk_Ekjh
+
+Criterions : 
+  BIC
+Strategy : 
+	Initial start parameters method : 
+	 strategyInitName : SMALL_EM
+	 nbTryInInit : 10
+	 nbIterationInInit : 5
+	 epsilonInInit : 0.001
+
+	Number of tries : 1
+	Number of algorithms in the strategy : 1
+	Algorithm 1
+	  Type : EM
+	  Stopping rule : NBITERATION_EPSILON
+	  Number of iterations : 200
+	  Set tolerance (xml criterion) : 0.001
+
+-----------------------------------------------------------------------
+Best model is 
+ - nbCluster : 2
+-----------------------------------------------------------------------
+
+-----------------------------------------------------------------------
+Parameters display
+	component : 0
+	proportion : 0.654355
+	center : 	1	3	1	1	1
+	scatter : 	0.493839	0.493839
+	0.0759919	0.00629804	0.173957	0.0916667
+	0.145881	0.145881
+	0.0379085	0.00557457	0.00542372	0.0269102
+	0.057713	0.0288244	0.0288886
+
+	component : 1
+	proportion : 0.345645
+	center : 	2	2	2	2	1
+	scatter : 	0.428194	0.428194
+	0.120442	0.146487	0.0151984	0.0108466
+	0.063661	0.063661
+	0.366164	0.547567	0.130775	0.050628
+	0.107441	0.0940224	0.0134185
+
+			BIC Criterion Value : 482.297
+
+-----------------------------------------------------------------------

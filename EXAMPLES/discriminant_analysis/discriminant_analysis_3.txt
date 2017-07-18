@@ -1,0 +1,276 @@
+-----------------------------------------------------------------------
+Discrimiant analysis example : 
+  - iris data (quantitative data)
+  - default options
+-----------------------------------------------------------------------
+
+-----------------------------------------------------------------------
+ Input : 
+-----------------------------------------------------------------------
+
+Models : 
+Gaussian_HD_p_AkjBQkD
+subDimensionEqual = 2
+
+Gaussian_HD_pk_AkjBQkD
+subDimensionEqual = 1
+
+Gaussian_HD_p_AjBQkD
+subDimensionEqual = 2
+
+Gaussian_HD_p_AkBQkD
+subDimensionEqual = 3
+
+Gaussian_HD_pk_AjBQkD
+subDimensionEqual = 1
+
+Gaussian_HD_pk_AkBQkD
+subDimensionEqual = 1
+
+Gaussian_HD_p_AkjBkQkDk
+subDimensionFree : 
+1
+1
+2
+
+
+Gaussian_HD_p_AkBkQkDk
+subDimensionFree : 
+1
+1
+2
+
+
+Gaussian_HD_p_AkjBkQkD
+subDimensionFree : 
+1
+1
+2
+
+
+Gaussian_HD_p_AjBkQkD
+subDimensionFree : 
+1
+1
+2
+
+
+Gaussian_HD_p_AkBkQkD
+subDimensionFree : 
+1
+1
+2
+
+
+Gaussian_HD_pk_AkjBkQkDk
+subDimensionFree : 
+1
+1
+2
+
+
+Gaussian_HD_pk_AkBkQkDk
+subDimensionFree : 
+1
+1
+2
+
+
+Gaussian_HD_pk_AkjBkQkD
+subDimensionFree : 
+1
+1
+2
+
+
+Gaussian_HD_pk_AjBkQkD
+subDimensionFree : 
+1
+1
+2
+
+
+Gaussian_HD_pk_AkBkQkD
+subDimensionFree : 
+1
+1
+2
+
+
+Criterions : 
+  CV
+
+-----------------------------------------------------------------------
+    LEARN STEP  
+-----------------------------------------------------------------------
+
+-----------------------------------------------------------------------
+ Output : 
+-----------------------------------------------------------------------
+
+-----------------------------------------------------------------------
+Best model is (for CV criterion) 
+-----------------------------------------------------------------------
+Best model is 
+ - model : Gaussian_HD_p_AjBQkD
+subDimensionEqual = 2
+
+-----------------------------------------------------------------------
+
+-----------------------------------------------------------------------
+Parameters display
+	component : 0
+		proportion : 0.333333
+		mean : 5.006 
+3.428 
+1.462 
+0.246 
+
+	Sub dimension : 2
+			Parameters Akj : 0.434695 
+0.0844596 
+
+			Parameter Bk : 0.0305364
+		Orientation : 
+			-0.669078,0.597884 			-0.734148,-0.620673 			-0.0965439,0.490056 			-0.0635636,0.130938 		Wk : 
+				6.0882 
+4.8616 
+0.8014 
+0.5062 
+
+				4.8616 
+7.0408 
+0.5732 
+0.4556 
+
+				0.8014 
+0.5732 
+1.4778 
+0.2974 
+
+				0.5062 
+0.4556 
+0.2974 
+0.5442 
+
+	component : 1
+		proportion : 0.333333
+		mean : 5.936 
+2.77 
+4.26 
+1.326 
+
+	Sub dimension : 2
+			Parameters Akj : 0.434695 
+0.0844596 
+
+			Parameter Bk : 0.0305364
+		Orientation : 
+			-0.686724,0.669089 			-0.305347,-0.567465 			-0.623663,-0.343327 			-0.214984,-0.335305 		Wk : 
+				13.0552 
+4.174 
+8.962 
+2.7332 
+
+				4.174 
+4.825 
+4.05 
+2.019 
+
+				8.962 
+4.05 
+10.82 
+3.582 
+
+				2.7332 
+2.019 
+3.582 
+1.9162 
+
+	component : 2
+		proportion : 0.333333
+		mean : 6.588 
+2.974 
+5.552 
+2.026 
+
+	Sub dimension : 2
+			Parameters Akj : 0.434695 
+0.0844596 
+
+			Parameter Bk : 0.0305364
+		Orientation : 
+			-0.741017,0.165259 			-0.203288,-0.748643 			-0.627892,0.169428 			-0.123775,-0.619288 		Wk : 
+				19.8128 
+4.5944 
+14.8612 
+2.4056 
+
+				4.5944 
+5.0962 
+3.4976 
+2.3338 
+
+				14.8612 
+3.4976 
+14.9248 
+2.3924 
+
+				2.4056 
+2.3338 
+2.3924 
+3.6962 
+
+	W : 
+				38.9562 
+13.63 
+24.6246 
+5.645 
+
+				13.63 
+16.962 
+8.1208 
+4.8084 
+
+				24.6246 
+8.1208 
+27.2226 
+6.2718 
+
+				5.645 
+4.8084 
+6.2718 
+6.1566 
+
+CV Error Rate:98.6667%
+CV Classification Tab:
+ | 50 0 0|
+ | 0 48 0|
+ | 0 2 50|
+-----------------------------------------------------------------------
+-----------------------------------------------------------------------
+    PREDICT STEP  
+-----------------------------------------------------------------------
+
+Predict Labels:
+1
+1
+2
+3
+Predict Probas:
+1.000000	
+0.000000	
+0.000000	
+
+1.000000	
+0.000000	
+0.000000	
+
+0.000000	
+0.999999	
+0.000001	
+
+0.000000	
+0.000066	
+0.999934	
+

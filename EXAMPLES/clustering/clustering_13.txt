@@ -1,0 +1,195 @@
+-----------------------------------------------------------------------
+Heterogeneous clustering: 
+-----------------------------------------------------------------------
+
+-----------------------------------------------------------------------
+ Input : 
+-----------------------------------------------------------------------
+
+Models : 
+Heterogeneous_pk_E_L_B
+
+Heterogeneous_pk_E_Lk_B
+
+Heterogeneous_pk_E_L_Bk
+
+Heterogeneous_pk_E_Lk_Bk
+
+Heterogeneous_pk_Ek_L_B
+
+Heterogeneous_pk_Ek_Lk_B
+
+Heterogeneous_pk_Ek_L_Bk
+
+Heterogeneous_pk_Ek_Lk_Bk
+
+Heterogeneous_pk_Ej_L_B
+
+Heterogeneous_pk_Ej_Lk_B
+
+Heterogeneous_pk_Ej_L_Bk
+
+Heterogeneous_pk_Ej_Lk_Bk
+
+Heterogeneous_pk_Ekj_L_B
+
+Heterogeneous_pk_Ekj_Lk_B
+
+Heterogeneous_pk_Ekj_L_Bk
+
+Heterogeneous_pk_Ekj_Lk_Bk
+
+Heterogeneous_pk_Ekjh_L_B
+
+Heterogeneous_pk_Ekjh_Lk_B
+
+Heterogeneous_pk_Ekjh_L_Bk
+
+Heterogeneous_pk_Ekjh_Lk_Bk
+
+Heterogeneous_p_E_L_B
+
+Heterogeneous_p_E_Lk_B
+
+Heterogeneous_p_E_L_Bk
+
+Heterogeneous_p_E_Lk_Bk
+
+Heterogeneous_p_Ek_L_B
+
+Heterogeneous_p_Ek_Lk_B
+
+Heterogeneous_p_Ek_L_Bk
+
+Heterogeneous_p_Ek_Lk_Bk
+
+Heterogeneous_p_Ej_L_B
+
+Heterogeneous_p_Ej_Lk_B
+
+Heterogeneous_p_Ej_L_Bk
+
+Heterogeneous_p_Ej_Lk_Bk
+
+Heterogeneous_p_Ekj_L_B
+
+Heterogeneous_p_Ekj_Lk_B
+
+Heterogeneous_p_Ekj_L_Bk
+
+Heterogeneous_p_Ekj_Lk_Bk
+
+Heterogeneous_p_Ekjh_L_B
+
+Heterogeneous_p_Ekjh_Lk_B
+
+Heterogeneous_p_Ekjh_L_Bk
+
+Heterogeneous_p_Ekjh_Lk_Bk
+
+Criterions : 
+  BIC
+Strategy : 
+	Initial start parameters method : 
+	 strategyInitName : SMALL_EM
+	 nbTryInInit : 10
+	 nbIterationInInit : 5
+	 epsilonInInit : 0.001
+
+	Number of tries : 1
+	Number of algorithms in the strategy : 1
+	Algorithm 1
+	  Type : EM
+	  Stopping rule : NBITERATION_EPSILON
+	  Number of iterations : 200
+	  Set tolerance (xml criterion) : 0.001
+
+-----------------------------------------------------------------------
+Best model is 
+ - nbCluster : 2
+- Model : Heterogeneous_p_Ekj_Lk_Bk
+-----------------------------------------------------------------------
+
+-----------------------------------------------------------------------
+Parameters display
+Binary Parameters
+**********************************************************
+	component : 0
+	proportion : 0.5
+	center : 	2	1
+	scatter : 	0.168901	0.168901
+	0.465224	0.465224
+
+	component : 1
+	proportion : 0.5
+	center : 	2	1
+	scatter : 	0.370252	0.370252
+	0.270421	0.270421
+
+
+Gaussian Parameters
+**********************************************************
+	component : 0
+		proportion : 0.5
+		mean : -3.61073 
+-2.80652 
+
+		sigma : 
+				2.74019 
+0 
+
+				0 
+1.2804 
+
+		Wk : 
+				171.332 
+0 
+
+				0 
+80.0579 
+
+		invSigma : 
+				0.364939 
+0 
+
+				0 
+0.781004 
+
+		tabInvSqrtDetSigma : 0.533871
+	component : 1
+		proportion : 0.5
+		mean : 0.578683 
+0.047849 
+
+		sigma : 
+				0.0556229 
+0 
+
+				0 
+1.14771 
+
+		Wk : 
+				7.64673 
+0 
+
+				0 
+157.78 
+
+		invSigma : 
+				17.9782 
+0 
+
+				0 
+0.871302 
+
+		tabInvSqrtDetSigma : 3.95783
+	W : 
+				178.978 
+0 
+
+				0 
+237.838 
+
+			BIC Criterion Value : 1621.01
+
+-----------------------------------------------------------------------

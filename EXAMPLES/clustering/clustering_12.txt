@@ -1,0 +1,255 @@
+-----------------------------------------------------------------------
+Clustering example : 
+  - iris data (quantitative data)
+-----------------------------------------------------------------------
+ Input : 
+-----------------------------------------------------------------------
+
+Models : 
+Gaussian_p_L_I
+
+Gaussian_p_Lk_I
+
+Gaussian_pk_L_I
+
+Gaussian_pk_Lk_I
+
+Gaussian_p_L_B
+
+Gaussian_p_Lk_B
+
+Gaussian_p_L_Bk
+
+Gaussian_p_Lk_Bk
+
+Gaussian_pk_L_B
+
+Gaussian_pk_Lk_B
+
+Gaussian_pk_L_Bk
+
+Gaussian_pk_Lk_Bk
+
+Gaussian_p_L_C
+
+Gaussian_p_Lk_C
+
+Gaussian_p_L_D_Ak_D
+
+Gaussian_p_Lk_D_Ak_D
+
+Gaussian_p_L_Dk_A_Dk
+
+Gaussian_p_Lk_Dk_A_Dk
+
+Gaussian_p_L_Ck
+
+Gaussian_p_Lk_Ck
+
+Gaussian_pk_L_C
+
+Gaussian_pk_Lk_C
+
+Gaussian_pk_L_D_Ak_D
+
+Gaussian_pk_Lk_D_Ak_D
+
+Gaussian_pk_L_Dk_A_Dk
+
+Gaussian_pk_Lk_Dk_A_Dk
+
+Gaussian_pk_L_Ck
+
+Gaussian_pk_Lk_Ck
+
+Criterions : 
+  BIC
+Strategy : 
+	Initial start parameters method : 
+	 strategyInitName : SMALL_EM
+	 nbTryInInit : 10
+	 nbIterationInInit : 5
+	 epsilonInInit : 0.001
+
+	Number of tries : 1
+	Number of algorithms in the strategy : 1
+	Algorithm 1
+	  Type : EM
+	  Stopping rule : NBITERATION_EPSILON
+	  Number of iterations : 200
+	  Set tolerance (xml criterion) : 0.001
+
+-----------------------------------------------------------------------
+Best model is 
+ - nbCluster : 2
+Model name: Gaussian_pk_Lk_Dk_A_Dk
+-----------------------------------------------------------------------
+
+-----------------------------------------------------------------------
+Parameters display
+	component : 0
+		proportion : 0.666668
+		mean : 6.262 
+2.872 
+4.90599 
+1.676 
+
+		sigma : 
+				0.400044 
+0.108654 
+0.399401 
+0.143682 
+
+				0.108654 
+0.109281 
+0.12389 
+0.0728438 
+
+				0.399401 
+0.12389 
+0.610901 
+0.257389 
+
+				0.143682 
+0.0728438 
+0.257389 
+0.168082 
+
+		Wk : 
+				43.4962 
+12.0938 
+44.8841 
+16.5493 
+
+				12.0938 
+10.9617 
+14.1372 
+7.92296 
+
+				44.8841 
+14.1372 
+67.4791 
+28.5854 
+
+				16.5493 
+7.92296 
+28.5854 
+17.8628 
+
+		invSigma : 
+				8.94576 
+-4.20184 
+-7.16392 
+5.14421 
+
+				-4.20184 
+14.9592 
+2.6255 
+-6.91169 
+
+				-7.16392 
+2.6255 
+10.3927 
+-10.9285 
+
+				5.14421 
+-6.91169 
+-10.9285 
+21.2827 
+
+		tabInvSqrtDetSigma : 56.4674
+	component : 1
+		proportion : 0.333332
+		mean : 5.006 
+3.428 
+1.462 
+0.246 
+
+		sigma : 
+				0.150651 
+0.130801 
+0.0208446 
+0.013091 
+
+				0.130801 
+0.176045 
+0.0160325 
+0.0122145 
+
+				0.0208446 
+0.0160325 
+0.0280826 
+0.00601567 
+
+				0.013091 
+0.0122145 
+0.00601567 
+0.0104237 
+
+		Wk : 
+				6.08815 
+4.86148 
+0.801383 
+0.506205 
+
+				4.86148 
+7.04054 
+0.573163 
+0.455612 
+
+				0.801383 
+0.573163 
+1.47779 
+0.297402 
+
+				0.506205 
+0.455612 
+0.297402 
+0.544199 
+
+		invSigma : 
+				20.0717 
+-14.0113 
+-5.72421 
+-5.48592 
+
+				-14.0113 
+16.0917 
+1.69225 
+-2.23635 
+
+				-5.72421 
+1.69225 
+43.1058 
+-19.6711 
+
+				-5.48592 
+-2.23635 
+-19.6711 
+116.799 
+
+		tabInvSqrtDetSigma : 702.698
+	W : 
+				49.5844 
+16.9553 
+45.6855 
+17.0555 
+
+				16.9553 
+18.0022 
+14.7104 
+8.37857 
+
+				45.6855 
+14.7104 
+68.9569 
+28.8828 
+
+				17.0555 
+8.37857 
+28.8828 
+18.407 
+
+			BIC Criterion Value : 561.728
+
+-----------------------------------------------------------------------
