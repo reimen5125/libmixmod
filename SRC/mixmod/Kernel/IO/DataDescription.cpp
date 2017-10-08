@@ -44,7 +44,7 @@ DataDescription::DataDescription() : Description() {
 //------------
 // Constructor by initialization
 //------------
-DataDescription::DataDescription(int64_t nbSample, int64_t nbColumn, 
+DataDescription::DataDescription(int nbSample, int nbColumn, 
 		std::vector<ColumnDescription*> columnDescription,
 		FormatNumeric::FormatNumericFile format, std::string filename, std::string infoName) 
 : Description(nbSample, nbColumn, columnDescription, format, filename, infoName) 
@@ -62,7 +62,7 @@ DataDescription::DataDescription(GaussianData * gData) {
 	_nbSample = gData->getNbSample();
 	_nbColumn = gData->getPbDimension();
 	_columnDescription.resize(_nbColumn);
-	for (int64_t i = 0; i < _nbColumn; ++i) {
+	for (int i = 0; i < _nbColumn; ++i) {
 		_columnDescription[i] = new QuantitativeColumnDescription(i);
 	}
 	_data = gData->clone();
@@ -82,8 +82,8 @@ DataDescription::DataDescription(BinaryData * bData) {
 	_nbSample = bData->getNbSample();
 	_nbColumn = bData->getPbDimension();
 	_columnDescription.resize(_nbColumn);
-	int64_t * tabModality = bData->getTabNbModality();
-	for (int64_t i = 0; i < _nbColumn; ++i) {
+	int * tabModality = bData->getTabNbModality();
+	for (int i = 0; i < _nbColumn; ++i) {
 		_columnDescription[i] = new QualitativeColumnDescription(i, tabModality[i]);
 	}
 	_data = bData->clone();
@@ -105,15 +105,15 @@ DataDescription::DataDescription(CompositeData * cData) {
 	_nbSample = cData->getNbSample();
 	_nbColumn = cData->getPbDimension();
 	_columnDescription.resize(_nbColumn);
-	int64_t * tabModality = bData->getTabNbModality();
+	int * tabModality = bData->getTabNbModality();
 
 	//Column 0:bData->getPbDimension() is Binary Data and from
 	//Column bData->getPbDimension()-1:_nbColumn is Gaussian Data
-	for (int64_t i = 0; i < bData->getPbDimension(); ++i) {
+	for (int i = 0; i < bData->getPbDimension(); ++i) {
 		_columnDescription[i] = new QualitativeColumnDescription(i, tabModality[i]);
 	}
 
-	for (int64_t i = bData->getPbDimension(); i < _nbColumn; ++i) {
+	for (int i = bData->getPbDimension(); i < _nbColumn; ++i) {
 		_columnDescription[i] = new QuantitativeColumnDescription(i);
 	}
 	_data = cData->clone();
@@ -146,7 +146,7 @@ DataDescription & DataDescription::operator=(const DataDescription & dataDescrip
 		_data = NULL;
 	}
 	_columnDescription.resize(_nbColumn);
-	for (int64_t i = 0; i < _nbColumn; ++i) {
+	for (int i = 0; i < _nbColumn; ++i) {
 		const ColumnDescription * cd = dataDescription.getColumnDescription(i);
 		_columnDescription[i] = cd->clone();
 	}
@@ -169,9 +169,9 @@ DataDescription::~DataDescription() {
 Data* DataDescription::createData() const {
 
 	Data* data = NULL;
-	std::vector<int64_t> nbModality;
-	int64_t nbQualitativeVariable = 0;
-	int64_t nbQuantitativeVariable = 0;
+	std::vector<int> nbModality;
+	int nbQualitativeVariable = 0;
+	int nbQuantitativeVariable = 0;
 	bool weightColumn = false;
 
 	for (std::vector<ColumnDescription*>::const_iterator it=_columnDescription.begin(); it != _columnDescription.end(); it++) {
@@ -215,9 +215,9 @@ Data* DataDescription::createData() const {
 }
 
 DataType DataDescription::getDataType() const {
-	int64_t nbQualitativeVariable = 0;
-	int64_t nbQuantitativeVariable = 0;
-	for (int64_t i = 0; i < _nbColumn; i++) {
+	int nbQualitativeVariable = 0;
+	int nbQuantitativeVariable = 0;
+	for (int i = 0; i < _nbColumn; i++) {
 		if (typeid (*(_columnDescription[i])) == typeid (QualitativeColumnDescription))
 			nbQualitativeVariable++;
 		if (typeid (*(_columnDescription[i])) == typeid (QuantitativeColumnDescription))

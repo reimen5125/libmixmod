@@ -53,17 +53,17 @@ void ICLCriterion::run(CriterionOutput & output) {
 	
 
 	// initialize value
-	double value = 0.0;
+	float value = 0.0;
 	// initialize error
 	Exception * error = &NOERROR;
 
 	try {
-		double bic_value = 0.0;
-		const double loglikelihood = _model->getLogLikelihood(false);
-		const int64_t freeParameter = _model->getFreeParameter();
-		const double logN = _model->getLogN();
+		float bic_value = 0.0;
+		const float loglikelihood = _model->getLogLikelihood(false);
+		const int freeParameter = _model->getFreeParameter();
+		const float logN = _model->getLogN();
 		bic_value = (-2 * loglikelihood)+(freeParameter * logN);
-		double entropy = _model->getEntropy();
+		float entropy = _model->getEntropy();
 		value = bic_value + 2.0 * entropy; 
 	}
 	catch (Exception&e) {

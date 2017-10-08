@@ -53,7 +53,7 @@ public:
 	virtual ~ProbaOutput();
 
 	/// setCVLabel
-	void setCVLabel(int64_t * CVLabel);
+	void setCVLabel(int * CVLabel);
 
 	/// editPartition
 	void editPartition(std::ofstream & oFile);
@@ -71,75 +71,75 @@ public:
 	void editCVLabel(std::ofstream & oFile);
 
 	/// Selector
-	int64_t * getTabLabel() const;
+	int * getTabLabel() const;
 
 	/// Selector
-	int64_t * getTabCVLabel() const;
+	int * getTabCVLabel() const;
 
 	/// Selector
-	int64_t ** getTabPartition() const;
+	int ** getTabPartition() const;
 
 	/// Selector
-	double ** getTabPostProba() const;
+	float ** getTabPostProba() const;
 	/// Selector
-	int64_t getNbSample() const;
-	int64_t getNbCluster() const;
+	int getNbSample() const;
+	int getNbCluster() const;
 	///clone
 	ProbaOutput * clone();
 
 private:
 
 	/// Number of samples
-	int64_t _nbSample;
+	int _nbSample;
 
 	/// Number of cluster
-	int64_t _nbCluster;
+	int _nbCluster;
 
 	/// Vector of sample label (dim :_nbSample)
-	int64_t * _tabLabel;
+	int * _tabLabel;
 
 	/// Yes if CV criterion
 	bool _CVLabelAvailable;
 
 	/// Table of sample label from cross validation (dim :_nbSample)
-	int64_t * _tabCVLabel;
+	int * _tabCVLabel;
 
 	/// Matrix of partition  _partition(i,j)=1 if sample i in class j
 	/// dim :  _nbSample * _nbCluster
 
 	//TODO RD : utiliser XEMPartition plutôt
-	int64_t ** _tabPartition;
+	int ** _tabPartition;
 
 	/// Matrix of posterior probabilities
 	/// dim : _nbSample *_nbCluster
-	double ** _tabPostProba;
+	float ** _tabPostProba;
 };
 
 //---------------
 // inline methods
 //---------------
 
-inline int64_t * ProbaOutput::getTabLabel() const {
+inline int * ProbaOutput::getTabLabel() const {
 	return _tabLabel;
 }
 
-inline int64_t * ProbaOutput::getTabCVLabel() const {
+inline int * ProbaOutput::getTabCVLabel() const {
 	return _tabCVLabel;
 }
 
-inline int64_t ** ProbaOutput::getTabPartition() const {
+inline int ** ProbaOutput::getTabPartition() const {
 	return _tabPartition;
 }
 
-inline double ** ProbaOutput::getTabPostProba() const {
+inline float ** ProbaOutput::getTabPostProba() const {
 	return _tabPostProba;
 }
 
-inline int64_t ProbaOutput::getNbSample() const {
+inline int ProbaOutput::getNbSample() const {
 	return _nbSample;
 }
 
-inline int64_t ProbaOutput::getNbCluster() const {
+inline int ProbaOutput::getNbCluster() const {
 	return _nbCluster;
 }
 

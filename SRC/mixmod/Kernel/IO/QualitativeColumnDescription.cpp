@@ -30,12 +30,12 @@ namespace XEM {
 QualitativeColumnDescription::QualitativeColumnDescription() : ColumnDescription() {
 }
 
-QualitativeColumnDescription::QualitativeColumnDescription(int64_t index, int64_t nbFactor) 
+QualitativeColumnDescription::QualitativeColumnDescription(int index, int nbFactor) 
 : ColumnDescription(index) 
 {
 	_nbFactor = nbFactor;
 	_variableDescription.resize(nbFactor);
-	for (int64_t i = 0; i < nbFactor; ++i) {
+	for (int i = 0; i < nbFactor; ++i) {
 		_variableDescription[i].name = "";
 		_variableDescription[i].num = i + 1;
 	}

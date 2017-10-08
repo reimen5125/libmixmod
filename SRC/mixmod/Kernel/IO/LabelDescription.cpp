@@ -46,8 +46,8 @@ LabelDescription::LabelDescription() : Description() {
 //constructor by initilization
 // ---------------------------
 LabelDescription::LabelDescription(
-		int64_t nbSample,
-		int64_t nbColumn,
+		int nbSample,
+		int nbColumn,
 		std::vector< ColumnDescription* > columnDescription,
 		FormatNumeric::FormatNumericFile format,
 		std::string filename,
@@ -62,7 +62,7 @@ LabelDescription::LabelDescription(
 //---------------------------------
 // constructor from a vector of int
 //----------------------------------
-LabelDescription::LabelDescription(int64_t nbSample, std::vector<int64_t> vLabel)
+LabelDescription::LabelDescription(int nbSample, std::vector<int> vLabel)
 : Description()
 {
 	// get the number of cluster
@@ -137,7 +137,7 @@ bool LabelDescription::operator ==(const LabelDescription & labelDescription) co
 	if (_infoName != labelDescription._infoName) return false;
 	if (_nbSample != labelDescription._nbSample) return false;
 	if (_nbColumn != labelDescription._nbColumn) return false;
-	for (int64_t i = 0; i < _nbColumn; ++i) {
+	for (int i = 0; i < _nbColumn; ++i) {
 		if (_columnDescription[i]->getName()
 				!= labelDescription.getColumnDescription(i)->getName())
 		{
@@ -173,10 +173,10 @@ void LabelDescription::saveNumericValues(std::string fileName) {
 Label* LabelDescription::createLabel() {
 	Label * label = new Label();
 
-	int64_t nbQualitativeVariable = 0;
-	int64_t nbIndividualVariable = 0;
+	int nbQualitativeVariable = 0;
+	int nbIndividualVariable = 0;
 
-	for (int64_t i = 0; i < _nbColumn; i++) {
+	for (int i = 0; i < _nbColumn; i++) {
 		if (typeid (*(_columnDescription[i])) == typeid (QualitativeColumnDescription)) {
 			nbQualitativeVariable++;
 		}

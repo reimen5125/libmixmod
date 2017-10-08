@@ -33,8 +33,8 @@
 
 namespace XEM {
 
-extern double rnd();
-extern int64_t flip(double x);
+extern float rnd();
+extern int flip(float x);
 
 extern void initRandomize(int seed);
 

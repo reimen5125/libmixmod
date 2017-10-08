@@ -6,7 +6,7 @@
 
 /***************************************************************************
     This file is part of MIXMOD
-    
+
     MIXMOD is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
@@ -20,7 +20,7 @@
     You should have received a copy of the GNU General Public License
     along with MIXMOD.  If not, see <http://www.gnu.org/licenses/>.
 
-    All informations available on : http://www.mixmod.org                                                                                               
+    All informations available on : http://www.mixmod.org
 ***************************************************************************/
 #include "mixmod/Utilities/Util.h"
 #include "mixmod/Utilities/Random.h"
@@ -33,10 +33,10 @@ int VERBOSE = 0;
 int MASSICCC = 0;
 IoMode IOMODE = IoMode::NUMERIC;
 
-void putDoubleInStream(std::ostream& output, double value, std::string appendChars)
+void putFloatInStream(std::ostream& output, float value, std::string appendChars)
 {
 	if (IOMODE == IoMode::BINARY) {
-		uint64_t tmp;
+		int tmp;
 		memcpy(&tmp, &value, sizeof(value));
 		output << hex << tmp << appendChars << endl;
 		//output << hexfloat <<_proba[i][k] << "\t"; //Writing is ok but reading isn't...
@@ -45,12 +45,12 @@ void putDoubleInStream(std::ostream& output, double value, std::string appendCha
 		output << value << appendChars << endl;
 }
 
-double getDoubleFromStream(std::istream& input)
+float getFloatFromStream(std::istream& input)
 {
-	double value;
+	float value;
 	if (IOMODE == IoMode::BINARY) {
 		stringstream stream;
-		uint64_t tmp;
+		int tmp;
 		input >> hex >> tmp;
 		//input >> hexfloat >> value; //Reading is not OK...
 		memcpy(&value, &tmp, sizeof(tmp));
@@ -60,18 +60,18 @@ double getDoubleFromStream(std::istream& input)
 	return value;
 }
 
-double powAndCheckIfNotNull(double a, double b, const Exception & errorType) {
-	double res;
+float powAndCheckIfNotNull(float a, float b, const Exception & errorType) {
+	float res;
 	res = pow(a, b);
 	if (res == 0.0) throw errorType;
 	return res;
 }
 
 //-----------------------
-// return the nearest int64_t
+// return the nearest int
 //-----------------------
-int64_t Round(double d) {
-	int64_t res = (int64_t) (d + 0.5);
+int Round(float d) {
+	int res = (int) (d + 0.5);
 	return res;
 }
 
@@ -1488,8 +1488,8 @@ bool hasFreeProportion(ModelName modelName) {
 	return res;
 }
 
-void editSimpleTab(double * tab, int64_t n, std::string sep, std::string before, std::ostream & flux) {
-	int64_t i;
+void editSimpleTab(float * tab, int n, std::string sep, std::string before, std::ostream & flux) {
+	int i;
 	flux << before;
 	for (i = 0; i < n; i++) {
 		flux << tab[i] << sep;
@@ -1497,8 +1497,8 @@ void editSimpleTab(double * tab, int64_t n, std::string sep, std::string before,
 	flux << endl ;
 }
 
-void editSimpleTab(int64_t    * tab, int64_t n, std::ostream & flux ) {
-	int64_t i;
+void editSimpleTab(int    * tab, int n, std::ostream & flux ) {
+	int i;
 	for (i = 0; i < n; i++)
 		flux << tab[i] << endl ;
 }
@@ -1526,8 +1526,8 @@ void moveUntilReach(std::ifstream & fi, std::string  what) {
 
 //-------------------
 // read nbNbCluster file names (ex : titi ; toto;tutu)
-void readTabFileName(std::ifstream & fi, int64_t nbNbCluster, std::string* tabFileName, std::string& keyWord) {
-	int64_t k = 0;
+void readTabFileName(std::ifstream & fi, int nbNbCluster, std::string* tabFileName, std::string& keyWord) {
+	int k = 0;
 
 	std::string c = "";
 	std::string c1 = "";
@@ -1586,29 +1586,29 @@ void readTabFileName(std::ifstream & fi, int64_t nbNbCluster, std::string* tabFi
 	keyWord = c;
 }
 
-void initToZero(double* tab, int64_t n) {
-	double * p_tab = tab;
-	int64_t i;
+void initToZero(float* tab, int n) {
+	float * p_tab = tab;
+	int i;
 	for (i = 0 ; i < n ; i++, p_tab++) {
 		*p_tab = 0.0;
 	}
 }
 
-inline void echange(double * tab, int64_t i1, int64_t i2) {
-	double tmp = tab[i1];
+inline void echange(float * tab, int i1, int i2) {
+	float tmp = tab[i1];
 	tab[i1]           = tab[i2];
 	tab[i2]           = tmp ;
 }
 
-inline void echange(int64_t * tab, int64_t i1, int64_t i2) {
-	int64_t tmp   = tab[i1];
+inline void echange(int * tab, int i1, int i2) {
+	int tmp   = tab[i1];
 	tab[i1]         = tab[i2];
 	tab[i2]         = tmp ;
 }
 
-void selectionSortWithOrder(double * tabRandom, int64_t * tabOrder, int64_t left, int64_t right) {
-	int64_t i, j;
-	int64_t min;
+void selectionSortWithOrder(float * tabRandom, int * tabOrder, int left, int right) {
+	int i, j;
+	int min;
 
 	for (i = left; i < right; i++) {
 		min = i;
@@ -1620,11 +1620,11 @@ void selectionSortWithOrder(double * tabRandom, int64_t * tabOrder, int64_t left
 	}
 }
 
-int64_t partition(double * tabRandom, int64_t * tabOrder, int64_t left, int64_t right) {
+int partition(float * tabRandom, int * tabOrder, int left, int right) {
 
-	double val = tabRandom[left];
-	int64_t lm    = left - 1;
-	int64_t rm    = right + 1;
+	float val = tabRandom[left];
+	int lm    = left - 1;
+	int rm    = right + 1;
 	for (; ; ) {
 		do
 			rm--;
@@ -1643,9 +1643,9 @@ int64_t partition(double * tabRandom, int64_t * tabOrder, int64_t left, int64_t 
 	}
 }
 
-void quickSortWithOrder(double * tabRandom, int64_t * tabOrder, int64_t left, int64_t right) {
+void quickSortWithOrder(float * tabRandom, int * tabOrder, int left, int right) {
 	if (left < (right - SMALL_ENOUGH_TO_USE_SELECTION_SORT)) {
-		int64_t split_pt = partition(tabRandom, tabOrder, left, right);
+		int split_pt = partition(tabRandom, tabOrder, left, right);
 		quickSortWithOrder(tabRandom, tabOrder, left      , split_pt);
 		quickSortWithOrder(tabRandom, tabOrder, split_pt + 1, right);
 	}
@@ -1655,15 +1655,15 @@ void quickSortWithOrder(double * tabRandom, int64_t * tabOrder, int64_t left, in
 //-------------------
 //generateRandomIndex [TODO: suboptimal method near when array contain a lot of "false"]
 //-------------------
-int64_t generateRandomIndex(bool * tabIndividualCanBeUsedForInitRandom, double * weight, double totalWeight) {
-	double rndWeight, sumWeight;
-	int64_t idxSample;
+int generateRandomIndex(bool * tabIndividualCanBeUsedForInitRandom, float * weight, float totalWeight) {
+	float rndWeight, sumWeight;
+	int idxSample;
 
 	/* Generate a random integer between 0 and _nbSample-1 */
 	bool IdxSampleCanBeUsed = false;  // idxSample can be used
 	while (!IdxSampleCanBeUsed) {
 		// get index of sample with weight //
-		rndWeight = (int64_t) (totalWeight * rnd() + 1);
+		rndWeight = (int) (totalWeight * rnd() + 1);
 		sumWeight = 0.0;
 		idxSample = -1;
 		while (sumWeight < rndWeight) {

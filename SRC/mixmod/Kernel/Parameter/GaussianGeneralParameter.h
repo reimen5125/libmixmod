@@ -52,25 +52,25 @@ public:
 	// Constructor
 	// called by XEMStrategyType if initialization is USER
 	GaussianGeneralParameter(
-			int64_t iNbCluster, 
-			int64_t iPbDimension, 
+			int iNbCluster, 
+			int iPbDimension, 
 			ModelType * iModelType, 
 			std::string & iFileName);
   // For heterogeneous models
 	GaussianGeneralParameter(
-			int64_t iNbCluster, 
-			int64_t iPbDimension, 
+			int iNbCluster, 
+			int iPbDimension, 
 			ModelType * iModelType, 
 			std::string & iFileName,
-      int64_t iNbVariable_binary,
-      std::vector< int64_t > inbFactor);
+      int iNbVariable_binary,
+      std::vector< int > inbFactor);
 	GaussianGeneralParameter(
-			int64_t iNbCluster, 
-			int64_t iPbDimension, 
+			int iNbCluster, 
+			int iPbDimension, 
 			ModelType * iModelType, 
-			double * proportions, 
-			double ** means, 
-			double *** variances);
+			float * proportions, 
+			float ** means, 
+			float *** variances);
 	
 	/// Constructor (copy)
 	GaussianGeneralParameter(const GaussianGeneralParameter * iParameter);
@@ -94,12 +94,12 @@ public:
 
 	/// Flury Algorithm
 	/// return the value of Flury function
-	double flury(double F);
+	float flury(float F);
 
 
 	//     SELECTORS
 	// ------ / -------- //
-	double * getTabLambda() const;
+	float * getTabLambda() const;
 
 	/** @brief Selector
 		@return Table of shape matrix for each cluster
@@ -111,12 +111,12 @@ public:
 	 */
 	GeneralMatrix ** getTabOrientation() const;
 
-	double getLogLikelihoodOne() const;
+	float getLogLikelihoodOne() const;
 
 protected:
 	
 	/// Table of volume of each cluster
-	double * _tabLambda; /* Volume      */
+	float * _tabLambda; /* Volume      */
 
 	/// Table of shape matrix of each cluster
 	DiagMatrix ** _tabShape; /* Shape       */
@@ -124,7 +124,7 @@ protected:
 	// Table of orientation matrix of each cluster
 	GeneralMatrix ** _tabOrientation; /* Orientation */
 
-	int64_t __storeDim;
+	int __storeDim;
 
 	// model dependant methods for computing _tabSigma
 	void computeTabSigma_L_C();
@@ -136,8 +136,8 @@ protected:
 	void computeTabSigma_L_D_Ak_D();
 	void computeTabSigma_Lk_D_Ak_D();
 
-	//void recopySymmetricMatrixInMatrix(SymmetricMatrix & sym, Matrix& mat, double facteur);
-	int64_t getFreeParameter() const;
+	//void recopySymmetricMatrixInMatrix(SymmetricMatrix & sym, Matrix& mat, float facteur);
+	int getFreeParameter() const;
 };
 
 inline DiagMatrix ** GaussianGeneralParameter::getTabShape() const {
@@ -148,7 +148,7 @@ inline GeneralMatrix ** GaussianGeneralParameter::getTabOrientation() const {
 	return _tabOrientation;
 }
 
-inline double * GaussianGeneralParameter::getTabLambda() const {
+inline float * GaussianGeneralParameter::getTabLambda() const {
 	return _tabLambda;
 }
 

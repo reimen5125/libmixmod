@@ -46,7 +46,7 @@ Description::Description() {
 //------------
 // Constructor by initialization
 //------------
-Description::Description(int64_t nbSample, int64_t nbColumn, 
+Description::Description(int nbSample, int nbColumn, 
 		std::vector<ColumnDescription *> columnDescription, 
 		FormatNumeric::FormatNumericFile format, std::string filename, std::string infoName)
 {
@@ -60,7 +60,7 @@ Description::Description(int64_t nbSample, int64_t nbColumn,
 		THROW(InputException, errorInColumnDescription);
 	}
 	_columnDescription.resize(_nbColumn);
-	for (int64_t i = 0; i < _nbColumn; ++i) {
+	for (int i = 0; i < _nbColumn; ++i) {
 		_columnDescription[i] = columnDescription[i]->clone();
 	}
 }
@@ -82,7 +82,7 @@ Description & Description::operator=(const Description & description) {
 	_nbSample = description._nbSample;
 	_nbColumn = description._nbColumn;
 	_columnDescription.resize(_nbColumn);
-	for (int64_t i = 0; i < _nbColumn; ++i) {
+	for (int i = 0; i < _nbColumn; ++i) {
 		const ColumnDescription * cd = description.getColumnDescription(i);
 		_columnDescription[i] = cd->clone();
 	}
@@ -102,7 +102,7 @@ Description::~Description() {
 
 void Description::initializationColumnDescription() {
 	_columnDescription.resize(_nbColumn);
-	for (int64_t i = 0; i < _nbColumn; ++i) {
+	for (int i = 0; i < _nbColumn; ++i) {
 		//auto_ptr<XEMQuantitativeColumnDescription> a (new XEMQuantitativeColumnDescription());
 		//_columnDescription[i] = a;
 		_columnDescription[i] = new QuantitativeColumnDescription(i);
@@ -112,9 +112,9 @@ void Description::initializationColumnDescription() {
 //------------------------------------------
 // return pbDimension (number of variables)
 //
-int64_t Description::getPbDimension() const {
-	int64_t nbVariable = _nbColumn;
-	for (int64_t i = 0; i < _nbColumn; i++) {
+int Description::getPbDimension() const {
+	int nbVariable = _nbColumn;
+	for (int i = 0; i < _nbColumn; i++) {
 		if (typeid (*(_columnDescription[i])) == typeid (IndividualColumnDescription)) {
 			nbVariable--;
 		}

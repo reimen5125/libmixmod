@@ -91,7 +91,7 @@ CompositeData::~CompositeData() {
 			_dataComponent[i] = NULL;
 		}
 	}
-  for (int64_t i = 0; i < _nbSample; i++) {
+  for (int i = 0; i < _nbSample; i++) {
     delete _matrix[i];
   }
   delete[] _matrix;
@@ -103,7 +103,7 @@ void CompositeData::input(const DataDescription& dataDescription)
 	std::vector<ColumnDescription*> bColumnDescription;
 
 //for (std::vector<ColumnDescription*>::const_iterator it=dataDescription.getAllColumnDescription().begin(); it != dataDescription.getAllColumnDescription().end(); it++) {
-  for (int64_t i = 0; i <dataDescription.getAllColumnDescription().size(); i++) {
+  for (int i = 0; i <dataDescription.getAllColumnDescription().size(); i++) {
 //  ColumnDescription* columnDescription = *it;
     ColumnDescription* columnDescription =(dataDescription.getAllColumnDescription())[i];
 		if (typeid (*columnDescription) == typeid (QualitativeColumnDescription)) {

@@ -54,9 +54,9 @@ LearnModelOutput::LearnModelOutput(Model * estimation) : ModelOutput(estimation)
 //  Initialization Constructor
 //-----------------
 LearnModelOutput::LearnModelOutput(ModelType & modelType, 
-		int64_t nbCluster,
+		int nbCluster,
 		std::vector< CriterionOutput* >& criterionOutput, 
-		double likelihood, 
+		float likelihood, 
 		ParameterDescription& parameterDescription,
 		LabelDescription& labelDescription, 
 		ProbaDescription& probaDescription)
@@ -68,7 +68,7 @@ LearnModelOutput::LearnModelOutput(ModelType & modelType,
 //-----------------
 //  Initialization Constructor
 //-----------------
-LearnModelOutput::LearnModelOutput(ModelType& modelType, int64_t nbCluster, Exception& error) 
+LearnModelOutput::LearnModelOutput(ModelType& modelType, int nbCluster, Exception& error) 
 : ModelOutput(modelType, nbCluster, error) {
     _CVLabel = nullptr;
 }
@@ -81,24 +81,24 @@ LearnModelOutput::~LearnModelOutput() {
 }
 
 /// set CV Labels
-void LearnModelOutput::setCVLabel(Model * estimation, std::vector<int64_t> & cvLabel) {
+void LearnModelOutput::setCVLabel(Model * estimation, std::vector<int> & cvLabel) {
 	if (isBinary(estimation->getModelType()->_nameModel) && DATA_REDUCE) {
 		////
 		//binary case
 
 		// cmake a copy of cvLabel
-		std::vector<int64_t> cvLabelCopy(cvLabel);
+		std::vector<int> cvLabelCopy(cvLabel);
 
-		const std::vector<int64_t> & correspondenceOriginDataToReduceData = 
+		const std::vector<int> & correspondenceOriginDataToReduceData = 
 				dynamic_cast<BinaryModel*> (estimation)->getCorrespondenceOriginDataToReduceData();
 		// get the true number of sample
-		const int64_t nbSample = correspondenceOriginDataToReduceData.size();
+		const int nbSample = correspondenceOriginDataToReduceData.size();
 
 		// resize cvLabel
 		cvLabel.resize(nbSample);
 
 		// convert labelReduce, to label
-		for (int64_t i = 0; i < nbSample; i++) {
+		for (int i = 0; i < nbSample; i++) {
 			cvLabel[i] = cvLabelCopy[correspondenceOriginDataToReduceData[i]];
 		}
 	}

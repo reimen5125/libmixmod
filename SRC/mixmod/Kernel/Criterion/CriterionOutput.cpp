@@ -58,7 +58,7 @@ CriterionOutput::CriterionOutput(CriterionName criterionName) {
 // Constructor
 //------------
 CriterionOutput::CriterionOutput(CriterionName criterionName, 
-		double criterionValue, Exception& criterionErrorType) 
+		float criterionValue, Exception& criterionErrorType) 
 {
 	_value = criterionValue;
 	_criterionName = criterionName;

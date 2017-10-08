@@ -52,7 +52,7 @@ public:
 	/// Constructor
 	// called by GaussianParameter or BinaryParameter (called by StrategyType)
 	// if USER initialisation
-	Parameter(int64_t iNbCluster, int64_t iPbDimension, ModelType * iModelType);
+	Parameter(int iNbCluster, int iPbDimension, ModelType * iModelType);
 
 	/// Constructor
 	// called by XEMParameter (called by XEMModel)
@@ -92,16 +92,16 @@ public:
 	/** Compute normal probability density function
 		 for iSample the sample and kCluster th cluster
 	 */
-	virtual double getPdf(int64_t iSample, int64_t kCluster) const = 0;
+	virtual float getPdf(int iSample, int kCluster) const = 0;
 
 	// compute normal probability density function
 	// for all i=1,..,n and k=1,..,K
-	virtual void getAllPdf(double ** tabFik, double * tabProportion) const = 0;
+	virtual void getAllPdf(float ** tabFik, float * tabProportion) const = 0;
 
 	/** Compute normal probability density function
 		 for x vector and kCluster th cluster
 	 */
-	virtual double getPdf(Sample * x, int64_t kCluster) const = 0;
+	virtual float getPdf(Sample * x, int kCluster) const = 0;
 
 	// computeTabProportion
 	void computeTabProportion();
@@ -109,13 +109,13 @@ public:
 	/** @brief Selector
 		@return The number of free parameters
 	 */
-	virtual int64_t getFreeParameter() const = 0;
+	virtual int getFreeParameter() const = 0;
 
 	/// get loglikelihood with one cluster
-	virtual double getLogLikelihoodOne() const = 0;
+	virtual float getLogLikelihoodOne() const = 0;
 
 	/// compute Tik for xi (i=0 -> _nbSample-1) when underflow
-	virtual void computeTikUnderflow(int64_t i, double ** tabTik);
+	virtual void computeTikUnderflow(int i, float ** tabTik);
 
 
 	//---------------
@@ -125,8 +125,8 @@ public:
 	/// init user
 	virtual void initUSER(Parameter * iParam) = 0;
 
-	int64_t generateRandomIndex(bool * tabIndividualCanBeUsedForInitRandom, 
-			double * weight, double totalWeight);
+	int generateRandomIndex(bool * tabIndividualCanBeUsedForInitRandom, 
+			float * weight, float totalWeight);
 
 	/// initialize attributes before an InitRandom  
 	virtual void initForInitRANDOM() = 0;
@@ -139,7 +139,7 @@ public:
 	/// -  nbInitializedCluster
 	/// - tabNotInitializedCluster (array of size _nbCluster)
 
-	virtual void initForInitUSER_PARTITION(int64_t & nbInitializedCluster, 
+	virtual void initForInitUSER_PARTITION(int & nbInitializedCluster, 
 			bool * tabNotInitializedCluster, Partition * initPartition) = 0;
 
 
@@ -173,13 +173,13 @@ public:
 	//-------
 
 	/// get TabProportion
-	double * getTabProportion() const;
+	float * getTabProportion() const;
 
 	/// get nbCluster
-	int64_t getNbCluster() const;
+	int getNbCluster() const;
 
 	/// get pbDimension
-	int64_t getPbDimension() const;
+	int getPbDimension() const;
 
 	/// getFreeProportion
 	bool getFreeProportion() const;
@@ -217,13 +217,13 @@ public:
 protected:
 
 	/// Number of classes
-	int64_t _nbCluster;
+	int _nbCluster;
 
 	/// problem dimension
-	int64_t _pbDimension;
+	int _pbDimension;
 
 	/// Table of proportion of each cluster
-	double * _tabProportion;
+	float * _tabProportion;
 
 	/// free proportion ?
 	bool _freeProportion;
@@ -246,15 +246,15 @@ private:
 // inline methods
 //---------------
 
-inline int64_t Parameter::getNbCluster() const {
+inline int Parameter::getNbCluster() const {
 	return _nbCluster;
 }
 
-inline int64_t Parameter::getPbDimension() const {
+inline int Parameter::getPbDimension() const {
 	return _pbDimension;
 }
 
-inline double * Parameter::getTabProportion() const {
+inline float * Parameter::getTabProportion() const {
 	return _tabProportion;
 }
 

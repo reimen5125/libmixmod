@@ -38,7 +38,7 @@ SymmetricMatrix::SymmetricMatrix() {
 	THROW(OtherException, wrongConstructorType);
 }
 
-SymmetricMatrix::SymmetricMatrix(int64_t pbDimension, double d) : Matrix(pbDimension) {
+SymmetricMatrix::SymmetricMatrix(int pbDimension, float d) : Matrix(pbDimension) {
 	_value = new MATH::SymmetricMatrix(_s_pbDimension);
 	_store = _value->Store();
 
@@ -66,8 +66,8 @@ SymmetricMatrix::~SymmetricMatrix() {
 	_value = NULL;
 }
 
-double SymmetricMatrix::determinant(Exception& errorType) {
-	double det = 0;
+float SymmetricMatrix::determinant(Exception& errorType) {
+	float det = 0;
 	try {
 		det = _value->LogDeterminant();
 	}
@@ -80,38 +80,38 @@ double SymmetricMatrix::determinant(Exception& errorType) {
 	return det;
 }
 
-void SymmetricMatrix::equalToMatrixMultiplyByDouble(Matrix* D, double d) {
+void SymmetricMatrix::equalToMatrixMultiplyByFloat(Matrix* D, float d) {
 	THROW(OtherException, nonImplementedMethod);
 }
 
-double* SymmetricMatrix::getDiagonalStore() {
+float* SymmetricMatrix::getDiagonalStore() {
 	THROW(OtherException, wrongMatrixType);
 }
 
-double* SymmetricMatrix::getSymmetricStore() {
+float* SymmetricMatrix::getSymmetricStore() {
 	return (_store);
 }
 
-double* SymmetricMatrix::getGeneralStore() {
+float* SymmetricMatrix::getGeneralStore() {
 	return (_store);
 }
 
-double SymmetricMatrix::getSphericalStore() {
+float SymmetricMatrix::getSphericalStore() {
 	THROW(OtherException, wrongMatrixType);
 }
 
-void SymmetricMatrix::compute_M_tM(double* V, int64_t l) {
-	int64_t indice1 = l - 1, indice2;
-	int64_t indiceStoreGammak = _s_storeDim - 1;
-	int64_t dim = l / _s_pbDimension;
+void SymmetricMatrix::compute_M_tM(float* V, int l) {
+	int indice1 = l - 1, indice2;
+	int indiceStoreGammak = _s_storeDim - 1;
+	int dim = l / _s_pbDimension;
 	while (indice1 > 0) {
-		for (int64_t j = 0; j < dim; j++) {
+		for (int j = 0; j < dim; j++) {
 			_store[indiceStoreGammak] += V[(indice1 - j)] * V[(indice1 - j)];
 		}
 		indiceStoreGammak -= 1;
 		indice2 = indice1 - dim;
 		while (indice2 > 0) {
-			for (int64_t j = 0; j < dim; j++) {
+			for (int j = 0; j < dim; j++) {
 				_store[indiceStoreGammak] += V[(indice1 - j)] * V[(indice2 - j)];
 			}
 			indice2 -= dim;
@@ -121,19 +121,19 @@ void SymmetricMatrix::compute_M_tM(double* V, int64_t l) {
 	}
 }
 
-void SymmetricMatrix::compute_product_Lk_Wk(Matrix* Wk, double L) {
-	double * Wk_store;
+void SymmetricMatrix::compute_product_Lk_Wk(Matrix* Wk, float L) {
+	float * Wk_store;
 	Wk_store = Wk->getSymmetricStore();
-	for (int64_t p = 0; p < _s_storeDim; p++) {
+	for (int p = 0; p < _s_storeDim; p++) {
 		_store[p] += Wk_store[p] / L;
 	}
 }
 
-double SymmetricMatrix::compute_trace_W_C(Matrix * C) {
-	double tabLambdak_k = 0.0;
-	double termesHorsDiag;
-	int64_t p, q, r;
-	double * C_store = C->getSymmetricStore();
+float SymmetricMatrix::compute_trace_W_C(Matrix * C) {
+	float tabLambdak_k = 0.0;
+	float termesHorsDiag;
+	int p, q, r;
+	float * C_store = C->getSymmetricStore();
 	termesHorsDiag = 0.0;
 	for (p = 0, r = 0; p < _s_pbDimension; p++, r++) {
 		for (q = 0; q < p; q++, r++) {
@@ -158,11 +158,11 @@ void SymmetricMatrix::inverse(Matrix * & Inv) {
 	delete value_Inv;
 }
 
-double SymmetricMatrix::norme(double * xMoinsMean) {
-	int64_t p, q, r;
-	double termesHorsDiag = 0.0;
-	double termesDiag = 0.0;
-	double xMoinsMean_p;
+float SymmetricMatrix::norme(float * xMoinsMean) {
+	int p, q, r;
+	float termesHorsDiag = 0.0;
+	float termesDiag = 0.0;
+	float xMoinsMean_p;
 
 	for (p = 0, r = 0; p < _s_pbDimension; p++, r++) {
 		xMoinsMean_p = xMoinsMean[p];
@@ -175,9 +175,9 @@ double SymmetricMatrix::norme(double * xMoinsMean) {
 	return termesDiag;
 }
 
-double SymmetricMatrix::putSphericalValueInStore(double & store) {
-	int64_t p, r;
-	int64_t increment = 2;
+float SymmetricMatrix::putSphericalValueInStore(float & store) {
+	int p, r;
+	int increment = 2;
 	store = 0.0;
 
 	for (p = 0, r = 0; p < _s_pbDimension; p++) {
@@ -190,9 +190,9 @@ double SymmetricMatrix::putSphericalValueInStore(double & store) {
 
 }
 
-double SymmetricMatrix::addSphericalValueInStore(double & store) {
-	int64_t p, r;
-	int64_t increment = 2;
+float SymmetricMatrix::addSphericalValueInStore(float & store) {
+	int p, r;
+	int increment = 2;
 	for (p = 0, r = 0; p < _s_pbDimension; p++) {
 		store += _store[r];
 		r += increment;
@@ -202,9 +202,9 @@ double SymmetricMatrix::addSphericalValueInStore(double & store) {
 	return (store);
 }
 
-double* SymmetricMatrix::putDiagonalValueInStore(double * store) {
-	int64_t p, r;
-	int64_t increment = 2;
+float* SymmetricMatrix::putDiagonalValueInStore(float * store) {
+	int p, r;
+	int increment = 2;
 	for (p = 0, r = 0; p < _s_pbDimension; p++) {
 		store[p] = _store[r];
 		r += increment;
@@ -213,9 +213,9 @@ double* SymmetricMatrix::putDiagonalValueInStore(double * store) {
 	return (store);
 }
 
-double* SymmetricMatrix::addDiagonalValueInStore(double * store) {
-	int64_t p, r;
-	int64_t increment = 2;
+float* SymmetricMatrix::addDiagonalValueInStore(float * store) {
+	int p, r;
+	int increment = 2;
 	for (p = 0, r = 0; p < _s_pbDimension; p++) {
 		store[p] += _store[r];
 		r += increment;
@@ -224,43 +224,43 @@ double* SymmetricMatrix::addDiagonalValueInStore(double * store) {
 	return (store);
 }
 
-double* SymmetricMatrix::putSymmetricValueInStore(double * store) {
-	for (int64_t p = 0; p < _s_storeDim; p++) {
+float* SymmetricMatrix::putSymmetricValueInStore(float * store) {
+	for (int p = 0; p < _s_storeDim; p++) {
 		store[p] = _store[p];
 	}
 	return (store);
 }
 
-double* SymmetricMatrix::addSymmetricValueInStore(double * store) {
-	for (int64_t p = 0; p < _s_storeDim; p++) {
+float* SymmetricMatrix::addSymmetricValueInStore(float * store) {
+	for (int p = 0; p < _s_storeDim; p++) {
 		store[p] += _store[p];
 	}
 	return (store);
 }
 
-double* SymmetricMatrix::putGeneralValueInStore(double * store) {
+float* SymmetricMatrix::putGeneralValueInStore(float * store) {
 	THROW(OtherException, wrongMatrixType);
 }
 
-double* SymmetricMatrix::addGeneralValueInStore(double * store) {
+float* SymmetricMatrix::addGeneralValueInStore(float * store) {
 	THROW(OtherException, wrongMatrixType);
 }
 
 // (this) will be A / d
-void SymmetricMatrix::equalToMatrixDividedByDouble(Matrix * A, double d) {
+void SymmetricMatrix::equalToMatrixDividedByFloat(Matrix * A, float d) {
 	A->putSymmetricValueInStore(_store);
 
-	int64_t p;
+	int p;
 	for (p = 0; p < _s_storeDim; p++) {
 		_store[p] /= d;
 	}
 }
 
 // add :  cik * xMoinsMean * xMoinsMean'  to this
-void SymmetricMatrix::add(double * xMoinsMean, double cik) {
+void SymmetricMatrix::add(float * xMoinsMean, float cik) {
 
-	int64_t p, q, r;
-	double xMoinsMean_p;
+	int p, q, r;
+	float xMoinsMean_p;
 
 	for (p = 0, r = 0; p < _s_pbDimension; p++, r++) {
 		xMoinsMean_p = xMoinsMean[p];
@@ -272,9 +272,9 @@ void SymmetricMatrix::add(double * xMoinsMean, double cik) {
 }
 
 // add : diag( cik * xMoinsMean * xMoinsMean' )  to this
-/*void SymmetricMatrix::addDiag(double * xMoinsMean, double cik){
-  int64_t p,q,r;
-  double xMoinsMean_p;
+/*void SymmetricMatrix::addDiag(float * xMoinsMean, float cik){
+  int p,q,r;
+  float xMoinsMean_p;
 
   for(p=0,r=0 ; p<_s_pbDimension ; p++,r++){
 	xMoinsMean_p = xMoinsMean[p];
@@ -284,9 +284,9 @@ void SymmetricMatrix::add(double * xMoinsMean, double cik) {
 }*/
 
 // set the value of (d x Identity) to this  
-void SymmetricMatrix::operator=(const double& d) {
+void SymmetricMatrix::operator=(const float& d) {
 
-	int64_t p, q, r;
+	int p, q, r;
 	for (p = 0, r = 0; p < _s_pbDimension; p++, r++) {
 		for (q = 0; q < p; q++, r++) {
 			_store[r] = 0.0;
@@ -296,16 +296,16 @@ void SymmetricMatrix::operator=(const double& d) {
 }
 
 // divide each element by d
-void SymmetricMatrix::operator/=(const double& d) {
-	int64_t p;
+void SymmetricMatrix::operator/=(const float& d) {
+	int p;
 	for (p = 0; p < _s_storeDim; p++) {
 		_store[p] /= d;
 	}
 }
 
 // multiply each element by d
-void SymmetricMatrix::operator*=(const double& d) {
-	int64_t p;
+void SymmetricMatrix::operator*=(const float& d) {
+	int p;
 	for (p = 0; p < _s_storeDim; p++) {
 		_store[p] *= d;
 	}
@@ -322,16 +322,16 @@ void SymmetricMatrix::operator+=(Matrix* M) {
 
 // compute Shape as diag(Ot . this . O ) / diviseur
 void SymmetricMatrix::computeShape_as__diag_Ot_this_O(
-		DiagMatrix* & Shape, GeneralMatrix* & Ori, double diviseur) 
+		DiagMatrix* & Shape, GeneralMatrix* & Ori, float diviseur) 
 {
-	int64_t i_index, j_index;
+	int i_index, j_index;
 
-	int64_t p, q, r, j;
-	double * O_store = Ori->getStore();
-	double * Shape_store = Shape->getStore();
+	int p, q, r, j;
+	float * O_store = Ori->getStore();
+	float * Shape_store = Shape->getStore();
 
-	double termesDiag, termesHorsDiag;
-	double tmp;
+	float termesDiag, termesHorsDiag;
+	float tmp;
 
 	for (j = 0; j < _s_pbDimension; j++) {
 		// computation of the [j,j] term of the diagonal
@@ -357,15 +357,15 @@ void SymmetricMatrix::computeShape_as__diag_Ot_this_O(
 }
 
 // compute this as : multi * (O * S * O' )
-void SymmetricMatrix::compute_as__multi_O_S_O(double multi, GeneralMatrix* & O, DiagMatrix* & S) {
+void SymmetricMatrix::compute_as__multi_O_S_O(float multi, GeneralMatrix* & O, DiagMatrix* & S) {
 
-	int64_t i_index = 0;
-	int64_t j_index;
-	int64_t p, q, r, l;
+	int i_index = 0;
+	int j_index;
+	int p, q, r, l;
 
-	double * O_store = O->getStore();
-	double * S_store = S->getStore();
-	double tmp;
+	float * O_store = O->getStore();
+	float * S_store = S->getStore();
+	float tmp;
 
 	for (p = 0, r = 0; p < _s_pbDimension; p++, i_index += _s_pbDimension) {
 		j_index = 0;
@@ -382,18 +382,18 @@ void SymmetricMatrix::compute_as__multi_O_S_O(double multi, GeneralMatrix* & O, 
 }
 
 // compute this as : (O * S * O' )
-void SymmetricMatrix::compute_as_O_S_O(GeneralMatrix* & O, double* & S_store) {
+void SymmetricMatrix::compute_as_O_S_O(GeneralMatrix* & O, float* & S_store) {
 
-	int64_t i_index = 0;
-	int64_t j_index;
-	int64_t p, q, r, l;
+	int i_index = 0;
+	int j_index;
+	int p, q, r, l;
 
-	for (int64_t i = 0; i < _s_storeDim; i++) {
+	for (int i = 0; i < _s_storeDim; i++) {
 		_store[i] = 0;
 	}
 
-	double * O_store = O->getStore();
-	double tmp;
+	float * O_store = O->getStore();
+	float tmp;
 	for (p = 0, r = 0; p < _s_pbDimension; p++, i_index += _s_pbDimension) {
 		j_index = 0;
 		for (q = 0; q <= p; q++, r++, j_index += _s_pbDimension) {
@@ -407,10 +407,10 @@ void SymmetricMatrix::compute_as_O_S_O(GeneralMatrix* & O, double* & S_store) {
 }
 
 //compute trace of a symmetric matrix
-double SymmetricMatrix::computeTrace() {
-	int64_t i;
-	int64_t indice = 0;
-	double trace = 0.0;
+float SymmetricMatrix::computeTrace() {
+	int i;
+	int indice = 0;
+	float trace = 0.0;
 
 
 	i = 0;
@@ -423,16 +423,16 @@ double SymmetricMatrix::computeTrace() {
 }
 
 void SymmetricMatrix::computeSVD(DiagMatrix* & S, GeneralMatrix* & O) {
-	int64_t dim = O->getPbDimension();
+	int dim = O->getPbDimension();
 	MATH::DiagonalMatrix * tabShape_k = new MATH::DiagonalMatrix(dim);
 	MATH::Matrix * tabOrientation_k = new MATH::Matrix(dim, dim);
 	_value->computeSVD(tabShape_k, tabOrientation_k);
 
-	double * storeS = S->getStore();
-	double * storeO = O->getStore();
+	float * storeS = S->getStore();
+	float * storeO = O->getStore();
 
-	double * storeTabShape_k = tabShape_k->Store();
-	double * storeTabOrientation_k = (*tabOrientation_k).Store();
+	float * storeTabShape_k = tabShape_k->Store();
+	float * storeTabOrientation_k = (*tabOrientation_k).Store();
 
 	recopyTab(storeTabShape_k, storeS, dim);
 	recopyTab(storeTabOrientation_k, storeO, dim * dim);
@@ -441,15 +441,15 @@ void SymmetricMatrix::computeSVD(DiagMatrix* & S, GeneralMatrix* & O) {
 	delete tabOrientation_k;
 }
 
-void SymmetricMatrix::compute_as_M_tM(GeneralMatrix* M, int64_t d) {
+void SymmetricMatrix::compute_as_M_tM(GeneralMatrix* M, int d) {
 
-	int64_t indiceStoreM1 = 0, indiceStoreM2;
-	int64_t indice = 0;
-	int64_t k1 = 0, k2;
-	int64_t DimStoreM = _s_pbDimension*_s_pbDimension;
-	double * storeM = M->getStore();
+	int indiceStoreM1 = 0, indiceStoreM2;
+	int indice = 0;
+	int k1 = 0, k2;
+	int DimStoreM = _s_pbDimension*_s_pbDimension;
+	float * storeM = M->getStore();
 
-	for (int64_t i = 0; i < _s_storeDim; i++) {
+	for (int i = 0; i < _s_storeDim; i++) {
 		_store[i] = 0;
 	}
 
@@ -458,7 +458,7 @@ void SymmetricMatrix::compute_as_M_tM(GeneralMatrix* M, int64_t d) {
 		indiceStoreM2 = indiceStoreM1;
 		while (indiceStoreM2 < DimStoreM) {
 
-			for (int64_t j = 0; j < d; j++) {
+			for (int j = 0; j < d; j++) {
 				// attention vecteur contenant la matrice triangulaire supérieure
 				_store[indice] += storeM[(indiceStoreM1 + j)] * storeM[(indiceStoreM2 + j)];
 			}
@@ -471,21 +471,21 @@ void SymmetricMatrix::compute_as_M_tM(GeneralMatrix* M, int64_t d) {
 	}
 }
 
-void SymmetricMatrix::compute_as_M_V(SymmetricMatrix* M, double * V) {
+void SymmetricMatrix::compute_as_M_V(SymmetricMatrix* M, float * V) {
 
-	for (int64_t i = 0; i < _s_pbDimension; i++) {
+	for (int i = 0; i < _s_pbDimension; i++) {
 		_store[i] = 0;
 	}
-	int64_t indiceV = 0, k = 0, indice = 0;
-	int64_t indiceM = 0;
-	double* storeM = M->getStore();
+	int indiceV = 0, k = 0, indice = 0;
+	int indiceM = 0;
+	float* storeM = M->getStore();
 
 	while (indice < _s_pbDimension) {
-		for (int64_t i = 0; i < (_s_pbDimension - k); i++) {
+		for (int i = 0; i < (_s_pbDimension - k); i++) {
 			_store[indice] += V[indiceV + i] * storeM[indiceM + i];
 		}
 
-		for (int64_t j = 1; j < (_s_pbDimension - k); j++) {
+		for (int j = 1; j < (_s_pbDimension - k); j++) {
 			_store[indice + j] += V[indiceV] * storeM[indiceM + j];
 		}
 		indiceM += (_s_pbDimension - k);
@@ -499,16 +499,16 @@ void SymmetricMatrix::compute_as_M_V(SymmetricMatrix* M, double * V) {
 void SymmetricMatrix::compute_M_as__O_Sinverse_Ot_this(
 		GeneralMatrix & M, GeneralMatrix* & O, DiagMatrix* & S) 
 {
-	double * M_store = M.getStore();
-	double * O_store = O->getStore();
-	double * S_store = S->getStore();
+	float * M_store = M.getStore();
+	float * O_store = O->getStore();
+	float * S_store = S->getStore();
 
-	int64_t i, j, l, p, r;
-	int64_t O1_index = 0;
-	int64_t O2_index;
-	int64_t r_decalage;
-	double tmp, omega;
-	int64_t fillindex = 0;
+	int i, j, l, p, r;
+	int O1_index = 0;
+	int O2_index;
+	int r_decalage;
+	float tmp, omega;
+	int fillindex = 0;
 
 	for (i = 0; i < _s_pbDimension; i++) {
 		for (j = 0; j < _s_pbDimension; j++, fillindex++) {
@@ -555,23 +555,23 @@ void SymmetricMatrix::compute_M_as__O_Sinverse_Ot_this(
 }
 
 void SymmetricMatrix::input(std::ifstream & fi) {
-	int64_t i, j, r = 0;
-	double garbage;
+	int i, j, r = 0;
+	float garbage;
 
 	for (i = 0; i < _s_pbDimension; i++) {
     for (j = 0; j < i + 1; j++) {
-			_store[r] = getDoubleFromStream(fi);
+			_store[r] = getFloatFromStream(fi);
       r++;
     }
     for (j = i + 1; j < _s_pbDimension; j++) {
 			// we don't need values (all are 0 ?)
-			getDoubleFromStream(fi);
+			getFloatFromStream(fi);
 		}
 	}
 }
 
-void SymmetricMatrix::input(double ** variances) {
-	int64_t i, j, r = 0;
+void SymmetricMatrix::input(float ** variances) {
+	int i, j, r = 0;
 
 	for (i = 0; i < _s_pbDimension; i++) {
 		for (j = 0; j < i + 1; j++) {
@@ -584,9 +584,9 @@ void SymmetricMatrix::input(double ** variances) {
 }
 
 // gives : det(diag(this))
-double SymmetricMatrix::detDiag(Exception& errorType) {
-	int64_t p, q, r;
-	double det = 1.0;
+float SymmetricMatrix::detDiag(Exception& errorType) {
+	int p, q, r;
+	float det = 1.0;
 
 	for (p = 0, r = 0; p < _s_pbDimension; p++, r++) {
 		for (q = 0; q < p; q++, r++);
@@ -598,17 +598,17 @@ double SymmetricMatrix::detDiag(Exception& errorType) {
 }
 
 // trace( this * O * S^{-1} * O' )
-double SymmetricMatrix::trace_this_O_Sm1_O(GeneralMatrix* & O, DiagMatrix* & S) {
-	double * O_store = O->getStore();
-	double * S_store = S->getStore();
+float SymmetricMatrix::trace_this_O_Sm1_O(GeneralMatrix* & O, DiagMatrix* & S) {
+	float * O_store = O->getStore();
+	float * S_store = S->getStore();
 
-	double trace = 0.0;
-	double termesHorsDiag = 0.0;
-	double tmp, tmp2;
+	float trace = 0.0;
+	float termesHorsDiag = 0.0;
+	float tmp, tmp2;
 
-	int64_t i_index = 0;
-	int64_t j_index;
-	int64_t p, q, r, l;
+	int i_index = 0;
+	int j_index;
+	int p, q, r, l;
 
 	for (p = 0, r = 0; p < _s_pbDimension; p++, r++, i_index += _s_pbDimension) {
 		j_index = 0;
@@ -634,13 +634,13 @@ double SymmetricMatrix::trace_this_O_Sm1_O(GeneralMatrix* & O, DiagMatrix* & S) 
 	return trace;
 }
 
-double** SymmetricMatrix::storeToArray() const {
+float** SymmetricMatrix::storeToArray() const {
 
-	int64_t i, j, k = (_s_storeDim - 1);
-	double** newStore = new double*[_s_pbDimension];
+	int i, j, k = (_s_storeDim - 1);
+	float** newStore = new float*[_s_pbDimension];
 
 	for (i = 0; i < _s_pbDimension; ++i) {
-		newStore[i] = new double[_s_pbDimension];
+		newStore[i] = new float[_s_pbDimension];
 	}
 	for (i = (_s_pbDimension - 1); i>-1; --i) {
 		newStore[i][i] = _store[k];

@@ -77,7 +77,7 @@ void PredictMain::run(IoMode iomode, int verbose, int massiccc) {
 	}
 
 	ModelType * modelType = _input->getModelType()[0];
-	int64_t nbCluster = _input->getNbCluster(0);
+	int nbCluster = _input->getNbCluster(0);
 	Data * data = (_input->getDataDescription()).getData();
 
 	// define a new estimation
@@ -90,7 +90,7 @@ void PredictMain::run(IoMode iomode, int verbose, int massiccc) {
 		Partition * inputKnownPartition = NULL;
 		Partition * workingKnownPartition = NULL;
 
-		std::vector<int64_t> correspondenceOriginDataToReduceData;
+		std::vector<int> correspondenceOriginDataToReduceData;
 
 		//--------------------------------
 		//Reduce Data

@@ -56,9 +56,9 @@ public:
 	// constructor for Binary
 	/// Constructor
 	ParameterDescription(
-			int64_t nbCluster, 
-			int64_t nbVariable, 
-			std::vector< int64_t > nbFactor, 
+			int nbCluster, 
+			int nbVariable, 
+			std::vector< int > nbFactor, 
 			FormatNumeric::FormatNumericFile format, 
 			std::string filename, 
 			std::string infoName, 
@@ -67,8 +67,8 @@ public:
 	// constructor for Gaussian
 	/// Constructor
 	ParameterDescription(
-			int64_t nbCluster, 
-			int64_t nbVariable, 
+			int nbCluster, 
+			int nbVariable, 
 			FormatNumeric::FormatNumericFile format, 
 			std::string filename, 
 			std::string infoName, 
@@ -77,10 +77,10 @@ public:
 	// constructor for Composite
 	/// Constructor
 	ParameterDescription(
-			int64_t nbCluster,
-			int64_t nbVariable_binary,
-			int64_t nbVariable_gaussian,
-			std::vector< int64_t > nbFactor,
+			int nbCluster,
+			int nbVariable_binary,
+			int nbVariable_gaussian,
+			std::vector< int > nbFactor,
 			FormatNumeric::FormatNumericFile format,
 			std::string filename,
 			std::string infoName,
@@ -90,35 +90,35 @@ public:
 
 	//constructor for binary data
 	ParameterDescription(
-			int64_t nbCluster,
-			int64_t nbVariable,
+			int nbCluster,
+			int nbVariable,
 			ModelName& modelName,
-			double * proportions,
-			double ** centers,
-			double *** scatters,
-			std::vector< int64_t > nbFactor);
+			float * proportions,
+			float ** centers,
+			float *** scatters,
+			std::vector< int > nbFactor);
 
 	//constructor for Gaussian data
 	ParameterDescription(
-			int64_t nbCluster,
-			int64_t nbVariable,
+			int nbCluster,
+			int nbVariable,
 			ModelName& modelName,
-			double * proportions,
-			double ** means,
-			double *** variances);
+			float * proportions,
+			float ** means,
+			float *** variances);
 
 	//constructor for Heterogeneous
 	ParameterDescription(
-			int64_t nbCluster, 
-			int64_t nbBinaryVariable, 
-			int64_t nbGaussianVariable, 
+			int nbCluster, 
+			int nbBinaryVariable, 
+			int nbGaussianVariable, 
 			ModelName& modelName, 
-			double * proportions, 
-			double ** centers, 
-			double *** scatters, 
-			double ** means, 
-			double *** variances, 
-			std::vector< int64_t > nbFactor);
+			float * proportions, 
+			float ** centers, 
+			float *** scatters, 
+			float ** means, 
+			float *** variances, 
+			std::vector< int > nbFactor);
 
 	/// Destructor
 	~ParameterDescription();
@@ -133,10 +133,10 @@ public:
 	std::string getInfoName();
 
 	///getPbDimension
-	int64_t getNbVariable();
+	int getNbVariable();
 
 	///getNbCluster
-	int64_t getNbCluster();
+	int getNbCluster();
 
 	///getFormat
 	FormatNumeric::FormatNumericFile getFormat();
@@ -148,7 +148,7 @@ public:
 	ModelType * getModelType();
 
 	///getTabNbModality
-	std::vector<int64_t> & getTabNbFactor();
+	std::vector<int> & getTabNbFactor();
 
 	void saveNumericValues(std::string fileName = "");
 
@@ -156,15 +156,15 @@ private:
 
 	std::string _infoName;
 
-	int64_t _nbVariable;
+	int _nbVariable;
 
-	int64_t _nbCluster;
+	int _nbCluster;
 
 	FormatNumeric::FormatNumericFile _format; //format of  numeric file
 
 	std::string _filename;
 
-	std::vector<int64_t> _nbFactor;
+	std::vector<int> _nbFactor;
 
 	ModelType * _modelType;
 
@@ -180,7 +180,7 @@ inline Parameter * ParameterDescription::getParameter() {
 	}
 }
 
-inline int64_t ParameterDescription::getNbCluster() {
+inline int ParameterDescription::getNbCluster() {
 	return _nbCluster;
 }
 
@@ -188,7 +188,7 @@ inline std::string ParameterDescription::getInfoName() {
 	return _infoName;
 }
 
-inline int64_t ParameterDescription::getNbVariable() {
+inline int ParameterDescription::getNbVariable() {
 	return _nbVariable;
 }
 
@@ -204,7 +204,7 @@ inline ModelType * ParameterDescription::getModelType() {
 	return _modelType;
 }
 
-inline std::vector<int64_t> & ParameterDescription::getTabNbFactor() {
+inline std::vector<int> & ParameterDescription::getTabNbFactor() {
 	return _nbFactor;
 }
 

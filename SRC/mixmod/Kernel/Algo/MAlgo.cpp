@@ -42,7 +42,7 @@ MAlgo::MAlgo(const MAlgo & mAlgo) : Algo(mAlgo) {
 //------------
 // Constructor
 //------------
-MAlgo::MAlgo(AlgoStopName algoStopName, double epsilon, int64_t nbIteration)
+MAlgo::MAlgo(AlgoStopName algoStopName, float epsilon, int nbIteration)
 : Algo(algoStopName, epsilon, nbIteration) {
 }
 

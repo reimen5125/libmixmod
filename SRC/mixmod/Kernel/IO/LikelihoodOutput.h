@@ -42,7 +42,7 @@ class LikelihoodOutput {
 public:
 
 	/// Default constructor
-	LikelihoodOutput(double logLikelihood, double completeLogLikelihood, double entropy, int64_t nbFreeParam);
+	LikelihoodOutput(float logLikelihood, float completeLogLikelihood, float entropy, int nbFreeParam);
 
 	LikelihoodOutput();
 	/// Constructor
@@ -55,29 +55,29 @@ public:
 	void edit(std::ofstream & oFile, bool text = false);
 
 	///Selector
-	double getLogLikelihood() const;
-	double getCompleteLogLikelihood() const;
+	float getLogLikelihood() const;
+	float getCompleteLogLikelihood() const;
 
 private:
 
 	/// Value of logLikelihood
-	double _logLikelihood;
+	float _logLikelihood;
 
 	/// Value of completed logLikelihood
-	double _completeLogLikelihood;
+	float _completeLogLikelihood;
 
 	/// Value of entropyd
-	double _entropy;
+	float _entropy;
 
 	/// Number of free parameter
-	int64_t _nbFreeParam;
+	int _nbFreeParam;
 };
 
-inline double LikelihoodOutput::getLogLikelihood() const {
+inline float LikelihoodOutput::getLogLikelihood() const {
 	return _logLikelihood;
 }
 
-inline double LikelihoodOutput::getCompleteLogLikelihood() const {
+inline float LikelihoodOutput::getCompleteLogLikelihood() const {
 	return _completeLogLikelihood;
 }
 

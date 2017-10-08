@@ -50,7 +50,7 @@ ClusteringStrategy::ClusteringStrategy() {
 	_nbAlgo  = defaultNbAlgo;
 	_tabAlgo.reserve(_nbAlgo);
 	//  _tabAlgo = new XEMAlgo * [_nbAlgo];
-	for (int64_t i = 0; i < _nbAlgo; i++) {
+	for (int i = 0; i < _nbAlgo; i++) {
 		_tabAlgo.push_back(createDefaultClusteringAlgo());
 	}
 }
@@ -62,7 +62,7 @@ ClusteringStrategy::ClusteringStrategy(const ClusteringStrategy & strategy) {
 	//  _tabAlgo = new XEMAlgo * [_nbAlgo];
 	//  XEMAlgo ** tabA = strategy.getTabAlgo();
 	std::vector<Algo*> tabA = strategy.getTabAlgo();
-	for (int64_t i = 0; i < _nbAlgo; i++) {
+	for (int i = 0; i < _nbAlgo; i++) {
 		//_tabAlgo[i] = tabA[i]->clone();
 		_tabAlgo.push_back(tabA[i]->clone());
 	}
@@ -80,21 +80,21 @@ ClusteringStrategy::~ClusteringStrategy() {
 }
 
 // setAlgoEpsilon
-void ClusteringStrategy::setAlgoEpsilon(int64_t position, double epsilonValue) {
+void ClusteringStrategy::setAlgoEpsilon(int position, float epsilonValue) {
 	_tabAlgo[position]->setEpsilon(epsilonValue);
 }
 
 // setAlgoStopRuleTypeValue
-void ClusteringStrategy::setAlgoStopRule(AlgoStopName stopName, int64_t position) {
+void ClusteringStrategy::setAlgoStopRule(AlgoStopName stopName, int position) {
 	_tabAlgo[position]->setAlgoStopName(stopName);
 }
 
-void ClusteringStrategy::setAlgoIteration( int64_t position, int64_t nbIterationValue) {
+void ClusteringStrategy::setAlgoIteration( int position, int nbIterationValue) {
 	_tabAlgo[position]->setNbIteration(nbIterationValue);
 }
 
 // setAlgo
-void ClusteringStrategy::setAlgo(AlgoName algoName, int64_t position) {
+void ClusteringStrategy::setAlgo(AlgoName algoName, int position) {
 	if (_tabAlgo[position] != NULL) {
 		delete _tabAlgo[position];
 	}
@@ -133,32 +133,32 @@ void ClusteringStrategy::addAlgo(AlgoName algoName) {
 }
 
 // set init parameter
-void ClusteringStrategy::setInitParam(std::string & paramFileName, int64_t position) {
+void ClusteringStrategy::setInitParam(std::string & paramFileName, int position) {
 	_strategyInit->setInitParam(paramFileName, position);
 }
 
 void ClusteringStrategy::setTabInitParameter(
-		Parameter ** tabInitParameter, int64_t nbInitParameter)
+		Parameter ** tabInitParameter, int nbInitParameter)
 {
 	_strategyInit->setTabInitParameter(tabInitParameter, nbInitParameter);
 }
 
 // set init partition
-void ClusteringStrategy::setInitPartition(std::string & partitionFileName, int64_t position) {
+void ClusteringStrategy::setInitPartition(std::string & partitionFileName, int position) {
 	_strategyInit->setPartition(partitionFileName, position);
 }
 
 // set init partition
-void ClusteringStrategy::setInitPartition(Partition * part, int64_t position) {
+void ClusteringStrategy::setInitPartition(Partition * part, int position) {
 	_strategyInit->setPartition(part, position);
 }
 
-void ClusteringStrategy::setTabPartition(Partition ** tabPartition, int64_t nbPartition) {
+void ClusteringStrategy::setTabPartition(Partition ** tabPartition, int nbPartition) {
 	_strategyInit->setTabPartition(tabPartition, nbPartition);
 }
 
 // insert algo
-void ClusteringStrategy::insertAlgo(AlgoName algoName, int64_t position) {
+void ClusteringStrategy::insertAlgo(AlgoName algoName, int position) {
 	switch (algoName) {
 	case EM:
 		_tabAlgo.insert(_tabAlgo.begin() + position, new EMAlgo());
@@ -192,10 +192,10 @@ void ClusteringStrategy::setStrategyInit(ClusteringStrategyInit * iStrategyInit)
 }
 
 void ClusteringStrategy::setStrategyInit(StrategyInitName initName, Data *& data,
-		int64_t nbNbCluster, int64_t * tabNbCluster, ModelType * modelType)
+		int nbNbCluster, int * tabNbCluster, ModelType * modelType)
 {
-	int64_t nbSample    = data->_nbSample;
-	int64_t pbDimension  = data->_pbDimension;
+	int nbSample    = data->_nbSample;
+	int pbDimension  = data->_pbDimension;
 
 	// TODO [bauder]: Why do we initialize with an empty filename ?
 	//                Maybe add a function parameter ?
@@ -216,13 +216,13 @@ void ClusteringStrategy::setStrategyInit(StrategyInitName initName, Data *& data
 		_strategyInit->setStrategyInitName(initName);
 		tabInitParameter = new Parameter * [nbNbCluster];
 
-		for (int64_t k = 0; k < nbNbCluster; k++) {
+		for (int k = 0; k < nbNbCluster; k++) {
 			if (isEDDA(modelType->_nameModel)) {
 				tabInitParameter[k] = new GaussianGeneralParameter(
 						tabNbCluster[k], pbDimension, modelType, fileName);
 			}
 			else if (getModelGenre(modelType->_nameModel) == QualitativeModel) {
-				int64_t * tabNbModality = (data->getBinaryData())->getTabNbModality();
+				int * tabNbModality = (data->getBinaryData())->getTabNbModality();
 				tabInitParameter[k] = new BinaryEkjhParameter(
 						tabNbCluster[k], pbDimension, modelType, tabNbModality, fileName);
 			}
@@ -238,7 +238,7 @@ void ClusteringStrategy::setStrategyInit(StrategyInitName initName, Data *& data
 	case USER_PARTITION:
 		_strategyInit->setStrategyInitName(initName);
 		tabInitPartition = new Partition * [nbNbCluster];
-		for (int64_t k = 0; k < nbNbCluster; k++) {
+		for (int k = 0; k < nbNbCluster; k++) {
 			NumericPartitionFile partitionFile;
 			partitionFile._fileName = fileName;
 			partitionFile._format = FormatNumeric::defaultFormatNumericFile;
@@ -253,7 +253,7 @@ void ClusteringStrategy::setStrategyInit(StrategyInitName initName, Data *& data
 //-------------
 // setNbTry
 //-------------
-void ClusteringStrategy::setNbTry(int64_t nbTry) {
+void ClusteringStrategy::setNbTry(int nbTry) {
 	if ((_strategyInit->getStrategyInitName() == USER) ||
 			(_strategyInit->getStrategyInitName() == USER_PARTITION)) {
 		THROW(InputException, badSetNbTry);
@@ -292,13 +292,13 @@ void ClusteringStrategy::run(Model *& model) const {
 		}
 
 		if ( (bestModel->getErrorType()) == NOERROR ) {
-			double bestLLorCLL = bestModel->getCompletedLogLikelihoodOrLogLikelihood();
+			float bestLLorCLL = bestModel->getCompletedLogLikelihoodOrLogLikelihood();
 			// other tries
-			for (int64_t i = iTry; i < _nbTry; i++) {
+			for (int i = iTry; i < _nbTry; i++) {
 				Model * currentModel = model->clone();
 				oneTry(currentModel);
 				if ( (currentModel->getErrorType()) == NOERROR ) {
-					double lastLLorCLL = currentModel->getCompletedLogLikelihoodOrLogLikelihood();
+					float lastLLorCLL = currentModel->getCompletedLogLikelihoodOrLogLikelihood();
 					if (lastLLorCLL > bestLLorCLL) {
 						delete bestModel;
 						bestModel = currentModel->clone();
@@ -315,11 +315,11 @@ void ClusteringStrategy::run(Model *& model) const {
 		model = bestModel;
 		/*    oneTry(model);
 			XEMModel * bestModel = new XEMModel(model);
-			double bestLLorCLL = model->getCompletedLogLikelihoodOrLogLikelihood();
+			float bestLLorCLL = model->getCompletedLogLikelihoodOrLogLikelihood();
 			// others tries
-			for (int64_t i=1; i<_nbTry; i++){
+			for (int i=1; i<_nbTry; i++){
 			  oneTry(model);
-			  double lastLLorCLL = model->getCompletedLogLikelihoodOrLogLikelihood();
+			  float lastLLorCLL = model->getCompletedLogLikelihoodOrLogLikelihood();
 			  cout<<"Try n°="<< i << " lastLL=" << lastLLorCLL << " bestLL=" << bestLLorCLL
 		      << " nbCluster=" << model->getNbCluster() << " modelName="
 		      << XEMModelNameToString(model->getModelType()->getModelName()) << endl;
@@ -351,12 +351,12 @@ void ClusteringStrategy::run(Model *& model) const {
 	case USER:
 	{
 		// get initPartition
-		int64_t nbCluster = model->getNbCluster();
-		int64_t index = 0;
+		int nbCluster = model->getNbCluster();
+		int index = 0;
 		bool ok = false;
-		int64_t nbInitParameter = _strategyInit->getNbInitParameter();
+		int nbInitParameter = _strategyInit->getNbInitParameter();
 		while (ok == false && index < nbInitParameter) {
-			int64_t nbClusterOfInitParameter =
+			int nbClusterOfInitParameter =
 					_strategyInit->getInitParameter(index)->getNbCluster();
 			if (nbCluster == nbClusterOfInitParameter) {
 				ok = true;
@@ -375,12 +375,12 @@ void ClusteringStrategy::run(Model *& model) const {
 	case USER_PARTITION:
 	{
 		// get initPartition
-		int64_t nbCluster = model->getNbCluster();
-		int64_t index = 0;
+		int nbCluster = model->getNbCluster();
+		int index = 0;
 		bool ok = false;
-		int64_t nbPartition = _strategyInit->getNbPartition();
+		int nbPartition = _strategyInit->getNbPartition();
 		while (ok == false && index < nbPartition) {
-			int64_t nbClusterOfInitPartition = _strategyInit->getPartition(index)->_nbCluster;
+			int nbClusterOfInitPartition = _strategyInit->getPartition(index)->_nbCluster;
 			if (nbCluster == nbClusterOfInitPartition) {
 				ok = true;
 			}
@@ -391,7 +391,7 @@ void ClusteringStrategy::run(Model *& model) const {
 		if (!ok)
 			THROW(OtherException, internalMixmodError);
 		Partition * initPartition = _strategyInit->getPartition(index);
-		int64_t nbTyInInit = _strategyInit->getNbTry();
+		int nbTyInInit = _strategyInit->getNbTry();
 		model->initUSER_PARTITION(initPartition, nbTyInInit);
 	}
 		break;
@@ -428,7 +428,7 @@ void ClusteringStrategy::run(Model *& model) const {
 	// define a number of errors iterator
 	int nbErrorInAlgo = 0;
 	//  _tabAlgo[0]->run(model);
-	for (int64_t i = 0; i < _nbAlgo ; i++) {
+	for (int i = 0; i < _nbAlgo ; i++) {
 		try {
 			_tabAlgo[i]->run(model);
 		}
@@ -491,9 +491,9 @@ bool ClusteringStrategy::verify() {
 // TODO XEMInput : a enlever
 //---------------
 void ClusteringStrategy::input_FLAT_FORMAT(std::ifstream & fi, Data *& data,
-		int64_t nbNbCluster, int64_t * tabNbCluster, ModelType * modelType)
+		int nbNbCluster, int * tabNbCluster, ModelType * modelType)
 {
-	int64_t j;
+	int j;
 	std::string keyWord = "";
 	bool alreadyRead = false;
 	std::string a = "";
@@ -503,7 +503,7 @@ void ClusteringStrategy::input_FLAT_FORMAT(std::ifstream & fi, Data *& data,
 	fi >> keyWord;
 	ConvertBigtoLowString(keyWord);
 	if (keyWord.compare("nbtry") == 0) {
-		int64_t nbTry;
+		int nbTry;
 		fi >> nbTry;
 		setNbTry(nbTry);
 	}
@@ -580,20 +580,20 @@ void ClusteringStrategy::input_FLAT_FORMAT(std::ifstream & fi, Data *& data,
 
 					if (keyWord.compare("stoprulevalue") == 0) {
 						if (_tabAlgo[j]->getAlgoStopName() == NBITERATION) {
-							int64_t nbIteration;
+							int nbIteration;
 							fi >> nbIteration;
 							_tabAlgo[j]->setNbIteration(nbIteration);
 							//_tabAlgo[j]->setEpsilon(minEpsilon);
 						}
 						else if (_tabAlgo[j]->getAlgoStopName() == EPSILON) {
-							double epsilon;
+							float epsilon;
 							fi >> epsilon;
 							_tabAlgo[j]->setEpsilon(epsilon);
 							// _tabAlgo[j]->setNbIteration(maxNbIteration);
 						}
 						else if (_tabAlgo[j]->getAlgoStopName() == NBITERATION_EPSILON) {
-							int64_t nbIteration;
-							double epsilon;
+							int nbIteration;
+							float epsilon;
 							fi >> nbIteration;
 							_tabAlgo[j]->setNbIteration(nbIteration);
 							fi >> epsilon;
@@ -634,7 +634,7 @@ void ClusteringStrategy::edit(std::ostream & out) {
 
 	out << "\tNumber of algorithms in the strategy : " << _nbAlgo << endl;
 
-	for (int64_t i = 0; i < _nbAlgo; i++) {
+	for (int i = 0; i < _nbAlgo; i++) {
 		out << "\tAlgorithm " << i + 1 << endl;
 		_tabAlgo[i]->edit(out);
 	}
@@ -653,7 +653,7 @@ std::ostream & operator << (std::ostream & fo, ClusteringStrategy & strategy) {
 
 	// nbAlgo
 	fo << "nbAlgo : " << strategy._nbAlgo << endl;
-	for (int64_t j = 0; j < strategy._nbAlgo; j++) {
+	for (int j = 0; j < strategy._nbAlgo; j++) {
 		Algo * curAlgo = strategy._tabAlgo[j];
 		fo << "Algo n " << j + 1 << " : " << endl;
 		fo << (*curAlgo);
@@ -662,19 +662,19 @@ std::ostream & operator << (std::ostream & fo, ClusteringStrategy & strategy) {
 	return fo;
 }
 
-const int64_t ClusteringStrategy::getNbTryInInit() const {
+const int ClusteringStrategy::getNbTryInInit() const {
 	return _strategyInit->getNbTry();
 }
 
-const int64_t ClusteringStrategy::getNbIterationInInit() const {
+const int ClusteringStrategy::getNbIterationInInit() const {
 	return _strategyInit->getNbIteration();
 }
 
-const double ClusteringStrategy::getEpsilonInInit() const {
+const float ClusteringStrategy::getEpsilonInInit() const {
 	return _strategyInit->getEpsilon();
 }
 
-void ClusteringStrategy::setNbTryInInit(int64_t nbTry) {
+void ClusteringStrategy::setNbTryInInit(int nbTry) {
 	_strategyInit->setNbTry(nbTry);
 }
 
@@ -682,11 +682,11 @@ void ClusteringStrategy::setStrategyInitName(StrategyInitName initName) {
 	_strategyInit->setStrategyInitName(initName);
 }
 
-void ClusteringStrategy::setNbIterationInInit(int64_t nbIteration) {
+void ClusteringStrategy::setNbIterationInInit(int nbIteration) {
 	_strategyInit->setNbIteration(nbIteration);
 }
 
-void ClusteringStrategy::setEpsilonInInit(double epsilon) {
+void ClusteringStrategy::setEpsilonInInit(float epsilon) {
 	_strategyInit->setEpsilon(epsilon);
 }
 

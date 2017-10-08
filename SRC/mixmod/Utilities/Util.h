@@ -82,7 +82,7 @@ class Algo;
 // Constants definitions
 
 /// Define PI
-const double XEMPI = 3.14159265358979323846; // Number pi
+const float XEMPI = 3.14159265358979323846; // Number pi
 
 // misc
 const int DEBUG = 0; // >0 for debug information
@@ -101,73 +101,73 @@ enum class IoMode // How to read/Write data in files ? (binary or ascii format)
 extern IoMode IOMODE; // BINARY for exact values (in hexa) in ouputs files for non regression tests; ASCII for human-readable.
 
 //write floating point number into stream (usually a file)
-void putDoubleInStream(std::ostream& output, double value, std::string appendChars = "");
+void putFloatInStream(std::ostream& output, float value, std::string appendChars = "");
 
 // retrieve floating point number from stream (usually a file)
-double getDoubleFromStream(std::istream& input);
+float getFloatFromStream(std::istream& input);
 
 /// Define number of maximum samples
-const int64_t maxNbSample = 1000000;     // Maximum sample size
-const int64_t maxPbDimension = 10000;    // Maximum sample dimension
-const int64_t minNbIteration = 1;        // Minimum number of iterations
-const int64_t minNbIterationForSEM = 50; // Minimum number of iterations for SEM
-const int64_t maxNbIteration = 100000;   // Maximum number of iterations
-const int64_t defaultNbIteration = 200;  // Default number of iteration
-const double minEpsilon = 0;             // Minimum value of eps
-const double maxEpsilon = 1;             // Maximum value of eps
+const int maxNbSample = 1000000;     // Maximum sample size
+const int maxPbDimension = 10000;    // Maximum sample dimension
+const int minNbIteration = 1;        // Minimum number of iterations
+const int minNbIterationForSEM = 50; // Minimum number of iterations for SEM
+const int maxNbIteration = 100000;   // Maximum number of iterations
+const int defaultNbIteration = 200;  // Default number of iteration
+const float minEpsilon = 0;             // Minimum value of eps
+const float maxEpsilon = 1;             // Maximum value of eps
 
-const double defaultEpsilon = 1.0E-3; // Default value of eps
-const int64_t maxNbNbCluster = 10;    // Maximum size of cluster list
-const int64_t maxNbAlgo = 5;          // Maximum number of algorithms
-const int64_t defaultNbAlgo = 1;      // Default number of algorithms
-const int64_t maxNbStrategy = 10;     // Maximum number of strategies
-const int64_t defaultNbStrategy = 1;  // Default number of strategies
-const int64_t maxNbModel = 100;       // Maximum number of models
-const int64_t defaultNbModel = 1;     // Default number of models
-const int64_t maxNbCriterion = 4;     // Maximum number of criteria
-const int64_t defaultNbCriterion = 1; // Default number of criteria
+const float defaultEpsilon = 1.0E-3; // Default value of eps
+const int maxNbNbCluster = 10;    // Maximum size of cluster list
+const int maxNbAlgo = 5;          // Maximum number of algorithms
+const int defaultNbAlgo = 1;      // Default number of algorithms
+const int maxNbStrategy = 10;     // Maximum number of strategies
+const int defaultNbStrategy = 1;  // Default number of strategies
+const int maxNbModel = 100;       // Maximum number of models
+const int defaultNbModel = 1;     // Default number of models
+const int maxNbCriterion = 4;     // Maximum number of criteria
+const int defaultNbCriterion = 1; // Default number of criteria
 
-const int64_t minNbTryInStrategy = 1;             // min of strategies repeats
-const int64_t maxNbTryInStrategy = 100;           // max of strategies repeats
-const int64_t defaultNbTryInStrategy = 1;           // number of strategies repeats
-const int64_t nbTryInDefaultClusteringStrategy = 1; // number of strategies repeats
+const int minNbTryInStrategy = 1;             // min of strategies repeats
+const int maxNbTryInStrategy = 100;           // max of strategies repeats
+const int defaultNbTryInStrategy = 1;           // number of strategies repeats
+const int nbTryInDefaultClusteringStrategy = 1; // number of strategies repeats
 
-const int64_t minNbTryInInit = 1;      // min of repeats in init
-const int64_t maxNbTryInInit = 1000;   // max of repeats in init
-const int64_t defaultNbTryInInit = 10; // number of repeats in init
+const int minNbTryInInit = 1;      // min of repeats in init
+const int maxNbTryInInit = 1000;   // max of repeats in init
+const int defaultNbTryInInit = 10; // number of repeats in init
 
-const int64_t minNbIterationInInit = 1;                // min number of iterations in init
-const int64_t maxNbIterationInInit = 1000;             // max number of iterations in init
-const int64_t defaultNbIterationInInit = 5;            // default number of iterations in init
-const int64_t defaultNbIterationInInitForSemMax = 100; // default number of iterations in init
+const int minNbIterationInInit = 1;                // min number of iterations in init
+const int maxNbIterationInInit = 1000;             // max number of iterations in init
+const int defaultNbIterationInInit = 5;            // default number of iterations in init
+const int defaultNbIterationInInitForSemMax = 100; // default number of iterations in init
 
-const double minEpsilonInInit = 0;         // min number of iterations in init
-const double maxEpsilonInInit = 1;         // max number of iterations in init
-const double defaultEpsilonInInit = 0.001; // default number of iterations in init
+const float minEpsilonInInit = 0;         // min number of iterations in init
+const float maxEpsilonInInit = 1;         // max number of iterations in init
+const float defaultEpsilonInInit = 0.001; // default number of iterations in init
 
-const int64_t maxNbIterationInCEM_INIT = 100; // Maximum number of iterations of CEM in CEM_INIT
+const int maxNbIterationInCEM_INIT = 100; // Maximum number of iterations of CEM in CEM_INIT
 
-const double minOverflow = std::numeric_limits<double>::min();  // Minimum value for overflow
-const double minUnderflow = std::numeric_limits<double>::min(); // Minimum value for underflow
-const int64_t nbMaxSelection  = 5;              // Maximum number of selection
-const int64_t maxNbOutputFiles = 52;            // Maximum number of output Files
-const int64_t nbTestOutputFiles = 7;            // Number of output files to compare in test
-const double defaultFluryEpsilon = 0.001;       // default value for espilon in flury algorthm
-const int64_t maxFluryIter = 7;                 // maximum of number of Flury iterations
-const double minDeterminantValue =
-		std::numeric_limits<double>::min();     // minimum value of determinant of sigma
-const double maxRelativeDiffValueTest = 1.0E-5; // Maximum difference between 2 value in test
-const double maxAbsoluteDiffValueTest = 1.0E-8; // Maximum difference between 2 value in test
+const float minOverflow = std::numeric_limits<float>::min();  // Minimum value for overflow
+const float minUnderflow = std::numeric_limits<float>::min(); // Minimum value for underflow
+const int nbMaxSelection  = 5;              // Maximum number of selection
+const int maxNbOutputFiles = 52;            // Maximum number of output Files
+const int nbTestOutputFiles = 7;            // Number of output files to compare in test
+const float defaultFluryEpsilon = 0.001;       // default value for espilon in flury algorthm
+const int maxFluryIter = 7;                 // maximum of number of Flury iterations
+const float minDeterminantValue =
+		std::numeric_limits<float>::min();     // minimum value of determinant of sigma
+const float maxRelativeDiffValueTest = 1.0E-5; // Maximum difference between 2 value in test
+const float maxAbsoluteDiffValueTest = 1.0E-8; // Maximum difference between 2 value in test
 
-const int64_t  defaultDCVnumberOfBlocks = 10;   // DCV
-const int64_t defaultCVnumberOfBlocks  = 10;    // CV
+const int  defaultDCVnumberOfBlocks = 10;   // DCV
+const int defaultCVnumberOfBlocks  = 10;    // CV
 
-const double minValueForLLandLLOne = 1.e-10;    // minimum value for LL - LLone
+const float minValueForLLandLLOne = 1.e-10;    // minimum value for LL - LLone
 
-const int64_t int64_t_max = std::numeric_limits<int64_t>::max();
+const int int64_t_max = std::numeric_limits<int>::max();
 
-const int64_t nbQualitativeGraphics = 2;
-const int64_t nbQuantitativeGraphics = 3;
+const int nbQualitativeGraphics = 2;
+const int nbQuantitativeGraphics = 3;
 
 /*
 Notes :
@@ -348,7 +348,7 @@ const AlgoName defaultClusteringAlgoName = EM;
 /** @enum FormatFile
 	@brief Format of differents data file
  */
-const int64_t nbFormatNumeric = 3;
+const int nbFormatNumeric = 3;
 namespace FormatNumeric {
 
 	enum FormatNumericFile {
@@ -402,15 +402,15 @@ bool isKeyword(std::string& name);
  */
 struct TWeightedIndividual {
 
-	int64_t val; // index of individual
-	double weight;
+	int val; // index of individual
+	float weight;
 };
 
 /// XEMCVBlock
 struct CVBlock {
 
-	int64_t   _nbSample;                          // number of samples in this CV Block
-	double _weightTotal;                          // weight Total of this CV Block
+	int   _nbSample;                          // number of samples in this CV Block
+	float _weightTotal;                          // weight Total of this CV Block
 	TWeightedIndividual * _tabWeightedIndividual; // array (size=nbSample) of weighted individual
 };
 
@@ -622,16 +622,16 @@ enum OutputType {
 	errorMixmodOutput,           // error code for mixmod execution
 	errorModelOutput,            // error code for NEC Criterion for each estimation
 
-	DCVinfo,                     // double cross validation information
-	DCVnumericInfo = 51          // numeric double cross validation information (for validation test)
+	DCVinfo,                     // float cross validation information
+	DCVnumericInfo = 51          // numeric float cross validation information (for validation test)
 };
 
 /// compute a^b and throw an error if it's equal to zero
-double powAndCheckIfNotNull(double a, double b,
+float powAndCheckIfNotNull(float a, float b,
 		const Exception & errorType = NumericException("Defaulter", 0, nullDeterminant) );
 
-/// return the nearest int64_t
-int64_t Round(double d);
+/// return the nearest int
+int Round(float d);
 
 /// convert big char of a string in low char
 void ConvertBigtoLowString(std::string & str);
@@ -728,20 +728,20 @@ ModelGenre getModelGenre(ModelName modelname);
 // traitement sur les tableaux
 //----------------------------
 
-// T* copyTab(T * tab, int64_t dim)
-template<typename T> T * copyTab(T * tab, int64_t dim) {
+// T* copyTab(T * tab, int dim)
+template<typename T> T * copyTab(T * tab, int dim) {
 	T * res = new T[dim];
-	int64_t i;
+	int i;
 	for (i = 0; i < dim; i++) {
 		res[i] = tab[i];
 	}
 	return res;
 }
 
-// T ** copyTab(T ** tab, int64_t dim1, int64_t dim2)
-template<typename T> T ** copyTab(T ** tab, int64_t dim1, int64_t dim2) {
+// T ** copyTab(T ** tab, int dim1, int dim2)
+template<typename T> T ** copyTab(T ** tab, int dim1, int dim2) {
 	T ** res = new T*[dim1];
-	int64_t i, j;
+	int i, j;
 	for (i = 0; i < dim1; i++) {
 		res[i] = new T[dim2];
 		for (j = 0 ; j < dim2; j++)
@@ -750,26 +750,26 @@ template<typename T> T ** copyTab(T ** tab, int64_t dim1, int64_t dim2) {
 	return res;
 }
 
-// void recopyTab(T * source, T * destination,int64_t dim)
-template<typename T> void recopyTab(T * source, T * destination, int64_t dim) {
-	int64_t i;
+// void recopyTab(T * source, T * destination,int dim)
+template<typename T> void recopyTab(T * source, T * destination, int dim) {
+	int i;
 	for (i = 0; i < dim; i++) {
 		destination[i] = source[i];
 	}
 }
 
-inline void recopyTab(int64_t * source, double * destination, int64_t dim) {
-	int64_t i;
+inline void recopyTab(int * source, float * destination, int dim) {
+	int i;
 	for (i = 0; i < dim; i++) {
 		destination[i] = source[i];
 	}
 }
 
-inline void recopyTabToVector(double ** source,
-		std::vector<std::vector<double> > & destination, int64_t dim1, int64_t dim2)
+inline void recopyTabToVector(float ** source,
+		std::vector<std::vector<float> > & destination, int dim1, int dim2)
 {
 	destination.resize(dim1);
-	int64_t i, j;
+	int i, j;
 	for (i = 0; i < dim1; i++) {
 		destination[i].resize(dim2);
 		for (j = 0; j < dim2; j++) {
@@ -778,37 +778,37 @@ inline void recopyTabToVector(double ** source,
 	}
 }
 
-inline void recopyTabToVector(int64_t * source, std::vector<int64_t> & destination, int64_t dim1) {
+inline void recopyTabToVector(int * source, std::vector<int> & destination, int dim1) {
 	destination.resize(dim1);
-	int64_t i;
+	int i;
 	for (i = 0; i < dim1; i++) {
 		destination[i] = source[i];
 	}
 }
 
-inline void recopyVectorToTab(std::vector<std::vector<double> > source, double **&  destination) {
-	int64_t dim1 = source.size();
-	int64_t dim2 = source[0].size();
-	destination = new double*[dim1];
-	for (int64_t i = 0; i < dim1; i++) {
-		destination[i] = new double[dim2];
-		for (int64_t k = 0; k < dim2; k++) {
+inline void recopyVectorToTab(std::vector<std::vector<float> > source, float **&  destination) {
+	int dim1 = source.size();
+	int dim2 = source[0].size();
+	destination = new float*[dim1];
+	for (int i = 0; i < dim1; i++) {
+		destination[i] = new float[dim2];
+		for (int k = 0; k < dim2; k++) {
 			destination[i][k] = source[i][k];
 		}
 	}
 }
 
-inline void recopyVectorToTab(std::vector<int64_t> source, int64_t *&  destination) {
-	int64_t dim1 = source.size();
-	destination = new int64_t[dim1];
-	for (int64_t i = 0; i < dim1; i++) {
+inline void recopyVectorToTab(std::vector<int> source, int *&  destination) {
+	int dim1 = source.size();
+	destination = new int[dim1];
+	for (int i = 0; i < dim1; i++) {
 		destination[i] = source[i];
 	}
 }
 
-// void recopyTab(T ** source, T ** destination, int64_t dim1, int64_t dim2)
-template<typename T> void recopyTab(T ** source, T ** destination, int64_t dim1, int64_t dim2) {
-	int64_t i, j;
+// void recopyTab(T ** source, T ** destination, int dim1, int dim2)
+template<typename T> void recopyTab(T ** source, T ** destination, int dim1, int dim2) {
+	int i, j;
 	for (i = 0; i < dim1; i++) {
 		for (j = 0; j < dim2; j++) {
 			destination[i][j] = source[i][j];
@@ -816,20 +816,20 @@ template<typename T> void recopyTab(T ** source, T ** destination, int64_t dim1,
 	}
 }
 
-void editSimpleTab(double * tab, int64_t n, std::ostream & flux, std::string sep = " ", std::string before = " ");
-void editSimpleTab(int64_t    * tab, int64_t n, std::ostream & flux);
+void editSimpleTab(float * tab, int n, std::ostream & flux, std::string sep = " ", std::string before = " ");
+void editSimpleTab(int    * tab, int n, std::ostream & flux);
 
-template<typename T> void editTab(T ** tab, int64_t dim1, int64_t dim2,
+template<typename T> void editTab(T ** tab, int dim1, int dim2,
 		std::ostream & flux, std::string sep = " ", std::string before = "")
 {
 	T ** p_tab = tab;
 	T *  p_tab_i;
-	int64_t i, j ;
+	int i, j ;
 	for (i = 0; i < dim1; i++) {
 		p_tab_i = *p_tab;
 		flux << before;
 		for (j = 0; j < dim2; j++)
-      putDoubleInStream(flux, p_tab_i[j], sep);
+      putFloatInStream(flux, p_tab_i[j], sep);
 		flux << endl;
 		p_tab++;
 	}
@@ -838,10 +838,10 @@ template<typename T> void editTab(T ** tab, int64_t dim1, int64_t dim2,
 //Deleters for unique_ptr
 template<typename T> 
  struct TabDeleter {
-  TabDeleter(int64_t size) : _size(size){};
-  int64_t _size;
+  TabDeleter(int size) : _size(size){};
+  int _size;
   void operator()(T** p) {
-    for(int64_t i=0;i<_size;i++){
+    for(int i=0;i<_size;i++){
       delete[] p[i];
     };
     delete[] p;
@@ -851,12 +851,12 @@ template<typename T>
 
 template<typename T> 
  struct VectTabDeleter {
- VectTabDeleter(int64_t sizeV, int64_t sizeT) : _sizeV(sizeV), _sizeT(sizeT) {};
-  int64_t _sizeV; 
-  int64_t _sizeT;  
+ VectTabDeleter(int sizeV, int sizeT) : _sizeV(sizeV), _sizeT(sizeT) {};
+  int _sizeV; 
+  int _sizeT;  
   void operator()(T*** p) {
-    for(int64_t v=0;v<_sizeV;v++){
-      for(int64_t i=0;i<_sizeT;i++){
+    for(int v=0;v<_sizeV;v++){
+      for(int i=0;i<_sizeT;i++){
         delete[] p[v][i];
       };
       delete[] p[v];
@@ -880,22 +880,22 @@ template<typename T>
 // move on a file until *what* is reached
 void moveUntilReach(std::ifstream & fi, std::string what = "datafile");
 
-void readTabFileName(std::ifstream & fi, int64_t nbNbCluster, std::string * tabFileName, std::string & keyWord);
+void readTabFileName(std::ifstream & fi, int nbNbCluster, std::string * tabFileName, std::string & keyWord);
 
-void initToZero(double * tab, int64_t n);
-void initToZero(double * tab, int64_t n);
+void initToZero(float * tab, int n);
+void initToZero(float * tab, int n);
 
-const int64_t SMALL_ENOUGH_TO_USE_SELECTION_SORT = 15;
-void echange(double * tab, int64_t i1, int64_t i2);
-void echange(int64_t * tab  , int64_t i1, int64_t i2);
+const int SMALL_ENOUGH_TO_USE_SELECTION_SORT = 15;
+void echange(float * tab, int i1, int i2);
+void echange(int * tab  , int i1, int i2);
 
-void selectionSortWithOrder(double * tabRandom, int64_t * tabOrder, int64_t left, int64_t right);
+void selectionSortWithOrder(float * tabRandom, int * tabOrder, int left, int right);
 
-int64_t partition(double * tabRandom, int64_t * tabOrder, int64_t left, int64_t right);
+int partition(float * tabRandom, int * tabOrder, int left, int right);
 
-void quickSortWithOrder(double * tabRandom, int64_t * tabOrder, int64_t left, int64_t right);
+void quickSortWithOrder(float * tabRandom, int * tabOrder, int left, int right);
 
-int64_t generateRandomIndex(bool * tabIndividualCanBeUsedForInitRandom, double * weight, double totalWeight);
+int generateRandomIndex(bool * tabIndividualCanBeUsedForInitRandom, float * weight, float totalWeight);
 
 void inputCriterion(std::ifstream & fi, CriterionName & criterionName);
 

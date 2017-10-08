@@ -60,22 +60,22 @@ public:
 	void setStrategyInitName(StrategyInitName initName);
 
 	/// getNbTry
-	const int64_t getNbTry() const;
+	const int getNbTry() const;
 
 	/// setNbTry
-	void setNbTry(int64_t nbTry);
+	void setNbTry(int nbTry);
 
 	/// getNbIteration
-	const int64_t getNbIteration() const;
+	const int getNbIteration() const;
 
 	/// set NbIteration
-	void setNbIteration(int64_t nbIteration);
+	void setNbIteration(int nbIteration);
 
 	/// getEpsilon
-	const double getEpsilon() const;
+	const float getEpsilon() const;
 
 	/// setEpsilon
-	void setEpsilon(double epsilon);
+	void setEpsilon(float epsilon);
 
 	/// getStopName
 	const AlgoStopName getStopName() const;
@@ -86,39 +86,39 @@ public:
 	/* Parameter */
 	//-----------//
 	/// getNbInitParameter
-	const int64_t & getNbInitParameter() const;
+	const int & getNbInitParameter() const;
 
 	/// getTabInitParameter
 	const Parameter ** getTabInitParameter() const;
 
 	/// getTabInitParameter
-	Parameter * getInitParameter(int64_t index) const;
+	Parameter * getInitParameter(int index) const;
 
 	/// setInitParam
-	void setInitParam(std::string & paramFileName, int64_t position);
+	void setInitParam(std::string & paramFileName, int position);
 
 	/// setTabInitParam
-	void setTabInitParameter(Parameter ** tabInitParameter, int64_t nbInitParameter);
+	void setTabInitParameter(Parameter ** tabInitParameter, int nbInitParameter);
 
 	/* Partition */
 	//-----------//
 	///  getNbPartition
-	const int64_t & getNbPartition() const;
+	const int & getNbPartition() const;
 
 	/// getTabPartition
 	const Partition ** getTabPartition() const;
 
 	/// getTabPartition
-	Partition * getPartition(int64_t index) const;
+	Partition * getPartition(int index) const;
 
 	///set Init Partition
-	void setPartition(Partition * part, int64_t position);
+	void setPartition(Partition * part, int position);
 
 	///set Init Partition
-	void setPartition(std::string & paramFileName, int64_t position);
+	void setPartition(std::string & paramFileName, int position);
 
 	/// setTabPartition
-	void setTabPartition(Partition ** tabPartition, int64_t nbPartition);
+	void setTabPartition(Partition ** tabPartition, int nbPartition);
 
 	/* Initialization */
 	//----------------//
@@ -135,8 +135,8 @@ public:
 	/* Input / Output */
 	//----------------//
 	// input
-	void input(std::ifstream & fi, Data *& data, int64_t nbNbCluster,
-			int64_t * tabNbCluster, ModelType * modelType, bool & alreadyRead);
+	void input(std::ifstream & fi, Data *& data, int nbNbCluster,
+			int * tabNbCluster, ModelType * modelType, bool & alreadyRead);
 
 	// verification
 	bool  verify() const;
@@ -150,34 +150,34 @@ private:
 	StrategyInitName _strategyInitName;
 
 	/// nbTry
-	int64_t _nbTry;
+	int _nbTry;
 
 	/// stopName (for smallEm & sem_max)
 	AlgoStopName _stopName;
 
 	/// nbIteration
-	int64_t _nbIteration;
+	int _nbIteration;
 
 	/// epsilon
-	double _epsilon;
+	float _epsilon;
 
 	/* USER */
 	/// number of InitParameter
-	int64_t _nbInitParameter;
+	int _nbInitParameter;
 
 	/// Init Parameters to initialize strategy
 	Parameter ** _tabInitParameter;
 
 	/* USER_PARTITION */
 	/// number of Partition
-	int64_t _nbPartition;
+	int _nbPartition;
 
 	/// Labels to initialize strategy
 	Partition ** _tabPartition;
 
 	bool _deleteTabParameter ;
 
-	void oneRunOfSmallEM(Model*& model, double & logLikelihood);
+	void oneRunOfSmallEM(Model*& model, float & logLikelihood);
 };
 
 inline  const StrategyInitName & ClusteringStrategyInit::getStrategyInitName() const {
@@ -188,11 +188,11 @@ inline const AlgoStopName ClusteringStrategyInit::getStopName() const {
 	return _stopName;
 }
 
-inline const int64_t & ClusteringStrategyInit::getNbInitParameter() const {
+inline const int & ClusteringStrategyInit::getNbInitParameter() const {
 	return _nbInitParameter;
 }
 
-inline const int64_t & ClusteringStrategyInit::getNbPartition() const {
+inline const int & ClusteringStrategyInit::getNbPartition() const {
 	return _nbPartition;
 }
 
@@ -200,7 +200,7 @@ inline const Parameter ** ClusteringStrategyInit::getTabInitParameter() const {
 	return const_cast<const Parameter**> (_tabInitParameter);
 }
 
-inline Parameter * ClusteringStrategyInit::getInitParameter(int64_t index) const {
+inline Parameter * ClusteringStrategyInit::getInitParameter(int index) const {
 	return _tabInitParameter[index];
 }
 
@@ -208,19 +208,19 @@ inline const Partition** ClusteringStrategyInit::getTabPartition() const {
 	return  const_cast<const Partition**> (_tabPartition);
 }
 
-inline Partition* ClusteringStrategyInit::getPartition(int64_t index) const {
+inline Partition* ClusteringStrategyInit::getPartition(int index) const {
 	return _tabPartition[index];
 }
 
-inline const int64_t ClusteringStrategyInit::getNbTry() const {
+inline const int ClusteringStrategyInit::getNbTry() const {
 	return _nbTry;
 }
 
-inline const int64_t ClusteringStrategyInit::getNbIteration() const {
+inline const int ClusteringStrategyInit::getNbIteration() const {
 	return _nbIteration;
 }
 
-inline const double ClusteringStrategyInit::getEpsilon() const {
+inline const float ClusteringStrategyInit::getEpsilon() const {
 	return _epsilon;
 }
 

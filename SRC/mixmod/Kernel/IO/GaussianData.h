@@ -45,20 +45,20 @@ public:
 	GaussianData(const GaussianData & iData);
 
 	/// Constructor
-	GaussianData(int64_t nbSample, int64_t pbDimension, const std::string & dataFileName);
+	GaussianData(int nbSample, int pbDimension, const std::string & dataFileName);
 
 	/// Constructor  (without fill matrix)
-	GaussianData(int64_t nbSample, int64_t pbDimension);
+	GaussianData(int nbSample, int pbDimension);
 
 	/// Constructor  (with matrix)
-	GaussianData(int64_t nbSample, int64_t pbDimension, double ** matrix);
+	GaussianData(int nbSample, int pbDimension, float ** matrix);
 
 	/// Constructor
-	GaussianData(int64_t nbSample, int64_t pbDimension, double weightTotal, Sample **& matrix, double * weight);
+	GaussianData(int nbSample, int pbDimension, float weightTotal, Sample **& matrix, float * weight);
 
 	/// Constructor
 	// used in DCV context
-	GaussianData(int64_t nbSample, int64_t pbDimension, Data * originalData, CVBlock & block);
+	GaussianData(int nbSample, int pbDimension, Data * originalData, CVBlock & block);
 
 	/// Destructor
 	virtual ~GaussianData();
@@ -91,53 +91,53 @@ public:
 	virtual bool verify()const;
 
 	/// pointer to stored values
-	double ** _yStore;
+	float ** _yStore;
 
-	double ** getYStore();
+	float ** getYStore();
 
-	double getInv2PiPow() const;
+	float getInv2PiPow() const;
 
-	double getHalfPbDimensionLog2Pi() const;
+	float getHalfPbDimensionLog2Pi() const;
 
-	double getPbDimensionLog2Pi() const;
+	float getPbDimensionLog2Pi() const;
 
-	double * getTmpTabOfSizePbDimension() const;
+	float * getTmpTabOfSizePbDimension() const;
 
 protected:
 
 	/// 1/ (2 * pi)^(d/2)
-	double _Inv2PiPow;
+	float _Inv2PiPow;
 
 	/// 0.5 * p * log(2 * PI)
-	double _halfPbDimensionLog2Pi;
+	float _halfPbDimensionLog2Pi;
 
-	double _pbDimensionLog2Pi;
+	float _pbDimensionLog2Pi;
 
-	// tableau de double longueur _pbDimension 
+	// tableau de float longueur _pbDimension 
 	// utilisé pour ne pas avoir à faire sans arret allocation / destruction
 	// utilisé par XEMnorme, getLogLikeLihoodOne
-	double * __tmpTabOfSizePbDimension;
+	float * __tmpTabOfSizePbDimension;
 
 	bool _deleteSamples;
 };
 
-inline double ** GaussianData::getYStore() {
+inline float ** GaussianData::getYStore() {
 	return _yStore;
 }
 
-inline double GaussianData::getInv2PiPow() const {
+inline float GaussianData::getInv2PiPow() const {
 	return _Inv2PiPow;
 }
 
-inline double GaussianData::getHalfPbDimensionLog2Pi()const {
+inline float GaussianData::getHalfPbDimensionLog2Pi()const {
 	return _halfPbDimensionLog2Pi;
 }
 
-inline double GaussianData::getPbDimensionLog2Pi()const {
+inline float GaussianData::getPbDimensionLog2Pi()const {
 	return _pbDimensionLog2Pi;
 }
 
-inline double* GaussianData::getTmpTabOfSizePbDimension()const {
+inline float* GaussianData::getTmpTabOfSizePbDimension()const {
 	return __tmpTabOfSizePbDimension;
 }
 

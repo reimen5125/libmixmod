@@ -51,7 +51,7 @@ public:
 
 	/// Constructor
 	// called by XEMStrategyType
-	GaussianHDDAParameter(int64_t iNbCluster, int64_t iPbDimension, 
+	GaussianHDDAParameter(int iNbCluster, int iPbDimension, 
 			ModelType * iModelType, std::string & iFileName);
 
 	/// Constructor
@@ -81,21 +81,21 @@ public:
 	/** @brief Selector
 		@return Control the shape of the density in the subspace Ei
 	 */
-	double** getTabA() const;
+	float** getTabA() const;
 
 	/** @brief Selector
 		@return Control the shape of the density in the subspace orthogonal to Ei
 	 */
-	double* getTabB() const;
+	float* getTabB() const;
 
 	/** @brief Selector
 		@return Dimension of each subspace
 	 */
-	int64_t * getTabD() const;
+	int * getTabD() const;
 
 	SymmetricMatrix ** getTabGammak() const;
 
-	double ** getGamma() const;
+	float ** getGamma() const;
 
 	void MStep();
 
@@ -110,13 +110,13 @@ public:
 	/// outputs :
 	/// -  nbInitializedCluster
 	/// - tabNotInitializedCluster (array of size _nbCluster)
-	void initForInitUSER_PARTITION(int64_t & nbInitializedCluster, 
+	void initForInitUSER_PARTITION(int & nbInitializedCluster, 
 			bool * tabNotInitializedCluster, Partition * initPartition);
 
 	/// User initialisation of the parameters of the model
 	virtual void initUSER(Parameter* iParam);
 
-	double getLogLikelihoodOne() const;
+	float getLogLikelihoodOne() const;
 
 	void edit();
 
@@ -124,13 +124,13 @@ public:
 
 	void recopy(Parameter * otherParameter);
 
-	double getPdf(int64_t iSample, int64_t kCluster) const;
+	float getPdf(int iSample, int kCluster) const;
 
-	void getAllPdf(double ** tabFik, double * tabProportion) const;
+	void getAllPdf(float ** tabFik, float * tabProportion) const;
 
-	double getPdf(Sample * x, int64_t kCluster)const;
+	float getPdf(Sample * x, int kCluster)const;
 
-	double* computeLoglikelihoodK(double** K);
+	float* computeLoglikelihoodK(float** K);
 
 	void input(std::ifstream & fi);
 
@@ -142,25 +142,25 @@ protected:
 	/// Table of orientation matrix of each cluster
 	GeneralMatrix ** _tabQk;
 
-	int64_t __storeDim;
+	int __storeDim;
 	///Table of parameters Akj of each cluster
-	double ** _tabAkj;
+	float ** _tabAkj;
 	///Table of parameters Bk of each cluster
-	double * _tabBk;
+	float * _tabBk;
 	///Table of sub dimension of each cluster
-	int64_t * _tabDk;
+	int * _tabDk;
 
 	/// _tabGammak = _Gammak * _Gammak' replaces matrix Wk when tabNk smaller than _pbDimension
 	SymmetricMatrix ** _tabGammak; // matrice nk * p
 	/// Array of individuals * weight - mean[k] in class k
-	double ** _Gammak;
+	float ** _Gammak;
 
-	int64_t getFreeParameter()const;
+	int getFreeParameter()const;
 
 	void computeTabWkW();
 
 	///compute function of cost for each tabQk_k
-	double ** computeCost(GeneralMatrix ** tabQ)const;
+	float ** computeCost(GeneralMatrix ** tabQ)const;
 
 	///compute parameters for the model AkjBkQk
 	void computeAkjBkQk();
@@ -188,15 +188,15 @@ inline GeneralMatrix ** GaussianHDDAParameter::getTabQ() const {
 	return _tabQk;
 }
 
-inline double** GaussianHDDAParameter::getTabA() const {
+inline float** GaussianHDDAParameter::getTabA() const {
 	return _tabAkj;
 }
 
-inline double* GaussianHDDAParameter::getTabB() const {
+inline float* GaussianHDDAParameter::getTabB() const {
 	return _tabBk;
 }
 
-inline int64_t * GaussianHDDAParameter::getTabD() const {
+inline int * GaussianHDDAParameter::getTabD() const {
 	return _tabDk;
 }
 
@@ -204,7 +204,7 @@ inline SymmetricMatrix** GaussianHDDAParameter::getTabGammak() const {
 	return _tabGammak;
 }
 
-inline double ** GaussianHDDAParameter::getGamma() const {
+inline float ** GaussianHDDAParameter::getGamma() const {
 	return _Gammak;
 }
 

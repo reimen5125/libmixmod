@@ -78,14 +78,14 @@ Input::Input(const Input & input) {
 //---------------------------
 // Initialisation Constructor
 //---------------------------
-Input::Input(const std::vector<int64_t> & iNbCluster, const DataDescription & iDataDescription) {
+Input::Input(const std::vector<int> & iNbCluster, const DataDescription & iDataDescription) {
 	cloneInitialisation(iNbCluster, iDataDescription);
 }
 
 //---------------------
 // Clone Initialisation 
 //---------------------
-void Input::cloneInitialisation(const std::vector<int64_t> & iNbCluster, 
+void Input::cloneInitialisation(const std::vector<int> & iNbCluster, 
 		const DataDescription & iDataDescription) 
 {
 	_finalized = false;
@@ -281,7 +281,7 @@ void Input::setWeight(std::string weightFileName) {
 	_finalized = false;
 }
 
-void Input::setWeight(double* weight) {
+void Input::setWeight(float* weight) {
 	// get pointer to Data
 	Data * data = getData();
 	data->setWeight(weight);

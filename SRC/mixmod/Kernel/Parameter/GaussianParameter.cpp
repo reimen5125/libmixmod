@@ -52,15 +52,15 @@ GaussianParameter::GaussianParameter() {
 GaussianParameter::GaussianParameter(Model * iModel, ModelType * iModelType) 
 : Parameter(iModel, iModelType) 
 {
-	int64_t k, j;
+	int k, j;
 	_pbDimension = iModel->getGaussianData()->getPbDimension();
-	_tabMean = new double*[_nbCluster];
+	_tabMean = new float*[_nbCluster];
 
 	_tabWk = new Matrix* [_nbCluster];
 	// _tabSigma           = new XEMMatrix* [_nbCluster];
 
 	for (k = 0; k < _nbCluster; k++) {
-		_tabMean[k] = new double[_pbDimension];
+		_tabMean[k] = new float[_pbDimension];
 		for (j = 0; j < _pbDimension; j++) {
 			_tabMean[k][j] = 0;
 		}
@@ -74,18 +74,18 @@ GaussianParameter::GaussianParameter(Model * iModel, ModelType * iModelType)
 // called by XEMGaussianEDDAParameter if initialization is USER
 //------------
 GaussianParameter::GaussianParameter(
-		int64_t iNbCluster, int64_t iPbDimension, ModelType * iModelType) 
+		int iNbCluster, int iPbDimension, ModelType * iModelType) 
 : Parameter(iNbCluster, iPbDimension, iModelType) 
 {
-	int64_t k;
-	_tabMean = new double*[_nbCluster];
+	int k;
+	_tabMean = new float*[_nbCluster];
 
 	_tabWk = new Matrix* [_nbCluster];
 	// _tabSigma           = new XEMMatrix* [_nbCluster];
 
 	for (k = 0; k < _nbCluster; k++) {
-		_tabMean[k] = new double[_pbDimension];
-		for (int64_t j = 0; j < _pbDimension; j++) {
+		_tabMean[k] = new float[_pbDimension];
+		for (int j = 0; j < _pbDimension; j++) {
 			_tabMean[k][j] = 0;
 		}
 	}
@@ -99,9 +99,9 @@ GaussianParameter::GaussianParameter(
 GaussianParameter::GaussianParameter(const GaussianParameter * iParameter) 
 : Parameter(iParameter) 
 {
-	int64_t k;
-	_tabMean = new double*[_nbCluster];
-	double ** iTabMean = iParameter->getTabMean();
+	int k;
+	_tabMean = new float*[_nbCluster];
+	float ** iTabMean = iParameter->getTabMean();
 	for (k = 0; k < _nbCluster; k++) {
 		_tabMean[k] = copyTab(iTabMean[k], _pbDimension);
 	}
@@ -113,7 +113,7 @@ GaussianParameter::GaussianParameter(const GaussianParameter * iParameter)
 // Destructor
 //-----------
 GaussianParameter::~GaussianParameter() {
-	int64_t k;
+	int k;
 
 	if (_tabMean) {
 		for (k = 0; k < _nbCluster; k++) {
@@ -149,8 +149,8 @@ GaussianParameter::~GaussianParameter() {
 //---------------------
 bool GaussianParameter::operator ==(const GaussianParameter & param) const {
 	if (!Parameter::operator==(param)) return false;
-	for (int64_t k = 0; k < _nbCluster; k++) {
-		for (int64_t j = 0; j < _pbDimension; j++) {
+	for (int k = 0; k < _nbCluster; k++) {
+		for (int j = 0; j < _pbDimension; j++) {
 			if (_tabMean[k][j] != param.getTabMean()[k][j]) return false;
 		}
 	}
@@ -161,7 +161,7 @@ bool GaussianParameter::operator ==(const GaussianParameter & param) const {
 // reset to default values
 //------------------------
 void GaussianParameter::reset() {
-	int64_t k, j;
+	int k, j;
 
 	for (k = 0; k < _nbCluster; k++) {
 		*(_tabWk[k]) = 1.0;
@@ -181,9 +181,9 @@ void GaussianParameter::reset() {
 void GaussianParameter::updateForInitRANDOMorUSER_PARTITION(
 		Sample ** tabSampleForInit, bool * tabClusterToInitialize) 
 {
-	double * sampleValue = NULL;
+	float * sampleValue = NULL;
 	Sample * curSample = NULL;
-	for (int64_t k = 0; k < _nbCluster; k++) {
+	for (int k = 0; k < _nbCluster; k++) {
 		if (tabClusterToInitialize[k]) {
 			curSample = tabSampleForInit[k];
 			sampleValue = (curSample->getGaussianSample())->getTabValue();
@@ -196,18 +196,18 @@ void GaussianParameter::updateForInitRANDOMorUSER_PARTITION(
 //computeGlobalDiagDataVariance
 //-----------------------------
 void GaussianParameter::computeGlobalDiagDataVariance(DiagMatrix * matrixDiagDataVar) {
-	int64_t nbSample = _model->getNbSample();
-	int64_t p;
-	int64_t i;
+	int nbSample = _model->getNbSample();
+	int p;
+	int i;
 	GaussianData * data = _model->getGaussianData();
-	double totalWeight = data->_weightTotal;
-	double ** p_yStore = data->getYStore();
-	double * p_yStore_i;
-	double * p_weight = data->_weight;
-	//double * Mean = new double[_pbDimension];
-	std::unique_ptr<double[]> Mean(new double[_pbDimension]);    
-	double wi;
-	double * xiMoinsMean = data->getTmpTabOfSizePbDimension();
+	float totalWeight = data->_weightTotal;
+	float ** p_yStore = data->getYStore();
+	float * p_yStore_i;
+	float * p_weight = data->_weight;
+	//float * Mean = new float[_pbDimension];
+	std::unique_ptr<float[]> Mean(new float[_pbDimension]);    
+	float wi;
+	float * xiMoinsMean = data->getTmpTabOfSizePbDimension();
 
 	computeMeanOne(Mean.get(), p_weight, p_yStore, nbSample, totalWeight);
 
@@ -242,20 +242,20 @@ void GaussianParameter::computeTabWkW() {
 
 	//recuperation des différents paramètres
 
-	double ** tabCik = _model->getTabCik();
-	double ** p_cik;
-	int64_t nbSample = _model->getNbSample();
+	float ** tabCik = _model->getTabCik();
+	float ** p_cik;
+	int nbSample = _model->getNbSample();
 	GaussianData * data = _model->getGaussianData();
-	double ** p_tabMean = _tabMean;
-	double * weight = data->_weight;
-	int64_t i;
-	int64_t k;
+	float ** p_tabMean = _tabMean;
+	float * weight = data->_weight;
+	int i;
+	int k;
 	// storage
-	double ** matrix = data->getYStore(); // to store x_i i=1,...,n
-	double * xiMoinsMuk = data->getTmpTabOfSizePbDimension(); //to store x_i - mu_k at each step
-	double* muk;
-	int64_t p;
-	double cik;
+	float ** matrix = data->getYStore(); // to store x_i i=1,...,n
+	float * xiMoinsMuk = data->getTmpTabOfSizePbDimension(); //to store x_i - mu_k at each step
+	float* muk;
+	int p;
+	float cik;
 	*(_W) = 0.0;
 
 	for (k = 0; k < _nbCluster; k++) {
@@ -293,17 +293,17 @@ void GaussianParameter::initFreeProportion(ModelType * iModelType) {
 // compute class assigment of idxSample element (idxSample : 0->_nbSample-1)
 // Note : distance euclidienne 
 //----------------------------------------------
-int64_t GaussianParameter::computeClassAssigment(int64_t idxSample) {
+int GaussianParameter::computeClassAssigment(int idxSample) {
 	GaussianData * data = _model->getGaussianData();
 
-	int64_t p, k, k0 = 0;
-	double bestDist = 0.0;
-	double * x_idxSample = (data->getYStore())[idxSample];
+	int p, k, k0 = 0;
+	float bestDist = 0.0;
+	float * x_idxSample = (data->getYStore())[idxSample];
 
-	double dist, tmp;
+	float dist, tmp;
 
-	double ** p_tabMean = _tabMean; // pointeur pour parcourir _tabMean
-	double * p_tabMean_k;
+	float ** p_tabMean = _tabMean; // pointeur pour parcourir _tabMean
+	float * p_tabMean_k;
 
 	for (k = 0; k < _nbCluster; k++) {
 		p_tabMean_k = *(p_tabMean);
@@ -330,20 +330,20 @@ int64_t GaussianParameter::computeClassAssigment(int64_t idxSample) {
 /****************************************************/
 /*  computeTabMean  in USER_PARTITION initialization*/
 /***************************************************/
-void GaussianParameter::computeTabMeanInitUSER_PARTITION(int64_t & nbInitializedCluster, 
+void GaussianParameter::computeTabMeanInitUSER_PARTITION(int & nbInitializedCluster, 
 		bool * tabNotInitializedCluster, Partition * initPartition) 
 {
-	int64_t k;
-	int64_t i;
-	int64_t ** initPartitionValue = initPartition->_tabValue;
-	int64_t nbSample = _model->getNbSample();
+	int k;
+	int i;
+	int ** initPartitionValue = initPartition->_tabValue;
+	int nbSample = _model->getNbSample();
 	GaussianData * data = _model->getGaussianData();
-	double ** matrix = data->getYStore();
-	double cik = 0.0;
-	double * tabWeight = data->_weight;
-	//double * tabWeightK = new double[_nbCluster];
-	std::unique_ptr<double[]> tabWeightK(new double[_nbCluster]);    
-	int64_t p; // parcours 0,..., _pbDimension
+	float ** matrix = data->getYStore();
+	float cik = 0.0;
+	float * tabWeight = data->_weight;
+	//float * tabWeightK = new float[_nbCluster];
+	std::unique_ptr<float[]> tabWeightK(new float[_nbCluster]);    
+	int p; // parcours 0,..., _pbDimension
 
 	for (k = 0; k < _nbCluster; k++) {
 		tabWeightK[k] = 0;
@@ -376,7 +376,7 @@ void GaussianParameter::computeTabMeanInitUSER_PARTITION(int64_t & nbInitialized
 	}
 
 	nbInitializedCluster = 0;
-	for (int64_t k = 0; k < _nbCluster; k++) {
+	for (int k = 0; k < _nbCluster; k++) {
 		if (tabWeightK[k] == 0) {
 			tabNotInitializedCluster[k] = true;
 			//cout<<"classe vide � l'initialisation"<<endl;
@@ -392,21 +392,21 @@ void GaussianParameter::computeTabMeanInitUSER_PARTITION(int64_t & nbInitialized
 
 void GaussianParameter::computeTabMean() {
 
-	int64_t k;
-	int64_t i;
-	double ** tabCik = _model->getTabCik();
-	double * tabNk = _model->getTabNk();
-	int64_t nbSample = _model->getNbSample();
+	int k;
+	int i;
+	float ** tabCik = _model->getTabCik();
+	float * tabNk = _model->getTabNk();
+	int nbSample = _model->getNbSample();
 	GaussianData * data = _model->getGaussianData();
-	double ** matrix = data->getYStore();
-	double * muk;
-	double cik = 0.0;
+	float ** matrix = data->getYStore();
+	float * muk;
+	float cik = 0.0;
 	// pointeurs
-	double ** p_matrix;
-	double ** p_cik;
-	double ** p_tabMean = _tabMean;
-	double * p_weight;
-	int64_t p; // parcours 0,..., _pbDimension
+	float ** p_matrix;
+	float ** p_cik;
+	float ** p_tabMean = _tabMean;
+	float * p_weight;
+	int p; // parcours 0,..., _pbDimension
 
 	for (k = 0; k < _nbCluster; k++) {
 		// refresh
@@ -445,15 +445,15 @@ void GaussianParameter::computeTabMean() {
 
 /// compute Mean when there is only one cluster
 /// called by initRANDOM, getLogLikelihoodOne
-void GaussianParameter::computeMeanOne(double * Mean, double * weight, 
-		double** y_Store, int64_t nbSample, double totalWeight) const 
+void GaussianParameter::computeMeanOne(float * Mean, float * weight, 
+		float** y_Store, int nbSample, float totalWeight) const 
 {
-	double ** p_yStore = y_Store;
-	double * p_weight = weight;
-	double * p_yStore_i;
-	int64_t p;
-	int64_t i;
-	double wi;
+	float ** p_yStore = y_Store;
+	float * p_weight = weight;
+	float * p_yStore_i;
+	int p;
+	int i;
+	float wi;
 
 	initToZero(Mean, _pbDimension);
 
@@ -512,9 +512,9 @@ void GaussianParameter::MStep() {
 	computeTabWkW();
 }
 
-double GaussianParameter::determinantDiag(double * mat_store, Exception& errorType) {
-	int64_t p;
-	double det = mat_store[0];
+float GaussianParameter::determinantDiag(float * mat_store, Exception& errorType) {
+	int p;
+	float det = mat_store[0];
 	for (p = 1; p < _pbDimension; p++) {
 		det *= mat_store[p];
 	}
@@ -531,17 +531,17 @@ double GaussianParameter::determinantDiag(double * mat_store, Exception& errorTy
 void GaussianParameter::updateForCV(Model * originalModel, CVBlock & CVBlock) {
 	GaussianParameter * oParam = (originalModel->getGaussianParameter());
 	Matrix ** oTabWk = oParam->getTabWk();
-	double ** oTabMean = oParam->getTabMean();
-	double * oTabNk = originalModel->getTabNk();
+	float ** oTabMean = oParam->getTabMean();
+	float * oTabNk = originalModel->getTabNk();
 
-	int64_t k;
+	int k;
 	GaussianData * oData = originalModel->getGaussianData();
-	double ** matrix = oData->getYStore();
-	double * x_i;
+	float ** matrix = oData->getYStore();
+	float * x_i;
 
-	double * tabNk = _model->getTabNk();
+	float * tabNk = _model->getTabNk();
 
-	double ** tabCik = _model->getTabCik();
+	float ** tabCik = _model->getTabCik();
 
 	//--------------------------------- updates the proportions
 	computeTabProportion();
@@ -549,15 +549,15 @@ void GaussianParameter::updateForCV(Model * originalModel, CVBlock & CVBlock) {
 	//--------------------------------- updates the means
 	//  mu*_k = (1/n*_k).(n_k.mu_k - sum_{test}(cik wi xi))
 
-	int64_t p;
-	int64_t i;
-	double cik;
+	int p;
+	int i;
+	float cik;
 
 	for (k = 0; k < _nbCluster; k++) {
 		for (p = 0; p < _pbDimension; p++) {
 			_tabMean[k][p] = oTabMean[k][p] * oTabNk[k];
 		}
-		for (int64_t ii = 0; ii < CVBlock._nbSample; ii++) {
+		for (int ii = 0; ii < CVBlock._nbSample; ii++) {
 			i = CVBlock._tabWeightedIndividual[ii].val;
 			cik = tabCik[i][k] * CVBlock._tabWeightedIndividual[ii].weight;
 			x_i = matrix[i];
@@ -577,16 +577,16 @@ void GaussianParameter::updateForCV(Model * originalModel, CVBlock & CVBlock) {
 	_tabWk*[k] = _tabWk[k] - Sum(i in CVBlock)cik*(xi-mu*k)(xi-mu*k)' + nk*(muk-oMuk)(muk-oMuk)'
 	 */
 
-	double * tmp = oData->getTmpTabOfSizePbDimension();
-	//double * mukMoinsoMuk = new double[_pbDimension];
-	std::unique_ptr<double[]> mukMoinsoMuk(new double[_pbDimension]);    
+	float * tmp = oData->getTmpTabOfSizePbDimension();
+	//float * mukMoinsoMuk = new float[_pbDimension];
+	std::unique_ptr<float[]> mukMoinsoMuk(new float[_pbDimension]);    
 
-	double * xi;
+	float * xi;
 	*(_W) = 0.0;
 	for (k = 0; k < _nbCluster; k++) {
 		// _tabWk[k]->recopy(oTabWk[k]);
 		(* _tabWk[k]) = oTabWk[k];
-		for (int64_t ii = 0; ii < CVBlock._nbSample; ii++) {
+		for (int ii = 0; ii < CVBlock._nbSample; ii++) {
 			i = CVBlock._tabWeightedIndividual[ii].val;
 			xi = matrix[i];
 			for (p = 0; p < _pbDimension; p++) {

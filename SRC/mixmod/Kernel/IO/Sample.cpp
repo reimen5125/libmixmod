@@ -44,7 +44,7 @@ Sample::Sample(Sample * iSample) {
 //------------
 // Constructor
 //------------
-Sample::Sample(int64_t pbDimension) {
+Sample::Sample(int pbDimension) {
 	_pbDimension = pbDimension;
 }
 

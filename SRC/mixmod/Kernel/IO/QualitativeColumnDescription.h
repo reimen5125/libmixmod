@@ -33,7 +33,7 @@ namespace XEM {
 //Variable Description
 struct VariableDescription {
 
-	int64_t num;
+	int num;
 	std::string name;
 };
 
@@ -51,7 +51,7 @@ public:
 	QualitativeColumnDescription();
 
 	/// initialization constructor
-	QualitativeColumnDescription(int64_t index, int64_t nbFactor);
+	QualitativeColumnDescription(int index, int nbFactor);
 
 	/// Destructor
 	virtual ~QualitativeColumnDescription();
@@ -60,7 +60,7 @@ public:
 
 	ColumnDescription * clone()const;
 
-	const int64_t & getNbFactor()const;
+	const int & getNbFactor()const;
 
 	const std::vector<VariableDescription> & getVariableDescription()const;
 
@@ -68,11 +68,11 @@ public:
 
 private:
 	
-	int64_t _nbFactor;
+	int _nbFactor;
 	std::vector<VariableDescription> _variableDescription;
 };
 
-inline const int64_t & QualitativeColumnDescription::getNbFactor()const {
+inline const int & QualitativeColumnDescription::getNbFactor()const {
 	return _nbFactor;
 }
 

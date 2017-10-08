@@ -44,7 +44,7 @@ public:
 	QuantitativeColumnDescription();
 
 	/// initialization constructor
-	QuantitativeColumnDescription(int64_t index);
+	QuantitativeColumnDescription(int index);
 
 	/// Destructor
 	virtual ~QuantitativeColumnDescription();

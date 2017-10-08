@@ -48,8 +48,8 @@ GaussianDiagParameter::GaussianDiagParameter() {
 GaussianDiagParameter::GaussianDiagParameter(Model * iModel, ModelType * iModelType) 
 : GaussianEDDAParameter(iModel, iModelType) 
 {
-	int64_t k;
-	_tabLambda = new double [_nbCluster];
+	int k;
+	_tabLambda = new float [_nbCluster];
 	_tabShape = new DiagMatrix*[_nbCluster];
 	_W = new DiagMatrix(_pbDimension); //Id
 	for (k = 0; k < _nbCluster; k++) {
@@ -68,7 +68,7 @@ GaussianDiagParameter::GaussianDiagParameter(Model * iModel, ModelType * iModelT
 GaussianDiagParameter::GaussianDiagParameter(const GaussianDiagParameter * iParameter) 
 : GaussianEDDAParameter(iParameter) 
 {
-	int64_t k;
+	int k;
 	_tabLambda = copyTab(iParameter->getTabLambda(), _nbCluster);
 	_tabShape = new DiagMatrix*[_nbCluster];
 	_W = new DiagMatrix(_pbDimension);
@@ -95,7 +95,7 @@ GaussianDiagParameter::GaussianDiagParameter(const GaussianDiagParameter * iPara
 /* Destructor */
 /**************/
 GaussianDiagParameter::~GaussianDiagParameter() {
-	int64_t k;
+	int k;
 
 	if (_tabLambda) {
 		delete[] _tabLambda;
@@ -130,7 +130,7 @@ GaussianDiagParameter::~GaussianDiagParameter() {
 // reset to default values
 //------------------------
 void GaussianDiagParameter::reset() {
-	int64_t k;
+	int k;
 	for (k = 0; k < _nbCluster; k++) {
 		_tabLambda[k] = 1.0;
 		*(_tabShape[k]) = 1.0;
@@ -160,26 +160,26 @@ void GaussianDiagParameter::initUSER(Parameter * iParam) {
 void GaussianDiagParameter::computeTabSigma() {
 	/* Initialization */
 	GaussianData * data = _model->getGaussianData();
-	double * tabNk = _model->getTabNk();
-	int64_t k;
+	float * tabNk = _model->getTabNk();
+	int k;
 	//DiagMatrix * B = new DiagMatrix(_pbDimension);
 	//DiagMatrix * Bk = new DiagMatrix(_pbDimension);
 	std::unique_ptr<DiagMatrix> B(new DiagMatrix(_pbDimension));
 	std::unique_ptr<DiagMatrix>Bk(new DiagMatrix(_pbDimension));
-	double detB = 0.0; // Determinant of matrix B
-	int64_t iter = 5; // Number of iterations in iterative procedure 
-	//  double detDiagW;         // Determinant of diagonal matrix W
-	double detDiagWk; // Determinant of diagonal matrix Wk
-	double lambda = 0.0; // Volume
-	double weightTotal = data->_weightTotal;
-	double power = 1.0 / _pbDimension;
-	double det = 0.0;
-	double logDet = 0.0;
-	//double * W_k = new double[_pbDimension];
-	std::unique_ptr<double[]> W_k(new double[_pbDimension]);    
-	double * Shape_k;
-	double tmp;
-	int64_t p;
+	float detB = 0.0; // Determinant of matrix B
+	int iter = 5; // Number of iterations in iterative procedure 
+	//  float detDiagW;         // Determinant of diagonal matrix W
+	float detDiagWk; // Determinant of diagonal matrix Wk
+	float lambda = 0.0; // Volume
+	float weightTotal = data->_weightTotal;
+	float power = 1.0 / _pbDimension;
+	float det = 0.0;
+	float logDet = 0.0;
+	//float * W_k = new float[_pbDimension];
+	std::unique_ptr<float[]> W_k(new float[_pbDimension]);    
+	float * Shape_k;
+	float tmp;
+	int p;
 
 	// Compute det[diag(W)]
 	NumericException error = NumericException(minDeterminantDiagWValueError);
@@ -198,7 +198,7 @@ void GaussianDiagParameter::computeTabSigma() {
 			  THROW(NumericException,errorSigmaConditionNumber);
 		   }*/
 			//_tabSigma[k] = _W/weightTotal
-			_tabSigma[k]->equalToMatrixDividedByDouble(_W, weightTotal);
+			_tabSigma[k]->equalToMatrixDividedByFloat(_W, weightTotal);
 		}
 		break;
 
@@ -211,7 +211,7 @@ void GaussianDiagParameter::computeTabSigma() {
 			detDiagWk = powAndCheckIfNotNull(det, power);
 
 			//_tabShape[k] = _tabW[k]/detWk
-			_tabShape[k]->equalToMatrixDividedByDouble(_tabWk[k], detDiagWk);
+			_tabShape[k]->equalToMatrixDividedByFloat(_tabWk[k], detDiagWk);
 			lambda += detDiagWk;
 		}
 
@@ -221,7 +221,7 @@ void GaussianDiagParameter::computeTabSigma() {
 				THROW(NumericException, errorSigmaConditionNumber);
 
 			//tabSigma[k] = tabShape[k]*somme(lambda[k])
-			_tabSigma[k]->equalToMatrixMultiplyByDouble(_tabShape[k], _tabLambda[k]);
+			_tabSigma[k]->equalToMatrixMultiplyByFloat(_tabShape[k], _tabLambda[k]);
 		}
 		break;
 
@@ -238,10 +238,10 @@ void GaussianDiagParameter::computeTabSigma() {
 				THROW(NumericException, errorSigmaConditionNumber);
 
 			//_tabShape[k] = _tabW[k]/detWk
-			_tabShape[k]->equalToMatrixDividedByDouble(_tabWk[k], detDiagWk);
+			_tabShape[k]->equalToMatrixDividedByFloat(_tabWk[k], detDiagWk);
 
 			//tabSigma[k] = tabShape[k]*tabLambda[k]
-			_tabSigma[k]->equalToMatrixMultiplyByDouble(_tabShape[k], _tabLambda[k]);
+			_tabSigma[k]->equalToMatrixMultiplyByFloat(_tabShape[k], _tabLambda[k]);
 		}
 		break;
 
@@ -259,7 +259,7 @@ void GaussianDiagParameter::computeTabSigma() {
 			(*B) = 0.0;
 			for (k = 0; k < _nbCluster; k++) {
 				//_tabShape[k] = _tabW[k]/_tabLambda[k]
-				Bk->equalToMatrixDividedByDouble(_tabWk[k], _tabLambda[k]);
+				Bk->equalToMatrixDividedByFloat(_tabWk[k], _tabLambda[k]);
 				(*B) += Bk.get(); // B->operator+=(Bk) : B=somme sur k des Bk
 			}
 			/* Compute det(B) */
@@ -271,7 +271,7 @@ void GaussianDiagParameter::computeTabSigma() {
 			for (k = 0; k < _nbCluster; k++) {
 				// W_k      = _tabWk[k]->getDiagonalValue();
               _tabWk[k]->putDiagonalValueInStore(W_k.get());
-				_tabShape[k]->equalToMatrixDividedByDouble(B.get(), detB);
+				_tabShape[k]->equalToMatrixDividedByFloat(B.get(), detB);
 				Shape_k = _tabShape[k]->getStore();
 				tmp = 0.0;
 				for (p = 0; p < _pbDimension; p++) {
@@ -287,7 +287,7 @@ void GaussianDiagParameter::computeTabSigma() {
 		}
 
 		for (k = 0; k < _nbCluster; k++) {
-			_tabSigma[k]->equalToMatrixMultiplyByDouble(_tabShape[k], _tabLambda[k]);
+			_tabSigma[k]->equalToMatrixMultiplyByFloat(_tabShape[k], _tabLambda[k]);
 		}
 
 		break;
@@ -307,34 +307,34 @@ void GaussianDiagParameter::computeTabSigma() {
 //-------------------
 //getLogLikelihoodOne
 //-------------------
-double GaussianDiagParameter::getLogLikelihoodOne() const {
+float GaussianDiagParameter::getLogLikelihoodOne() const {
 
 	/* Compute log-likelihood for one cluster
 	   useful for NEC criterion */
 
 	/* Initialization */
-	int64_t nbSample = _model->getNbSample();
-	int64_t i;
+	int nbSample = _model->getNbSample();
+	int i;
 	GaussianData * data = _model->getGaussianData();
-	double logLikelihoodOne; // Log-likelihood for k=1
-	//double * Mean = new double[_pbDimension];
-	std::unique_ptr<double[]> Mean(new double[_pbDimension]);    
-	double ** y = data->_yStore;
-	double * yi;
+	float logLikelihoodOne; // Log-likelihood for k=1
+	//float * Mean = new float[_pbDimension];
+	std::unique_ptr<float[]> Mean(new float[_pbDimension]);    
+	float ** y = data->_yStore;
+	float * yi;
 	//DiagMatrix * Sigma = new DiagMatrix(_pbDimension);
 	//DiagMatrix * W = new DiagMatrix(_pbDimension, 0.0);
 	std::unique_ptr<DiagMatrix> Sigma(new DiagMatrix(_pbDimension));
 	std::unique_ptr<DiagMatrix> W(new DiagMatrix(_pbDimension, 0.0));
-	double norme;
-	double * weight = data->_weight;
+	float norme;
+	float * weight = data->_weight;
 	//  Mean Estimator (empirical estimator)
-	double totalWeight = data->_weightTotal;
+	float totalWeight = data->_weightTotal;
 	computeMeanOne(Mean.get(), weight, y, nbSample, totalWeight);
 	weight = data->_weight;
 
 	/* Compute the Cluster Scattering Matrix W */
-	int64_t p; // parcours
-	double * xiMoinsMuk = data->getTmpTabOfSizePbDimension();
+	int p; // parcours
+	float * xiMoinsMuk = data->getTmpTabOfSizePbDimension();
 
 	for (i = 0; i < nbSample; i++) {
 		yi = y[i];
@@ -346,7 +346,7 @@ double GaussianDiagParameter::getLogLikelihoodOne() const {
 
 	/* Compute determinant of diag(W) */
 	//logDet   = W->detDiag(minDeterminantDiagWValueError); //virtual
-	Sigma->equalToMatrixDividedByDouble(W.get(), totalWeight); //virtual
+	Sigma->equalToMatrixDividedByFloat(W.get(), totalWeight); //virtual
 
 	// inverse of Sigma
 	//DiagMatrix * SigmaMoins1 = new DiagMatrix(_pbDimension);
@@ -355,7 +355,7 @@ double GaussianDiagParameter::getLogLikelihoodOne() const {
 	Sigma->inverse(SigmaMoins1_p); //construction de SigmaMoins1 dans la fonction inverse
     std::unique_ptr<Matrix> SigmaMoins1(SigmaMoins1_p);
 	NumericException error = NumericException(minDeterminantSigmaValueError);
-	double detSigma = Sigma->determinant(error); // virtual
+	float detSigma = Sigma->determinant(error); // virtual
 
 	// Compute the log-likelihood for one cluster (k=1)
 	logLikelihoodOne = 0.0;
@@ -382,13 +382,13 @@ double GaussianDiagParameter::getLogLikelihoodOne() const {
 //----------------
 //getFreeParameter
 //----------------
-int64_t GaussianDiagParameter::getFreeParameter() const {
-	int64_t nbParameter; // Number of parameters
-	int64_t k = _nbCluster; // Sample size
-	int64_t d = _pbDimension; // Sample dimension
+int GaussianDiagParameter::getFreeParameter() const {
+	int nbParameter; // Number of parameters
+	int k = _nbCluster; // Sample size
+	int d = _pbDimension; // Sample dimension
 
-	int64_t alphaR = k*d; //alpha for for models with Restrainct proportions (Gaussian_p_...)
-	int64_t alphaF = (k * d) + k - 1; //alpha for models with Free proportions (Gaussian_pk_...)
+	int alphaR = k*d; //alpha for for models with Restrainct proportions (Gaussian_p_...)
+	int alphaF = (k * d) + k - 1; //alpha for models with Free proportions (Gaussian_pk_...)
 
 	switch (_modelType->_nameModel) {
 	case (Gaussian_p_L_B):

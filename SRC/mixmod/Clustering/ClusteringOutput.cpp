@@ -62,13 +62,13 @@ ClusteringOutput* ClusteringOutput::clone() {
 }
 
 // Add one ClusteringModelOutput (incremental construction)
-void ClusteringOutput::addEstimation(ClusteringModelOutput* cmoutput, int64_t count) {
+void ClusteringOutput::addEstimation(ClusteringModelOutput* cmoutput, int count) {
 //_clusteringModelOutput.push_back(cmoutput); //Can't use push_back with openMP. Erase this line if there is no problems
   _clusteringModelOutput[count] = cmoutput; 
 }
 
 // Resize ClusteringModelOutput
-void ClusteringOutput::clusteringModelOutputResize(int64_t size) {
+void ClusteringOutput::clusteringModelOutputResize(int size) {
   _clusteringModelOutput.resize(size);
 }
 
@@ -82,7 +82,7 @@ ClusteringOutput::ClusteringOutput(std::vector<Model*> const & estimations,
 , _criterionName(criterionName)
 {
 	// get a constant of the number of estimations
-	const int64_t sizeEstimation = estimations.size();
+	const int sizeEstimation = estimations.size();
 	// loop over the estimations
 	for (unsigned int i = 0; i < sizeEstimation; i++) {
 		_clusteringModelOutput[i] = new ClusteringModelOutput(estimations[i]);
@@ -106,12 +106,12 @@ ClusteringOutput::~ClusteringOutput() {
 //---------------------
 bool ClusteringOutput::operator ==(const ClusteringOutput & cOutput) const {
 
-  cout.precision (std::numeric_limits<double>::digits10 + 1);
-//double EPS = 1e-13; // small value, but not too small...
+  cout.precision (std::numeric_limits<float>::digits10 + 1);
+//float EPS = 1e-13; // small value, but not too small...
 	// [TODO: loss of relevant digits when saving to .mixmod file]
-	int64_t nbSample = _clusteringModelOutput[0]->getProbaDescription()->getProba()->getNbSample();
+	int nbSample = _clusteringModelOutput[0]->getProbaDescription()->getProba()->getNbSample();
 
-	for (uint64_t k = 0; k < _clusteringModelOutput.size(); k++) {
+	for (size_t k = 0; k < _clusteringModelOutput.size(); k++) {
 		ClusteringModelOutput* cOutputThis = _clusteringModelOutput[k];
 		ClusteringModelOutput* cOutputOther = cOutput._clusteringModelOutput[k];
 
@@ -144,9 +144,9 @@ bool ClusteringOutput::operator ==(const ClusteringOutput & cOutput) const {
   	}
 
 		//Checking criterionValues
-    int64_t j = 0;
-    for (int64_t i = 0; i < maxNbCriterion; i++) {
-      for (int64_t j = 0; j < maxNbCriterion; j++) {
+    int j = 0;
+    for (int i = 0; i < maxNbCriterion; i++) {
+      for (int j = 0; j < maxNbCriterion; j++) {
         if (cOutputThis->getCriterionOutput(i).getCriterionName() == cOutputOther->getCriterionOutput(j).getCriterionName()) {
           if (fabs(cOutputThis->getCriterionOutput(i).getValue() - cOutputOther->getCriterionOutput(j).getValue()) != 0.0) {
             cout << "UNEQUAL: criterion differ res" << k+1 << "  : computed " << cOutputThis->getCriterionOutput(i).getValue()
@@ -159,13 +159,13 @@ bool ClusteringOutput::operator ==(const ClusteringOutput & cOutput) const {
 
 		//precomputation: remap clusters
 		//(may be needed if e.g. (111222333) and (222333111) are obtained)
-		int64_t nbClusters = cOutputThis->getNbCluster();
-		vector<int64_t> clustersCorrespondence(nbClusters);
-		for (int64_t i = 0; i < nbClusters; i++)
+		int nbClusters = cOutputThis->getNbCluster();
+		vector<int> clustersCorrespondence(nbClusters);
+		for (int i = 0; i < nbClusters; i++)
 			clustersCorrespondence[i] = -1;
-		vector<int64_t> labelsThis = cOutputThis->getLabelDescription()->getLabel()->getLabel();
-		vector<int64_t> labelsOther = cOutputOther->getLabelDescription()->getLabel()->getLabel();
-		for (uint64_t i = 0; i < labelsThis.size(); i++) {
+		vector<int> labelsThis = cOutputThis->getLabelDescription()->getLabel()->getLabel();
+		vector<int> labelsOther = cOutputOther->getLabelDescription()->getLabel()->getLabel();
+		for (size_t i = 0; i < labelsThis.size(); i++) {
 			if (clustersCorrespondence[labelsThis[i] - 1] < 0) {
 				//WARNING: labels start at 1, not 0.
 				clustersCorrespondence[labelsThis[i] - 1] = labelsOther[i] - 1;
@@ -178,7 +178,7 @@ bool ClusteringOutput::operator ==(const ClusteringOutput & cOutput) const {
 
 		// [TEMPORARY: THIS SHOULD NEVER HAPPEN]
 		// sanity check: if some cluster correspondence is unassigned, we have an issue...
-  	for (int64_t i = 0; i < nbClusters; i++) {
+  	for (int i = 0; i < nbClusters; i++) {
   		if (clustersCorrespondence[i] < 0) {
   			cout << "ERROR: component " << (i+1) << " is empty in res" << k+1 << endl;
   			return false;
@@ -191,7 +191,7 @@ bool ClusteringOutput::operator ==(const ClusteringOutput & cOutput) const {
 		// there are many of them. So, for the moment, only essential checks are done 'by hand'.
 
 		//Checking labels
-  	for (int64_t i = 0; i < nbSample; i++) {
+  	for (int i = 0; i < nbSample; i++) {
   		if (clustersCorrespondence[labelsThis[i] - 1] != labelsOther[i] - 1) {
   			cout << "UNEQUAL: labels differ resLabel" << k+1 << "   (at least) at row " << (i+1) << endl;
   			return false;
@@ -199,13 +199,13 @@ bool ClusteringOutput::operator ==(const ClusteringOutput & cOutput) const {
   	}
 
 		//Checking probabilities
-  	int64_t nbCluster = cOutputThis->getProbaDescription()->getProba()->getNbCluster();
-  	vector<vector<double> > probaThis =
+  	int nbCluster = cOutputThis->getProbaDescription()->getProba()->getNbCluster();
+  	vector<vector<float> > probaThis =
   			cOutputThis->getProbaDescription()->getProba()->getProba();
-  	vector<vector<double> > probaOther =
+  	vector<vector<float> > probaOther =
   			cOutputOther->getProbaDescription()->getProba()->getProba();
-  	for (int64_t i = 0; i < nbSample; i++) {
-  		for (int64_t j = 0; j < nbCluster; j++) {
+  	for (int i = 0; i < nbSample; i++) {
+  		for (int j = 0; j < nbCluster; j++) {
   			if (fabs(probaThis[i][j] - probaOther[i][clustersCorrespondence[j]]) != 0.0) {
   				cout << "UNEQUAL: probabilities differ resProba" << k+1<< "   (at least) at row " << (i+1)
   						<< ", cluster " << (j+1) << ": computed " << probaThis[i][j]
@@ -221,8 +221,8 @@ bool ClusteringOutput::operator ==(const ClusteringOutput & cOutput) const {
         dynamic_cast<BinaryParameter*> (cOutputThis->getParameterDescription()->getParameter());
       BinaryParameter * bParameterOther = 
         dynamic_cast<BinaryParameter*> (cOutputOther->getParameterDescription()->getParameter());
-      int64_t pbDimension = bParameterThis->getPbDimension();
-      for (int64_t j = 0; j < nbCluster; j++) {
+      int pbDimension = bParameterThis->getPbDimension();
+      for (int j = 0; j < nbCluster; j++) {
         //Checking tabProportion
         if (fabs((bParameterThis->getTabProportion())[j] - (bParameterOther->getTabProportion())[clustersCorrespondence[j]]) != 0.0) {
           cout << "UNEQUAL: proportions differ resParam" << k+1 
@@ -231,7 +231,7 @@ bool ClusteringOutput::operator ==(const ClusteringOutput & cOutput) const {
             return false;
         }
         //Checking tabCenter
-        for (int64_t h = 0; h < pbDimension; h++) {
+        for (int h = 0; h < pbDimension; h++) {
           if (fabs((bParameterThis->getTabCenter())[j][h] - (bParameterOther->getTabCenter())[clustersCorrespondence[j]][h]) != 0.0) {
             cout << "UNEQUAL: means differ resParam" << k+1
               << ", cluster " << (j+1) << " Variable " << (h+1) << ": computed " << (bParameterThis->getTabCenter())[j][h]
@@ -241,12 +241,12 @@ bool ClusteringOutput::operator ==(const ClusteringOutput & cOutput) const {
         }
       }
       //Checking tabScatter
-      double *** scatterThis = bParameterThis->scatterToArray();
-      double *** scatterOther = bParameterOther->scatterToArray();
-      for (int64_t j = 0; j < nbCluster; j++) {
-        for (int64_t h = 0; h < pbDimension; h++) {
-          int64_t tabNbModality = bParameterThis->getTabNbModality()[h];
-          for (int64_t m = 0; m < tabNbModality; m++) {
+      float *** scatterThis = bParameterThis->scatterToArray();
+      float *** scatterOther = bParameterOther->scatterToArray();
+      for (int j = 0; j < nbCluster; j++) {
+        for (int h = 0; h < pbDimension; h++) {
+          int tabNbModality = bParameterThis->getTabNbModality()[h];
+          for (int m = 0; m < tabNbModality; m++) {
             if (fabs(scatterThis[j][h][m] - scatterOther[clustersCorrespondence[j]][h][m]) != 0.0) {
               cout << "UNEQUAL: Scatter differ resParam" << k+1 
                 << ", cluster " << (j+1) << " Scatter[" << h+1 << "][" << m+1 << "] " << ": computed " << scatterThis[j][h][m]
@@ -256,8 +256,8 @@ bool ClusteringOutput::operator ==(const ClusteringOutput & cOutput) const {
           }
         }
       }
-      for (int64_t j = 0; j < nbCluster; j++) {
-        for (int64_t h = 0; h < pbDimension; h++) {
+      for (int j = 0; j < nbCluster; j++) {
+        for (int h = 0; h < pbDimension; h++) {
           delete[] scatterThis[j][h];
           delete[] scatterOther[j][h];
         }
@@ -276,8 +276,8 @@ bool ClusteringOutput::operator ==(const ClusteringOutput & cOutput) const {
         dynamic_cast<GaussianEDDAParameter*> (cOutputThis->getParameterDescription()->getParameter());
       GaussianEDDAParameter * gParameterOther = 
         dynamic_cast<GaussianEDDAParameter*> (cOutputOther->getParameterDescription()->getParameter());
-      int64_t pbDimension = gParameterThis->getPbDimension();
-      for (int64_t j = 0; j < nbCluster; j++) {
+      int pbDimension = gParameterThis->getPbDimension();
+      for (int j = 0; j < nbCluster; j++) {
         //Checking tabProportion
         if (fabs((gParameterThis->getTabProportion())[j] - (gParameterOther->getTabProportion())[clustersCorrespondence[j]]) != 0.0) {
           cout << "UNEQUAL: proportions differ resParam" << k+1
@@ -286,7 +286,7 @@ bool ClusteringOutput::operator ==(const ClusteringOutput & cOutput) const {
             return false;
         }
         //Checking tabMean
-        for (int64_t h = 0; h < pbDimension; h++) {
+        for (int h = 0; h < pbDimension; h++) {
           if (fabs((gParameterThis->getTabMean())[j][h] - (gParameterOther->getTabMean())[clustersCorrespondence[j]][h]) != 0.0) {
             cout << "UNEQUAL: means differ resParam" << k+1
               << ", cluster " << (j+1) << " Variable " << (h+1) << ": computed " << (gParameterThis->getTabMean())[j][h]
@@ -295,10 +295,10 @@ bool ClusteringOutput::operator ==(const ClusteringOutput & cOutput) const {
           }
         }
         //Checking tabSigma
-        double ** storeThis = gParameterThis->getTabSigma()[j]->storeToArray();
-        double ** storeOther = gParameterOther->getTabSigma()[clustersCorrespondence[j]]->storeToArray();
-        for (int64_t l = 0; l < pbDimension; l++) {
-          for (int64_t m = 0; m < pbDimension; m++) {
+        float ** storeThis = gParameterThis->getTabSigma()[j]->storeToArray();
+        float ** storeOther = gParameterOther->getTabSigma()[clustersCorrespondence[j]]->storeToArray();
+        for (int l = 0; l < pbDimension; l++) {
+          for (int m = 0; m < pbDimension; m++) {
             if (fabs(storeThis[l][m] - storeOther[l][m]) != 0.0) {
               cout << "UNEQUAL: Sigma differ resParam" << k+1
                 << ", cluster " << (j+1) << " Sigma[" << l+1 << "][" << m+1 << "] " << ": computed " << storeThis[l][m]
@@ -307,7 +307,7 @@ bool ClusteringOutput::operator ==(const ClusteringOutput & cOutput) const {
             }
           }
         }
-        for (int64_t l = 0; l < pbDimension; l++) {
+        for (int l = 0; l < pbDimension; l++) {
           delete[] storeThis[l];
           delete[] storeOther[l];
         }
@@ -326,8 +326,8 @@ bool ClusteringOutput::operator ==(const ClusteringOutput & cOutput) const {
       //Binary Parameter
       BinaryParameter * bParameterThis = cParameterThis->getBinaryParameter(); 
       BinaryParameter * bParameterOther = cParameterOther->getBinaryParameter();
-      int64_t pbDimension = bParameterThis->getPbDimension();
-      for (int64_t j = 0; j < nbCluster; j++) {
+      int pbDimension = bParameterThis->getPbDimension();
+      for (int j = 0; j < nbCluster; j++) {
         //Checking tabProportion
         if (fabs((bParameterThis->getTabProportion())[j] - (bParameterOther->getTabProportion())[clustersCorrespondence[j]]) != 0.0) {
           cout << "UNEQUAL: proportions differ resParam" << k+1 
@@ -336,7 +336,7 @@ bool ClusteringOutput::operator ==(const ClusteringOutput & cOutput) const {
             return false;
         }
         //Checking tabCenter
-        for (int64_t h = 0; h < pbDimension; h++) {
+        for (int h = 0; h < pbDimension; h++) {
           if (fabs((bParameterThis->getTabCenter())[j][h] - (bParameterOther->getTabCenter())[clustersCorrespondence[j]][h]) != 0.0) {
             cout << "UNEQUAL: means differ resParam" << k+1
               << ", cluster " << (j+1) << " Variable " << (h+1) << ": computed " << (bParameterThis->getTabCenter())[j][h]
@@ -346,12 +346,12 @@ bool ClusteringOutput::operator ==(const ClusteringOutput & cOutput) const {
         }
       }
       //Checking tabScatter
-      double *** scatterThis = bParameterThis->scatterToArray();
-      double *** scatterOther = bParameterOther->scatterToArray();
-      for (int64_t j = 0; j < nbCluster; j++) {
-        for (int64_t h = 0; h < pbDimension; h++) {
-          int64_t tabNbModality = bParameterThis->getTabNbModality()[h];
-          for (int64_t m = 0; m < tabNbModality; m++) {
+      float *** scatterThis = bParameterThis->scatterToArray();
+      float *** scatterOther = bParameterOther->scatterToArray();
+      for (int j = 0; j < nbCluster; j++) {
+        for (int h = 0; h < pbDimension; h++) {
+          int tabNbModality = bParameterThis->getTabNbModality()[h];
+          for (int m = 0; m < tabNbModality; m++) {
             if (fabs(scatterThis[j][h][m] - scatterOther[clustersCorrespondence[j]][h][m]) != 0.0) {
               cout << "UNEQUAL: Scatter differ resParam" << k+1 
                 << ", cluster " << (j+1) << " Scatter[" << h+1 << "][" << m+1 << "] " << ": computed " << scatterThis[j][h][m]
@@ -361,8 +361,8 @@ bool ClusteringOutput::operator ==(const ClusteringOutput & cOutput) const {
           }
         }
       }
-      for (int64_t j = 0; j < nbCluster; j++) {
-        for (int64_t h = 0; h < pbDimension; h++) {
+      for (int j = 0; j < nbCluster; j++) {
+        for (int h = 0; h < pbDimension; h++) {
           delete[] scatterThis[j][h];
           delete[] scatterOther[j][h];
         }
@@ -380,7 +380,7 @@ bool ClusteringOutput::operator ==(const ClusteringOutput & cOutput) const {
       GaussianEDDAParameter * gParameterOther = 
         dynamic_cast<GaussianEDDAParameter*> (cParameterOther->getGaussianParameter());
       pbDimension = gParameterThis->getPbDimension();
-      for (int64_t j = 0; j < nbCluster; j++) {
+      for (int j = 0; j < nbCluster; j++) {
         //Checking tabProportion
         if (fabs((gParameterThis->getTabProportion())[j] - (gParameterOther->getTabProportion())[clustersCorrespondence[j]]) != 0.0) {
           cout << "UNEQUAL: proportions differ resParam" << k+1
@@ -389,7 +389,7 @@ bool ClusteringOutput::operator ==(const ClusteringOutput & cOutput) const {
             return false;
         }
         //Checking tabMean
-        for (int64_t h = 0; h < pbDimension; h++) {
+        for (int h = 0; h < pbDimension; h++) {
           if (fabs((gParameterThis->getTabMean())[j][h] - (gParameterOther->getTabMean())[clustersCorrespondence[j]][h]) != 0.0) {
             cout << "UNEQUAL: means differ resParam" << k+1
               << ", cluster " << (j+1) << " Variable " << (h+1) << ": computed " << (gParameterThis->getTabMean())[j][h]
@@ -398,10 +398,10 @@ bool ClusteringOutput::operator ==(const ClusteringOutput & cOutput) const {
           }
         }
         //Checking tabSigma
-        double ** storeThis = gParameterThis->getTabSigma()[j]->storeToArray();
-        double ** storeOther = gParameterOther->getTabSigma()[clustersCorrespondence[j]]->storeToArray();
-        for (int64_t l = 0; l < pbDimension; l++) {
-          for (int64_t m = 0; m < pbDimension; m++) {
+        float ** storeThis = gParameterThis->getTabSigma()[j]->storeToArray();
+        float ** storeOther = gParameterOther->getTabSigma()[clustersCorrespondence[j]]->storeToArray();
+        for (int l = 0; l < pbDimension; l++) {
+          for (int m = 0; m < pbDimension; m++) {
             if (fabs(storeThis[l][m] - storeOther[l][m]) != 0.0) {
               cout << "UNEQUAL: Sigma differ resParam" << k+1
                 << ", cluster " << (j+1) << " Sigma[" << l+1 << "][" << m+1 << "] " << ": computed " << storeThis[l][m]
@@ -410,7 +410,7 @@ bool ClusteringOutput::operator ==(const ClusteringOutput & cOutput) const {
             }
           }
         }
-        for (int64_t l = 0; l < pbDimension; l++) {
+        for (int l = 0; l < pbDimension; l++) {
           delete[] storeThis[l];
           delete[] storeOther[l];
         }

@@ -42,45 +42,45 @@ public:
 	BinarySample();
 
 	/// Constructor
-	BinarySample(int64_t pbDimension);
+	BinarySample(int pbDimension);
 
 	/// Constructor
 	BinarySample(BinarySample * iSample);
 
 	/// Constructor
-	BinarySample(int64_t pbDimension, int64_t * tabValue);
+	BinarySample(int pbDimension, int * tabValue);
 
 	/// Destructor
 	virtual ~BinarySample();
 
 	/// Set value vector of sample
-	void setDataTabValue(int64_t * tabValue);
+	void setDataTabValue(int * tabValue);
 
 	/// Set one value of sample
-	void setDataValue(int64_t idxDim, int64_t iValue);
+	void setDataValue(int idxDim, int iValue);
 
 	/// get value vector of sample
-	int64_t * getTabValue() const;
+	int * getTabValue() const;
 
 	/// get one value of sample
-	int64_t getDataValue(int64_t idxDim) const;
+	int getDataValue(int idxDim) const;
 
 
 protected:
 
 	/// Vector of sample value
-	int64_t * _value;
+	int * _value;
 };
 
 //---------------
 // inline methods
 //---------------
 
-inline int64_t * BinarySample::getTabValue() const {
+inline int * BinarySample::getTabValue() const {
 	return _value;
 }
 
-inline int64_t BinarySample::getDataValue(int64_t idxDim) const {
+inline int BinarySample::getDataValue(int idxDim) const {
 	return _value[idxDim];
 }
 

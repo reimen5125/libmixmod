@@ -99,7 +99,7 @@ void ClusteringMain::run(int seed, IoMode iomode, int verbose, int massiccc) {
   ClusteringStrategy* workingStrategy = _input->getStrategy();
 
 	// Prepare reduced data if qualitative data and DATA_REDUCE==true
-	std::vector<int64_t> correspondenceOriginDataToReduceData;
+	std::vector<int> correspondenceOriginDataToReduceData;
 	if (_input->getDataType() == QualitativeData && DATA_REDUCE) {
 		BinaryData * bData = dynamic_cast<BinaryData*> (_input->getDataDescription().getData());
 
@@ -152,7 +152,7 @@ void ClusteringMain::run(int seed, IoMode iomode, int verbose, int massiccc) {
 #endif
   for (int nbCluster_i = 0; nbCluster_i < nbnbCluster; nbCluster_i++) {
     for (int nbModel_i = 0; nbModel_i < nbModel; nbModel_i++) {
-      int64_t nbCluster = _input->getNbCluster()[nbCluster_i];
+      int nbCluster = _input->getNbCluster()[nbCluster_i];
       //Write progress in algo, not in this loop if both equals 1
       if (MASSICCC == 1 && nbnbCluster == 1 && nbModel == 1) {
         MASSICCC = 10;
@@ -256,7 +256,7 @@ void ClusteringMain::run(int seed, IoMode iomode, int verbose, int massiccc) {
       
       //Compute Entropy if needed (for massiccc's visualization)
       if (MASSICCC == 1 || MASSICCC == 10 || MASSICCC == 11) {
-        vector< vector<double> > entropyM = model->getEntropyMatrix();
+        vector< vector<float> > entropyM = model->getEntropyMatrix();
         int nbVariables = model->getData()->getPbDimension();
         ofstream entropyFile;
         entropyFile.open ("entropy" + std::to_string(nbModel_i + 1 + nbCluster_i * nbModel) + ".txt");
@@ -274,10 +274,10 @@ void ClusteringMain::run(int seed, IoMode iomode, int verbose, int massiccc) {
 			//Write progress in file
 			if (MASSICCC == 1) {
 				progressFile.open ("progress.json");
-				progressFile << "{ \"Progress\" :  " << ((double)nbModel_i + 1 + (double)nbCluster_i * (double)nbModel)/((double)nbModel * (double)nbnbCluster) * 100.0;
+				progressFile << "{ \"Progress\" :  " << ((float)nbModel_i + 1 + (float)nbCluster_i * (float)nbModel)/((float)nbModel * (float)nbnbCluster) * 100.0;
 				std::time_t currTime;
 				std::time(&currTime);
-				double timePerModel = std::difftime(currTime, startTime) / ((double)nbModel_i + 1 + (double)nbCluster_i * (double)nbModel);
+				float timePerModel = std::difftime(currTime, startTime) / ((float)nbModel_i + 1 + (float)nbCluster_i * (float)nbModel);
 				progressFile << ", \"Estimated remaining time\" : " << timePerModel * (nbModel - nbModel_i - 1) +  (nbnbCluster - nbCluster_i - 1) * nbModel * timePerModel << " } ";
 				progressFile.close();
 			}

@@ -56,7 +56,7 @@ public:
 
 	/// Constructor
 	// called by XEMGaussianEDDAParameter if initialization is USER
-	GaussianParameter(int64_t iNbCluster, int64_t iPbDimension, ModelType * iModelType);
+	GaussianParameter(int iNbCluster, int iPbDimension, ModelType * iModelType);
 
 	/// Constructor
 	GaussianParameter(const GaussianParameter * iParameter);
@@ -78,7 +78,7 @@ public:
 	//----------
 
 	/// get TabMean
-	double ** getTabMean() const;
+	float ** getTabMean() const;
 
 	
 	//----------------
@@ -92,7 +92,7 @@ public:
 	virtual void computeTabWkW();
 
 	/// compute label of idxSample
-	int64_t computeClassAssigment(int64_t idxSample);
+	int computeClassAssigment(int idxSample);
 
 	/// Compute table of means of the samples for each cluster
 	void computeTabMean();
@@ -101,7 +101,7 @@ public:
 	/// outputs :
 	/// -  nbInitializedCluster
 	/// - tabNotInitializedCluster (array of size _nbCluster)
-	void computeTabMeanInitUSER_PARTITION(int64_t & nbInitializedCluster, bool * tabNotInitializedCluster, Partition * initPartition);
+	void computeTabMeanInitUSER_PARTITION(int & nbInitializedCluster, bool * tabNotInitializedCluster, Partition * initPartition);
 
 	/// Compute table of sigmas of the samples for each cluster
 	// NB : compute also lambda, shape, orientation, wk, w
@@ -109,15 +109,15 @@ public:
 
 	//Compute normal probability density function
 	//       for iSample the sample and kCluster th cluster
-	virtual double getPdf(int64_t iSample, int64_t kCluster) const = 0;
+	virtual float getPdf(int iSample, int kCluster) const = 0;
 
 	// compute normal probability density function
 	// for all i=1,..,n and k=1,..,K
-	virtual void getAllPdf(double ** tabFik, double * tabProportion) const = 0;
+	virtual void getAllPdf(float ** tabFik, float * tabProportion) const = 0;
 
 	// compute normal probability density function
 	// for the line x within the kCluster cluster
-	virtual double getPdf(Sample * x, int64_t kCluster) const = 0;
+	virtual float getPdf(Sample * x, int kCluster) const = 0;
 
 
 	//-----------
@@ -154,7 +154,7 @@ public:
 
 	virtual void input(std::ifstream & fi) = 0;
 
-	virtual double getLogLikelihoodOne() const = 0;
+	virtual float getLogLikelihoodOne() const = 0;
 
 	/// recopie sans faire construction / destruction
 	// utilisé par SMALL_EM, CEM_INIT
@@ -185,10 +185,10 @@ protected:
 	Matrix * _W;
 
 	// 1/det(Sigma)
-	//double * _tabInvSqrtDetSigma;
+	//float * _tabInvSqrtDetSigma;
 
 	/// Table of means vector of each cluster
-	double ** _tabMean;
+	float ** _tabMean;
 
 	// called by constructor
 	// update _freeProportion
@@ -196,23 +196,23 @@ protected:
 
 	/// compute Mean when only one cluster
 	/// called by initRANDOM, getLogLikelihoodOne
-	void computeMeanOne(double * Mean, double * weight, double** y_Store, 
-			int64_t nbSample, double totalWeight) const;
+	void computeMeanOne(float * Mean, float * weight, float** y_Store, 
+			int nbSample, float totalWeight) const;
 
-	void putIdentityInDiagonalMatrix(double * mat_store);
+	void putIdentityInDiagonalMatrix(float * mat_store);
 
-	void putIdentityInMatrix(double * mat_store);
+	void putIdentityInMatrix(float * mat_store);
 
-	void initDiagonalMatrixToZero(double * A_store);
+	void initDiagonalMatrixToZero(float * A_store);
 
-	double determinantDiag(double * mat_store, Exception& errorType);
+	float determinantDiag(float * mat_store, Exception& errorType);
 };
 
 //---------------
 // inline methods
 //---------------
 
-inline double ** GaussianParameter::getTabMean() const {
+inline float ** GaussianParameter::getTabMean() const {
 	return this->_tabMean;
 }
 

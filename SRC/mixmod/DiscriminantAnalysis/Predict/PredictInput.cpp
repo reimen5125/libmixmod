@@ -48,7 +48,7 @@ PredictInput::PredictInput(const PredictInput & cInput)
 //---------------------------
 PredictInput::PredictInput(DataDescription * predictData, 
 		ParameterDescription * classificationRule)
-: Input(std::vector<int64_t>(1, classificationRule->getNbCluster()), *predictData)
+: Input(std::vector<int>(1, classificationRule->getNbCluster()), *predictData)
 , _classificationRule(classificationRule->getParameter()) 
 {
 	// replace default model type by the input model type

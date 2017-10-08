@@ -36,7 +36,7 @@ ColumnDescription::ColumnDescription() : _index(0), _name("") {
 //------------
 // Initialization Constructor
 //------------
-ColumnDescription::ColumnDescription(int64_t index) : _index(index), _name("") {
+ColumnDescription::ColumnDescription(int index) : _index(index), _name("") {
 }
 
 //------------

@@ -45,14 +45,14 @@ BICCriterion::~BICCriterion() {
 //---
 void BICCriterion::run(CriterionOutput & output) {
 	// initialize value
-	double value = 0.0;
+	float value = 0.0;
 	// initialize error
 	Exception * error = &NOERROR;
 	try {
 		// false : to not compute fik because already done
-		const double loglikelihood = _model->getLogLikelihood(false);
-		const int64_t freeParameter = _model->getFreeParameter();
-		const double logN = _model->getLogN();
+		const float loglikelihood = _model->getLogLikelihood(false);
+		const int freeParameter = _model->getFreeParameter();
+		const float logN = _model->getLogN();
 		value = (-2 * loglikelihood)+(freeParameter * logN);
 	}
 	catch (Exception&e) {

@@ -75,9 +75,9 @@ ModelOutput::ModelOutput(Model * estimation) {
 //------------------------------
 ModelOutput::ModelOutput(
 		ModelType & modelType, 
-		int64_t nbCluster, 
+		int nbCluster, 
 		std::vector<CriterionOutput*> & criterionOutput, 
-		double likelihood, 
+		float likelihood, 
 		ParameterDescription & parameterDescription, 
 		LabelDescription & labelDescription, 
 		ProbaDescription & probaDescription) 
@@ -89,7 +89,7 @@ ModelOutput::ModelOutput(
     _probaDescription = new ProbaDescription(probaDescription);
     _labelDescription = new LabelDescription(labelDescription);
     _parameterDescription = new ParameterDescription(parameterDescription);
-    for (int64_t i = 0; i < criterionOutput.size(); i++) {
+    for (int i = 0; i < criterionOutput.size(); i++) {
       _criterionOutput[i].setValue(criterionOutput[i]->getValue());
       _criterionOutput[i].setCriterionName(criterionOutput[i]->getCriterionName());
       _criterionOutput[i].setError(criterionOutput[i]->getError());
@@ -107,7 +107,7 @@ ModelOutput::ModelOutput(
 //------------------------------
 //  Initialization constructor 3
 //------------------------------
-ModelOutput::ModelOutput(ModelType & modelType, int64_t nbCluster, Exception& error) {
+ModelOutput::ModelOutput(ModelType & modelType, int nbCluster, Exception& error) {
 	_modelType = modelType;
 	_nbCluster = nbCluster;
 	_strategyRunError = error.clone();

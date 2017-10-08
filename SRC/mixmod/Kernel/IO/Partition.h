@@ -47,10 +47,10 @@ public:
 	Partition(Partition * iPartition);
 
 	/// Constructor 
-	Partition(int64_t nbSample, int64_t nbCluster, const NumericPartitionFile & partitionFile);
+	Partition(int nbSample, int nbCluster, const NumericPartitionFile & partitionFile);
 
 	/// constructor from a XEMLabel
-	Partition(const Label * label, int64_t nbCluster);
+	Partition(const Label * label, int nbCluster);
 
 	/// Constructor
 	// used in DCV context
@@ -63,26 +63,26 @@ public:
 	@param nbSample The number of samples
 	@param nbCluster The number of clusters
 	 */
-	void setDimension(int64_t nbSample, int64_t nbCluster);
+	void setDimension(int nbSample, int nbCluster);
 
-	int64_t getGroupNumber(int64_t idxSample);
+	int getGroupNumber(int idxSample);
 
 	/** verify if partition is complete 
 	- each line has one (and only one) '1'
 	- each cluster appears at least one time
 	 */
 	bool isComplete();
-	int64_t** getTabValue() const;
-	int64_t* getTabValueI(int64_t index) const;
+	int** getTabValue() const;
+	int* getTabValueI(int index) const;
 
 	///get Format
 	const NumericPartitionFile & getPartitionFile() const;
     void setPartitionFile(std::string f, TypePartition::TypePartition type);
 	/// get Number of samples
-	int64_t getNbSample()const;
+	int getNbSample()const;
 
 	/// get Number of clusters
-	int64_t getNbCluster() const;
+	int getNbCluster() const;
 
 	bool operator==(Partition & otherPartition);
 
@@ -100,12 +100,12 @@ public:
 //private:
 	
 	/// Number of samples
-	int64_t _nbSample;
+	int _nbSample;
 
 	/// Number of clusters
-	int64_t _nbCluster;
+	int _nbCluster;
 
-	int64_t ** _tabValue; // aggregate
+	int ** _tabValue; // aggregate
 
 	///name of partition
 	NumericPartitionFile _partitionFile;
@@ -113,11 +113,11 @@ public:
 	bool _deleteValues;
 };
 
-inline int64_t ** Partition::getTabValue() const {
+inline int ** Partition::getTabValue() const {
 	return _tabValue;
 }
 
-inline int64_t * Partition::getTabValueI(int64_t index) const {
+inline int * Partition::getTabValueI(int index) const {
 	return _tabValue[index];
 }
 
@@ -125,11 +125,11 @@ inline const NumericPartitionFile & Partition::getPartitionFile() const {
 	return _partitionFile;
 }
 
-inline int64_t Partition::getNbSample()const {
+inline int Partition::getNbSample()const {
 	return _nbSample;
 }
 
-inline int64_t Partition::getNbCluster() const {
+inline int Partition::getNbCluster() const {
 	return _nbCluster;
 }
 

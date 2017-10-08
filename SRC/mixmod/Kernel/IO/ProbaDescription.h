@@ -48,7 +48,7 @@ public:
 	ProbaDescription();
 
 	///constructor by initilization
-	ProbaDescription(int64_t nbSample, int64_t nbCluster, FormatNumeric::FormatNumericFile format, std::string filename, std::string infoName = "");
+	ProbaDescription(int nbSample, int nbCluster, FormatNumeric::FormatNumericFile format, std::string filename, std::string infoName = "");
 
 	///constructor after an estimation->run
 	ProbaDescription(Model * model);

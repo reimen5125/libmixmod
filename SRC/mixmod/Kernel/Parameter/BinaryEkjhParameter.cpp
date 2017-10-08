@@ -41,15 +41,15 @@ BinaryEkjhParameter::BinaryEkjhParameter() {
 // Constructor called by XEMModel
 //-------------------------------
 BinaryEkjhParameter::BinaryEkjhParameter(
-		Model * iModel, ModelType * iModelType, int64_t * tabNbModality) 
+		Model * iModel, ModelType * iModelType, int * tabNbModality) 
 : BinaryParameter(iModel, iModelType, tabNbModality) 
 {
-	_scatter = new double**[_nbCluster];
-	int64_t k, j, h;
+	_scatter = new float**[_nbCluster];
+	int k, j, h;
 	for (k = 0; k < _nbCluster; k++) {
-		_scatter[k] = new double*[_pbDimension];
+		_scatter[k] = new float*[_pbDimension];
 		for (j = 0; j < _pbDimension; j++) {
-			_scatter[k][j] = new double[_tabNbModality[j]];
+			_scatter[k][j] = new float[_tabNbModality[j]];
 			for (h = 0; h < _tabNbModality[j]; h++) {
 				_scatter[k][j][h] = 0.0;
 			}
@@ -63,16 +63,16 @@ BinaryEkjhParameter::BinaryEkjhParameter(
 BinaryEkjhParameter::BinaryEkjhParameter(const BinaryEkjhParameter * iParameter) 
 : BinaryParameter(iParameter) 
 {
-	int64_t k, j, h;
-	_scatter = new double**[_nbCluster];
+	int k, j, h;
+	_scatter = new float**[_nbCluster];
 
 	for (k = 0; k < _nbCluster; k++) {
-		_scatter[k] = new double*[_pbDimension];
+		_scatter[k] = new float*[_pbDimension];
 		for (j = 0; j < _pbDimension; j++) {
-			_scatter[k][j] = new double[_tabNbModality[j]];
+			_scatter[k][j] = new float[_tabNbModality[j]];
 		}
 	}
-	double *** iScatter = iParameter->getScatter();
+	float *** iScatter = iParameter->getScatter();
 	for (k = 0; k < _nbCluster; k++) {
 		for (j = 0; j < _pbDimension; j++) {
 			for (h = 0; h < _tabNbModality[j]; h++) {
@@ -86,15 +86,15 @@ BinaryEkjhParameter::BinaryEkjhParameter(const BinaryEkjhParameter * iParameter)
 // Constructor
 // called by XEMStrategyType if USER partition
 //------------
-BinaryEkjhParameter::BinaryEkjhParameter(int64_t iNbCluster, int64_t iPbDimension, 
-		ModelType * iModelType, int64_t * tabNbModality, std::string & iFileName) 
+BinaryEkjhParameter::BinaryEkjhParameter(int iNbCluster, int iPbDimension, 
+		ModelType * iModelType, int * tabNbModality, std::string & iFileName) 
 : BinaryParameter(iNbCluster, iPbDimension, iModelType, tabNbModality) 
 {
-	_scatter = new double**[_nbCluster];
-	for (int64_t k = 0; k < _nbCluster; k++) {
-		_scatter[k] = new double*[_pbDimension];
-		for (int64_t j = 0; j < _pbDimension; j++) {
-			_scatter[k][j] = new double[_tabNbModality[j]];
+	_scatter = new float**[_nbCluster];
+	for (int k = 0; k < _nbCluster; k++) {
+		_scatter[k] = new float*[_pbDimension];
+		for (int j = 0; j < _pbDimension; j++) {
+			_scatter[k][j] = new float[_tabNbModality[j]];
 		}
 	}
 
@@ -112,20 +112,20 @@ BinaryEkjhParameter::BinaryEkjhParameter(int64_t iNbCluster, int64_t iPbDimensio
 // Constructor
 //------------
 BinaryEkjhParameter::BinaryEkjhParameter(
-		int64_t iNbCluster, 
-		int64_t iPbDimension, 
+		int iNbCluster, 
+		int iPbDimension, 
 		ModelType * iModelType, 
-		int64_t * tabNbModality, 
-		double * proportions, 
-		double ** centers, 
-		double *** scatters)
+		int * tabNbModality, 
+		float * proportions, 
+		float ** centers, 
+		float *** scatters)
 : BinaryParameter(iNbCluster, iPbDimension, iModelType, tabNbModality) 
 {
-	_scatter = new double**[_nbCluster];
-	for (int64_t k = 0; k < _nbCluster; k++) {
-		_scatter[k] = new double*[_pbDimension];
-		for (int64_t j = 0; j < _pbDimension; j++) {
-			_scatter[k][j] = new double[_tabNbModality[j]];
+	_scatter = new float**[_nbCluster];
+	for (int k = 0; k < _nbCluster; k++) {
+		_scatter[k] = new float*[_pbDimension];
+		for (int j = 0; j < _pbDimension; j++) {
+			_scatter[k][j] = new float[_tabNbModality[j]];
 		}
 	}
 	input(proportions, centers, scatters);
@@ -144,8 +144,8 @@ Parameter * BinaryEkjhParameter::clone() const {
 //-----------
 BinaryEkjhParameter::~BinaryEkjhParameter() {
 	if (_scatter) {
-		for (int64_t k = 0; k < _nbCluster; k++) {
-			for (int64_t j = 0; j < _pbDimension; j++) {
+		for (int k = 0; k < _nbCluster; k++) {
+			for (int j = 0; j < _pbDimension; j++) {
 				delete [] _scatter[k][j];
 			}
 			delete [] _scatter[k];
@@ -160,9 +160,9 @@ BinaryEkjhParameter::~BinaryEkjhParameter() {
 //---------------------
 bool BinaryEkjhParameter::operator ==(const BinaryEkjhParameter & param) const {
 	if (!BinaryParameter::operator==(param)) return false;
-	for (int64_t k = 0; k < _nbCluster; k++) {
-		for (int64_t j = 0; j < _pbDimension; j++) {
-			for (int64_t h = 0; h < _tabNbModality[j]; h++) {
+	for (int k = 0; k < _nbCluster; k++) {
+		for (int j = 0; j < _pbDimension; j++) {
+			for (int h = 0; h < _tabNbModality[j]; h++) {
 				if (_scatter[k][j][h] != param.getScatter()[k][j][h]) return false;
 			}
 		}
@@ -174,7 +174,7 @@ bool BinaryEkjhParameter::operator ==(const BinaryEkjhParameter & param) const {
 // reset to default values
 //------------------------
 void BinaryEkjhParameter::reset() {
-	int64_t k, j, h;
+	int k, j, h;
 	for (k = 0; k < _nbCluster; k++) {
 		for (j = 0; j < _pbDimension; j++) {
 			for (h = 0; h < _tabNbModality[j]; h++) {
@@ -188,9 +188,9 @@ void BinaryEkjhParameter::reset() {
 //-----------
 // getFreeParameter
 //-----------
-int64_t BinaryEkjhParameter::getFreeParameter() const {
-	int64_t nbFreeParameter = 0;
-	for (int64_t j = 0; j < _pbDimension; j++) {
+int BinaryEkjhParameter::getFreeParameter() const {
+	int nbFreeParameter = 0;
+	for (int j = 0; j < _pbDimension; j++) {
 		nbFreeParameter += _tabNbModality[j] - 1;
 	}
 	nbFreeParameter *= _nbCluster;
@@ -203,12 +203,12 @@ int64_t BinaryEkjhParameter::getFreeParameter() const {
 //-------
 // getPdf
 //-------
-double BinaryEkjhParameter::getPdf(int64_t iSample, int64_t kCluster) const {
-	int64_t j;
-	double bernPdf = 1.0;
+float BinaryEkjhParameter::getPdf(int iSample, int kCluster) const {
+	int j;
+	float bernPdf = 1.0;
 	BinaryData * data = _model->getBinaryData();
 	BinarySample * curSample = (data->_matrix[iSample])->getBinarySample();
-	int64_t value;
+	int value;
 
 	for (j = 0; j < _pbDimension; j++) {
 		// iSample have major modality ?//
@@ -226,12 +226,12 @@ double BinaryEkjhParameter::getPdf(int64_t iSample, int64_t kCluster) const {
 //----------
 // getLogPdf
 //----------
-long double BinaryEkjhParameter::getLogPdf(int64_t iSample, int64_t kCluster) const {
-	int64_t j;
-	double bernPdf = 0.0;
+float BinaryEkjhParameter::getLogPdf(int iSample, int kCluster) const {
+	int j;
+	float bernPdf = 0.0;
 	BinaryData * data = _model->getBinaryData();
 	BinarySample * curSample = (data->_matrix[iSample])->getBinarySample();
-	int64_t value;
+	int value;
 
 	for (j = 0; j < _pbDimension; j++) {
 		// iSample have major modality ?//
@@ -252,11 +252,11 @@ long double BinaryEkjhParameter::getLogPdf(int64_t iSample, int64_t kCluster) co
 /* Compute normal probability density function
 	   for x vector and kCluster th cluster
  */
-double BinaryEkjhParameter::getPdf(Sample * x, int64_t kCluster) const {
-	int64_t j;
-	double bernPdf = 1.0;
+float BinaryEkjhParameter::getPdf(Sample * x, int kCluster) const {
+	int j;
+	float bernPdf = 1.0;
 	BinarySample * binaryX = x->getBinarySample();
-	int64_t value;
+	int value;
 
 	for (j = 0; j < _pbDimension; j++) {
 		value = binaryX->getDataValue(j);
@@ -274,26 +274,26 @@ double BinaryEkjhParameter::getPdf(Sample * x, int64_t kCluster) const {
 //--------------------
 // getlogLikelihoodOne (one cluster)
 //--------------------
-double BinaryEkjhParameter::getLogLikelihoodOne() const {
-	int64_t i;
-	int64_t j, h;
-	double logLikelihoodOne = 0.0, pdf; //, ** Scatter;
-	//Scatter = new double*[_pbDimension];
-    std::unique_ptr<double*[], TabDeleter<double>>  Scatter(new double*[_pbDimension], TabDeleter<double>(_pbDimension));
+float BinaryEkjhParameter::getLogLikelihoodOne() const {
+	int i;
+	int j, h;
+	float logLikelihoodOne = 0.0, pdf; //, ** Scatter;
+	//Scatter = new float*[_pbDimension];
+    std::unique_ptr<float*[], TabDeleter<float>>  Scatter(new float*[_pbDimension], TabDeleter<float>(_pbDimension));
 	for (j = 0; j < _pbDimension; j++) {
-		Scatter[j] = new double[_tabNbModality[j]];
+		Scatter[j] = new float[_tabNbModality[j]];
 	}
 
-	//int64_t * Center = new int64_t[_pbDimension];
-    std::unique_ptr<int64_t[]> Center(new int64_t[_pbDimension]);
-	//double * tabNbSampleInMajorModality = new double [_pbDimension];
-    std::unique_ptr<double[]> tabNbSampleInMajorModality(new double[_pbDimension]);
-	//double ** tabNbSamplePerModality = new double * [_pbDimension];
-    std::unique_ptr<double*[], TabDeleter<double>>  tabNbSamplePerModality(new double * [_pbDimension], TabDeleter<double>(_pbDimension));
+	//int * Center = new int[_pbDimension];
+    std::unique_ptr<int[]> Center(new int[_pbDimension]);
+	//float * tabNbSampleInMajorModality = new float [_pbDimension];
+    std::unique_ptr<float[]> tabNbSampleInMajorModality(new float[_pbDimension]);
+	//float ** tabNbSamplePerModality = new float * [_pbDimension];
+    std::unique_ptr<float*[], TabDeleter<float>>  tabNbSamplePerModality(new float * [_pbDimension], TabDeleter<float>(_pbDimension));
 	for (j = 0; j < _pbDimension; j++) {
-		tabNbSamplePerModality[j] = new double[_tabNbModality[j]];
+		tabNbSamplePerModality[j] = new float[_tabNbModality[j]];
 	}
-	int64_t nbSample = _model->getNbSample();
+	int nbSample = _model->getNbSample();
 	BinaryData * data = _model->getBinaryData();
 
 	// Compute Center fo One cluster //
@@ -341,17 +341,17 @@ double BinaryEkjhParameter::getLogLikelihoodOne() const {
 // Compute scatter 
 //----------------
 void BinaryEkjhParameter::computeScatter() {
-	int64_t j, k, h;
-	int64_t i;
-	double valueScatter;
-	double * tabNk = _model->getTabNk();
-	double ** tabCik = _model->getTabCik();
+	int j, k, h;
+	int i;
+	float valueScatter;
+	float * tabNk = _model->getTabNk();
+	float ** tabCik = _model->getTabCik();
 
 	BinaryData * data = _model->getBinaryData();
 	Sample ** dataMatrix = data->getDataMatrix();
 	BinarySample * curSample;
-	int64_t nbSample = _model->getNbSample();
-	int64_t value;
+	int nbSample = _model->getNbSample();
+	int value;
 
 	for (k = 0; k < _nbCluster; k++) {
 		for (j = 0; j < _pbDimension; j++) {
@@ -382,10 +382,10 @@ void BinaryEkjhParameter::computeScatter() {
 // Compute random scatter(s)
 //--------------------------
 void BinaryEkjhParameter::computeRandomScatter() {
-	for (int64_t k = 0; k < _nbCluster; k++) {
-		for (int64_t j = 0; j < _pbDimension; j++) {
-			double scatterKJOnMajorModality = rnd() / _tabNbModality[j];
-			for (int64_t h = 0; h < _tabNbModality[j]; h++) {
+	for (int k = 0; k < _nbCluster; k++) {
+		for (int j = 0; j < _pbDimension; j++) {
+			float scatterKJOnMajorModality = rnd() / _tabNbModality[j];
+			for (int h = 0; h < _tabNbModality[j]; h++) {
 				if (h + 1 == _tabCenter[k][j]) {// on est sur le centre       
 					_scatter[k][j][h] = scatterKJOnMajorModality;
 				}
@@ -405,8 +405,8 @@ void BinaryEkjhParameter::recopyScatter(Parameter * iParam) {
 	if (typeid (*iParam) != typeid (*this)) {
 		THROW(OtherException, badBinaryParameterClass);
 	}
-	double *** iScatter = ((BinaryEkjhParameter*) iParam)->getScatter();
-	int64_t k, j, h;
+	float *** iScatter = ((BinaryEkjhParameter*) iParam)->getScatter();
+	int k, j, h;
 	for (k = 0; k < _nbCluster; k++) {
 		for (j = 0; j < _pbDimension; j++) {
 			for (h = 0; h < _tabNbModality[j]; h++) {
@@ -419,8 +419,8 @@ void BinaryEkjhParameter::recopyScatter(Parameter * iParam) {
 //---------------
 //create scatter from Scatter Ekjh 
 //---------------
-void BinaryEkjhParameter::createScatter(double *** scatter) {
-	int64_t k, j, h;
+void BinaryEkjhParameter::createScatter(float *** scatter) {
+	int k, j, h;
 	for (k = 0; k < _nbCluster; k++) {
 		for (j = 0; j < _pbDimension; j++) {
 			for (h = 0; h < _tabNbModality[j]; h++) {
@@ -433,8 +433,8 @@ void BinaryEkjhParameter::createScatter(double *** scatter) {
 //------------
 // editScatter (for debug)
 //------------
-void BinaryEkjhParameter::editScatter(int64_t k) {
-	int64_t j, h;
+void BinaryEkjhParameter::editScatter(int k) {
+	int j, h;
 	for (j = 0; j < _pbDimension; j++) {
 		for (h = 0; h < _tabNbModality[j]; h++) {
 			cout << "\t" << _scatter[k][j][h];
@@ -445,8 +445,8 @@ void BinaryEkjhParameter::editScatter(int64_t k) {
 
 // editScatter 
 //------------
-void BinaryEkjhParameter::editScatter(std::ofstream & oFile, int64_t k, bool text) {
-	int64_t j, h;
+void BinaryEkjhParameter::editScatter(std::ofstream & oFile, int k, bool text) {
+	int j, h;
 	if (text) {
 		oFile << "\t\t\tScattering : \n";
 	}
@@ -456,16 +456,16 @@ void BinaryEkjhParameter::editScatter(std::ofstream & oFile, int64_t k, bool tex
 			;
 		}
 		for (h = 0; h < _tabNbModality[j]; h++)
-			putDoubleInStream(oFile, _scatter[k][j][h], "  ");
+			putFloatInStream(oFile, _scatter[k][j][h], "  ");
 		oFile << endl;
 	}
 }
 
 // Read Scatter in input file
 //---------------------------
-void BinaryEkjhParameter::inputScatter(std::ifstream & fi, int64_t k) {
+void BinaryEkjhParameter::inputScatter(std::ifstream & fi, int k) {
   //Mise a jour de tabCenter, tabScatter et tabProportion
-  int64_t j, h;
+  int j, h;
   //for (k = 0; k < _nbCluster; k++) {
   //  // Proportions //
   //  fi >> _tabProportion[k];
@@ -478,14 +478,14 @@ void BinaryEkjhParameter::inputScatter(std::ifstream & fi, int64_t k) {
   // Scatter  //
   for (j = 0; j < _pbDimension; j++) {
     for (h = 0; h < _tabNbModality[j]; h++)
-			_scatter[k][j][h] = getDoubleFromStream(fi);
+			_scatter[k][j][h] = getFloatFromStream(fi);
   }
   //} // end for k
 }
 
 // Read Scatter in input containers
 //---------------------------
-void BinaryEkjhParameter::inputScatter(double *** scatters) {
+void BinaryEkjhParameter::inputScatter(float *** scatters) {
 
 	// Scatter
 	for (int k = 0; k < _nbCluster; k++) {
@@ -497,14 +497,14 @@ void BinaryEkjhParameter::inputScatter(double *** scatters) {
 	} // end for k
 }
 
-double*** BinaryEkjhParameter::scatterToArray() const {
-	double *** tabScatter = new double**[_nbCluster];
-	int64_t k, j;
+float*** BinaryEkjhParameter::scatterToArray() const {
+	float *** tabScatter = new float**[_nbCluster];
+	int k, j;
 	for (k = 0; k < _nbCluster; ++k) {
-		tabScatter[k] = new double*[_pbDimension];
+		tabScatter[k] = new float*[_pbDimension];
 		for (j = 0; j < _pbDimension; ++j) {
-			tabScatter[k][j] = new double [_tabNbModality[j]];
-			recopyTab<double>(_scatter[k][j], tabScatter[k][j], _tabNbModality[j]);
+			tabScatter[k][j] = new float [_tabNbModality[j]];
+			recopyTab<float>(_scatter[k][j], tabScatter[k][j], _tabNbModality[j]);
 		}
 	}
 

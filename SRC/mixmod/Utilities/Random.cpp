@@ -34,7 +34,7 @@ namespace XEM {
 
 // Algorithm implemented for portability 32-64 bits, ...
 
-const double m = 4294967296.0;
+const float m = 4294967296.0;
 
 const uint32_t d = 0x09E3779B9L;
 const uint32_t k0 = 0x0C7D7A8B4L;
@@ -46,7 +46,7 @@ uint32_t y = 123456789L;
 uint32_t z = 987654321L;
 
 // Return a value in [0...1[
-double rnd() {
+float rnd() {
 	uint32_t s = 0;
 	uint32_t n = 8;
 	while (n-- > 0) {
@@ -57,7 +57,7 @@ double rnd() {
 	return (z + y / m) / m;
 }
 
-int64_t flip(double x) {
+int flip(float x) {
 	return (rnd() <= x);
 }
 

@@ -30,7 +30,7 @@ namespace XEM {
 WeightColumnDescription::WeightColumnDescription() : ColumnDescription() {
 }
 
-WeightColumnDescription::WeightColumnDescription(int64_t index) : ColumnDescription(index) {
+WeightColumnDescription::WeightColumnDescription(int index) : ColumnDescription(index) {
 	_index = index;
 }
 

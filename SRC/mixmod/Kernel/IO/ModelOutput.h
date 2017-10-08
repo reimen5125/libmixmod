@@ -63,10 +63,10 @@ public:
 	ModelOutput(Model * estimation);
 
 	/// Initialization Constructor 2
-	ModelOutput(ModelType & modelType, int64_t nbCluster, std::vector<CriterionOutput*> & criterionOutput, double likelihood, ParameterDescription & parameterDescription, LabelDescription & labelDescription, ProbaDescription & probaDescription);
+	ModelOutput(ModelType & modelType, int nbCluster, std::vector<CriterionOutput*> & criterionOutput, float likelihood, ParameterDescription & parameterDescription, LabelDescription & labelDescription, ProbaDescription & probaDescription);
 
 	///Initialization Constructor 3
-	ModelOutput(ModelType & modelType, int64_t nbCluster, Exception& error);
+	ModelOutput(ModelType & modelType, int nbCluster, Exception& error);
 
 	/// Destructor
 	virtual ~ModelOutput();
@@ -78,7 +78,7 @@ public:
 	//-------------//
 	ModelType getModelType() const;
 
-	int64_t getNbCluster() const;
+	int getNbCluster() const;
 
 	ParameterDescription * getParameterDescription() const;
 
@@ -90,7 +90,7 @@ public:
 
 	Model * getModel() const;
 
-	double getLikelihood() const;
+	float getLikelihood() const;
 
 	CriterionOutput const & getCriterionOutput(CriterionName criterionName) const;
 	CriterionOutput const & getCriterionOutput(const int index) const;
@@ -108,7 +108,7 @@ protected:
 	ModelType _modelType;
 
 	// the number of cluster
-	int64_t _nbCluster;
+	int _nbCluster;
 
 	// parameter description for that model
 	ParameterDescription * _parameterDescription;
@@ -120,7 +120,7 @@ protected:
 	ProbaDescription * _probaDescription;
 
 	// the model likelihood
-	double _likelihood;
+	float _likelihood;
 
 	// the error
 	Exception * _strategyRunError;
@@ -130,7 +130,7 @@ inline ModelType ModelOutput::getModelType() const {
 	return _modelType;
 }
 
-inline int64_t ModelOutput::getNbCluster() const {
+inline int ModelOutput::getNbCluster() const {
 	return _nbCluster;
 }
 
@@ -150,7 +150,7 @@ inline Exception & ModelOutput::getStrategyRunError() const {
 	return *_strategyRunError;
 }
 
-inline double ModelOutput::getLikelihood() const {
+inline float ModelOutput::getLikelihood() const {
 	return _likelihood;
 }
 
@@ -184,8 +184,8 @@ struct SortByCriterion {
 		if (error1 != NOERROR && error2 != NOERROR) return false;
 		if (error1 != NOERROR) return false;
 		if (error2 != NOERROR) return true;
-		const double value1 = m1->getCriterionOutput(_criterionName).getValue();
-		const double value2 = m2->getCriterionOutput(_criterionName).getValue();
+		const float value1 = m1->getCriterionOutput(_criterionName).getValue();
+		const float value2 = m2->getCriterionOutput(_criterionName).getValue();
 		if (value1 == value2) {
 			return m1->getParameterDescription()->getParameter()->getFreeParameter() < m2->getParameterDescription()->getParameter()->getFreeParameter();
 		}

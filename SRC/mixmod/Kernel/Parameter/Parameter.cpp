@@ -41,12 +41,12 @@ Parameter::Parameter() {
 // Constructor
 // called if USER initialisation
 //------------
-Parameter::Parameter(int64_t iNbCluster, int64_t iPbDimension, ModelType * iModelType) {
+Parameter::Parameter(int iNbCluster, int iPbDimension, ModelType * iModelType) {
 	_modelType = iModelType;
 	_nbCluster = iNbCluster;
 	_pbDimension = iPbDimension;
-	_tabProportion = new double[_nbCluster];
-	for (int64_t k = 0; k < _nbCluster; k++) {
+	_tabProportion = new float[_nbCluster];
+	for (int k = 0; k < _nbCluster; k++) {
 		_tabProportion[k] = 1.0 / _nbCluster;
 	}
 	_model = NULL;
@@ -66,10 +66,10 @@ Parameter::Parameter(Model * iModel, ModelType * iModelType) {
 	_nbCluster = _model->getNbCluster();
 	//Now pbDimention gets updated in derived classes.
 	//_pbDimension   = _model->getData()->_pbDimension ;
-	_tabProportion = new double[_nbCluster];
+	_tabProportion = new float[_nbCluster];
 
 	// _tabProportion isn't computed because model->_tabNk isn't updated (=0)
-	for (int64_t k = 0; k < _nbCluster; k++) {
+	for (int k = 0; k < _nbCluster; k++) {
 		_tabProportion[k] = 1.0 / _nbCluster;
 	}
 	_filename = "";
@@ -116,7 +116,7 @@ bool Parameter::operator ==(const Parameter & param) const {
 	if (_pbDimension != param.getPbDimension()) return false;
 	if (_nbCluster != param.getNbCluster()) return false;
 	if (_freeProportion != param.getFreeProportion()) return false;
-	for (int64_t k = 0; k < _nbCluster; k++) {
+	for (int k = 0; k < _nbCluster; k++) {
 		if (_tabProportion[k] != param.getTabProportion()[k]) return false;
 	}
 	return true;
@@ -126,7 +126,7 @@ bool Parameter::operator ==(const Parameter & param) const {
 // reset to default values
 //------------------------
 void Parameter::reset() {
-	for (int64_t k = 0; k < _nbCluster; k++) {
+	for (int k = 0; k < _nbCluster; k++) {
 		_tabProportion[k] = 1.0 / _nbCluster;
 	}
 }
@@ -134,17 +134,17 @@ void Parameter::reset() {
 //-------------------
 //generateRandomIndex
 //-------------------
-int64_t Parameter::generateRandomIndex(bool * tabIndividualCanBeUsedForInitRandom, 
-		double * weight, double totalWeight) 
+int Parameter::generateRandomIndex(bool * tabIndividualCanBeUsedForInitRandom, 
+		float * weight, float totalWeight) 
 {
-	double rndWeight, sumWeight;
-	int64_t idxSample;
+	float rndWeight, sumWeight;
+	int idxSample;
 
 	/* Generate a random integer between 0 and _nbSample-1 */
 	bool IdxSampleCanBeUsed = false; // idxSample can be used
 	while (!IdxSampleCanBeUsed) {
 		// get index of sample with weight //
-		rndWeight = (int64_t) (totalWeight * rnd() + 1);
+		rndWeight = (int) (totalWeight * rnd() + 1);
 		sumWeight = 0.0;
 		idxSample = -1;
 		while (sumWeight < rndWeight) {
@@ -171,9 +171,9 @@ int64_t Parameter::generateRandomIndex(bool * tabIndividualCanBeUsedForInitRando
 // compute tab proportion
 //-----------------------
 void Parameter::computeTabProportion() {
-	int64_t k;
-	double * tabNk = _model->getTabNk();
-	double weightTotal = (_model->getData())->_weightTotal;
+	int k;
+	float * tabNk = _model->getTabNk();
+	float weightTotal = (_model->getData())->_weightTotal;
 
 	if (_freeProportion) {
 		for (k = 0; k < _nbCluster; k++)
@@ -190,7 +190,7 @@ void Parameter::computeTabProportion() {
 // -model->_tabSumF[i] pour ith sample = 0
 // i : 0 ->_nbSample-1
 //-----------------------------------------
-void Parameter::computeTikUnderflow(int64_t i, double ** tabTik) {
+void Parameter::computeTikUnderflow(int i, float ** tabTik) {
 	THROW(OtherException, nonImplementedMethod);
 }
 

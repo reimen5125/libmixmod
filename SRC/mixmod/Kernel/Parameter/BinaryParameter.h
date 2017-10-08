@@ -51,12 +51,12 @@ public:
 
 	/// Constructor
 	// called by XEMModel (via XEMBinary...Parameter)
-	BinaryParameter(Model * iModel, ModelType * iModelType, int64_t * tabNbModality);
+	BinaryParameter(Model * iModel, ModelType * iModelType, int * tabNbModality);
 
 	// constructor
 	// called if USER initialisation
-	BinaryParameter(int64_t iNbCluster, int64_t iPbDimension, 
-			ModelType * iModelType, int64_t * tabNbModality);
+	BinaryParameter(int iNbCluster, int iPbDimension, 
+			ModelType * iModelType, int * tabNbModality);
 
 	/// Constructor
 	BinaryParameter(const BinaryParameter * iParameter);
@@ -72,7 +72,7 @@ public:
 	virtual void reset();
 
 	/// create the same parameter than this but after updating because without xi0
-	Parameter * createParameter(Model * iModel, int64_t i0, int64_t ki0);
+	Parameter * createParameter(Model * iModel, int i0, int ki0);
 
 
 	//----------
@@ -80,44 +80,44 @@ public:
 	//----------
 
 	/// get TabCenter
-	int64_t ** getTabCenter() const;
+	int ** getTabCenter() const;
 
 	/// get _tabNbModality
-	int64_t * getTabNbModality() const;
+	int * getTabNbModality() const;
 
 	/// get total number of modality
-	int64_t getTotalNbModality() const;
+	int getTotalNbModality() const;
 
 	//----------------
 	// compute methods
 	//----------------
 
-	void getAllPdf(double ** tabFik, double * tabProportion) const;
+	void getAllPdf(float ** tabFik, float * tabProportion) const;
 
 	/** @brief Compute probability density
 	@param iSample  Probability for sample iSample
 	@param kCluster Probability in class kCluster
 	 */
 
-	virtual double getPdf(int64_t iSample, int64_t kCluster) const = 0;
+	virtual float getPdf(int iSample, int kCluster) const = 0;
 
 	/** @brief Compute log probability density
 	@param iSample  Probability for sample iSample
 	@param kCluster Probability in class kCluster
 	 */
-	virtual long double getLogPdf(int64_t iSample, int64_t kCluster) const = 0;
+	virtual float getLogPdf(int iSample, int kCluster) const = 0;
 
 	/** Compute normal probability density function
 		 for x vector and kCluster th cluster
 	 */
-	//double getPdf(RowVector x, int64_t kCluster);
-	virtual double getPdf(Sample * x, int64_t kCluster) const = 0;
+	//float getPdf(RowVector x, int kCluster);
+	virtual float getPdf(Sample * x, int kCluster) const = 0;
 
 	/// getlogLikelihoodOne (one cluster)
-	virtual double getLogLikelihoodOne() const = 0;
+	virtual float getLogLikelihoodOne() const = 0;
 
 	/// compute Tik for xi (i=0 -> _nbSample-1) when underflow
-	virtual void computeTikUnderflow(int64_t i, double ** tabTik);
+	virtual void computeTikUnderflow(int i, float ** tabTik);
 
 	/// Compute table of centers of the samples for each cluster
 	void computeTabCenter();
@@ -150,13 +150,13 @@ public:
 	/// outputs :
 	/// -  nbInitializedCluster
 	/// - tabNotInitializedCluster (array of size _nbCluster)
-	void initForInitUSER_PARTITION(int64_t & nbInitializedCluster, 
+	void initForInitUSER_PARTITION(int & nbInitializedCluster, 
 			bool * tabNotInitializedCluster, Partition * initPartition);
 
 	/// computeTabCenterInitUSER_PARTITIONoutputs :
 	/// -  nbInitializedCluster
 	/// - tabNotInitializedCluster (array of size _nbCluster)
-	void computeTabCenterInitUSER_PARTITION(int64_t & nbInitializedCluster, 
+	void computeTabCenterInitUSER_PARTITION(int & nbInitializedCluster, 
 			bool * tabNotInitializedCluster, Partition * initPartition);
 
 
@@ -182,34 +182,34 @@ public:
 	void edit();
 
 	/// editScatter (for debug)
-	virtual void editScatter(int64_t k) = 0;
+	virtual void editScatter(int k) = 0;
 
 	/// Edit
 	void edit(std::ofstream & oFile, bool text = false);
 
 	/// editScatter 
-	virtual void editScatter(std::ofstream & oFile, int64_t k, bool text = false) = 0;
+	virtual void editScatter(std::ofstream & oFile, int k, bool text = false) = 0;
 
 	// Read Parameters in input file
 	void input(std::ifstream & fi);
 
 	// Read Parameters in input containers
 	void input(
-			double * proportions, 
-			double ** centers, 
-			double *** scatters);
+			float * proportions, 
+			float ** centers, 
+			float *** scatters);
 
 	// Read Scatter in input file
-	virtual void inputScatter(std::ifstream & fi, int64_t k) = 0;
-	virtual void inputScatter(double *** scatters) = 0;
+	virtual void inputScatter(std::ifstream & fi, int k) = 0;
+	virtual void inputScatter(float *** scatters) = 0;
 
 	/// recopie sans faire construction / destruction
 	// utilise par SMALL_EM, CEM_INIT, SEM ...
 	void recopy(Parameter * otherParameter);
 
 	///create Scatter from "Binary Parameter Ekjh"
-	virtual void createScatter(double *** scatter) = 0;
-	virtual double *** scatterToArray() const = 0;
+	virtual void createScatter(float *** scatter) = 0;
+	virtual float *** scatterToArray() const = 0;
 
 	void updateForCV(Model * originalModel, CVBlock & CVBlock);
 
@@ -217,44 +217,44 @@ protected:
 
 	///compute TabCenter if there is only One Cluster
 	// _tabCenter will not be changed
-	void getTabCenterIfOneCluster(int64_t * tabCenter, double * tabNbSampleInMajorModality, 
-			double ** tabNbSamplePerModality = NULL) const;
+	void getTabCenterIfOneCluster(int * tabCenter, float * tabNbSampleInMajorModality, 
+			float ** tabNbSamplePerModality = NULL) const;
 
 	/// Table of centers vector of each cluster
-	int64_t ** _tabCenter;
+	int ** _tabCenter;
 
 	/// Table of modality
-	int64_t * _tabNbModality;
+	int * _tabNbModality;
 
 	/// Total number of modality
-	int64_t _totalNbModality;
+	int _totalNbModality;
 };
 
 /// compute Pdf in case nbCluster=1 (Scatter is a scalar)
-double computePdfOneCluster(Sample * x, int64_t * Center, double Scatter, int64_t * tabNbModality);
+float computePdfOneCluster(Sample * x, int * Center, float Scatter, int * tabNbModality);
 
-/// compute Pdf in case nbCluster=1 (Scatter is a array of double, depends on variables)
-double computePdfOneCluster(Sample * x, int64_t * Center, 
-		double * Scatter, int64_t * tabNbModality);
+/// compute Pdf in case nbCluster=1 (Scatter is a array of float, depends on variables)
+float computePdfOneCluster(Sample * x, int * Center, 
+		float * Scatter, int * tabNbModality);
 
 /// compute Pdf in case nbCluster=1 
-// (Scatter is a array of double*double, depends on variables and modalities)
-double computePdfOneCluster(Sample * x, int64_t * Center, 
-		double ** Scatter, int64_t * tabNbModality);
+// (Scatter is a array of float*float, depends on variables and modalities)
+float computePdfOneCluster(Sample * x, int * Center, 
+		float ** Scatter, int * tabNbModality);
 
 //---------------
 // inline methods
 //---------------
 
-inline int64_t ** BinaryParameter::getTabCenter() const {
+inline int ** BinaryParameter::getTabCenter() const {
 	return _tabCenter;
 }
 
-inline int64_t * BinaryParameter::getTabNbModality() const {
+inline int * BinaryParameter::getTabNbModality() const {
 	return _tabNbModality;
 }
 
-inline int64_t BinaryParameter::getTotalNbModality() const {
+inline int BinaryParameter::getTotalNbModality() const {
 	return _totalNbModality;
 }
 

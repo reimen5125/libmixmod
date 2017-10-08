@@ -42,44 +42,44 @@ public:
 	GaussianSample();
 
 	/// Constructor
-	GaussianSample(int64_t pbDimension);
+	GaussianSample(int pbDimension);
 
 	/// Constructor
 	GaussianSample(GaussianSample * iSample);
 
 	/// Constructor
-	GaussianSample(int64_t pbDimension, double * tabValue);
+	GaussianSample(int pbDimension, float * tabValue);
 
 	/// Destructor
 	virtual ~GaussianSample();
 
 	/// Set value vector of sample
-	void setDataTabValue(double * tabValue);
+	void setDataTabValue(float * tabValue);
 
 	/// Set one value of sample
-	void setDataValue(int64_t idxDim, double value);
+	void setDataValue(int idxDim, float value);
 
 	/// get value vector of sample
-	double * getTabValue() const;
+	float * getTabValue() const;
 
 	/// get one value of sample
-	double getDataValue(int64_t idxDim) const;
+	float getDataValue(int idxDim) const;
 
 protected:
 
 	/// Vector of sample value
-	double * _value;
+	float * _value;
 };
 
 //---------------
 // inline methods
 //---------------
 
-inline double * GaussianSample::getTabValue() const {
+inline float * GaussianSample::getTabValue() const {
 	return _value;
 }
 
-inline double GaussianSample::getDataValue(int64_t idxDim) const {
+inline float GaussianSample::getDataValue(int idxDim) const {
 	return _value[idxDim];
 }
 

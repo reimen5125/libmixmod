@@ -52,10 +52,10 @@ public:
 	Input(const Input & input);
 
 	/// Initialisation constructor
-	Input(const std::vector<int64_t> & iNbCluster, const DataDescription & iDataDescription);
+	Input(const std::vector<int> & iNbCluster, const DataDescription & iDataDescription);
 
 	/// clone initialisation
-	void cloneInitialisation(const std::vector<int64_t> & iNbCluster, const DataDescription & iDataDescription);
+	void cloneInitialisation(const std::vector<int> & iNbCluster, const DataDescription & iDataDescription);
 
 	// Constructor used in DCV context
 	Input(Input * originalInput, CVBlock & learningBlock);
@@ -71,23 +71,23 @@ public:
 	
 	//------ Sample  ----//
 	/// getNbSample 
-	int64_t getNbSample() const;
+	int getNbSample() const;
 
 	
 	//------ Dimension  ----//
 	/// getPbDimension
-	int64_t getPbDimension() const;
+	int getPbDimension() const;
 
 	
 	//------ nbCluster  ----//
 	/// get all NbCluster
-	std::vector<int64_t> getNbCluster() const;
+	std::vector<int> getNbCluster() const;
 
 	/// get ith NbCluster
-	int64_t getNbCluster(int64_t index) const;
+	int getNbCluster(int index) const;
 
 	/// get NbCluster size
-	int64_t getNbClusterSize() const;
+	int getNbClusterSize() const;
 
 	
 	//------ Criterion  ----//
@@ -95,7 +95,7 @@ public:
 	std::vector <CriterionName> const & getCriterionName() const;
 
 	///getNbCriterionName
-	int64_t getNbCriterion() const;
+	int getNbCriterion() const;
 
 	///getCriterionName[i]
 	CriterionName getCriterionName(unsigned int index) const;
@@ -140,16 +140,16 @@ public:
 
 
 	/// setSubDimensionEqual
-	// void setSubDimensionEqual(int64_t modelTypePosition, int64_t subDimensionValue);
+	// void setSubDimensionEqual(int modelTypePosition, int subDimensionValue);
 
 	/// setSubDimensionFreel
-	// void setSubDimensionFree(int64_t modelTypePosition, int64_t subDimensionValue, int64_t dimensionPosition);
+	// void setSubDimensionFree(int modelTypePosition, int subDimensionValue, int dimensionPosition);
 
 	///setWeight();
 	void setWeight(std::string weightFileName);
 
 	///setWeight();
-	void setWeight(double* weight);
+	void setWeight(float* weight);
 
 	///removeWeight();
 	void removeWeight();
@@ -228,36 +228,36 @@ private:
 	LabelDescription * _knownLabelDescription;
 
 	// Number of samples (no reduced data)
-	int64_t _nbSample;
+	int _nbSample;
 
 	// Problem dimension
-	int64_t _pbDimension;
+	int _pbDimension;
 
 	// nbCluster
-	std::vector<int64_t> _nbCluster;
+	std::vector<int> _nbCluster;
 };
 
-inline int64_t Input::getNbSample() const {
+inline int Input::getNbSample() const {
 	return _nbSample;
 }
 
-inline int64_t Input::getPbDimension() const {
+inline int Input::getPbDimension() const {
 	return _pbDimension;
 }
 
-inline std::vector<int64_t> Input::getNbCluster() const {
+inline std::vector<int> Input::getNbCluster() const {
 	return _nbCluster;
 }
 
-inline int64_t Input::getNbCluster(int64_t index) const {
+inline int Input::getNbCluster(int index) const {
 	return _nbCluster[index];
 }
 
-inline int64_t Input::getNbClusterSize() const {
+inline int Input::getNbClusterSize() const {
 	return _nbCluster.size();
 }
 
-inline int64_t Input::getNbCriterion() const {
+inline int Input::getNbCriterion() const {
 	return _criterionName.size();
 }
 

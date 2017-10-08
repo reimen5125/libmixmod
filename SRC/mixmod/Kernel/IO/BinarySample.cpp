@@ -38,8 +38,8 @@ BinarySample::BinarySample() : Sample() {
 //------------
 // Constructor
 //------------
-BinarySample::BinarySample(int64_t pbDimension) : Sample(pbDimension) {
-	_value = new int64_t[_pbDimension];
+BinarySample::BinarySample(int pbDimension) : Sample(pbDimension) {
+	_value = new int[_pbDimension];
 }
 
 //------------
@@ -52,7 +52,7 @@ BinarySample::BinarySample(BinarySample * iSample) : Sample(iSample) {
 //------------
 // Constructor
 //------------
-BinarySample::BinarySample(int64_t pbDimension, int64_t * tabValue) : Sample(pbDimension) {
+BinarySample::BinarySample(int pbDimension, int * tabValue) : Sample(pbDimension) {
 	_value = copyTab(tabValue, _pbDimension);
 }
 
@@ -69,8 +69,8 @@ BinarySample::~BinarySample() {
 //-------------
 // set tab value
 //--------------
-void BinarySample::setDataTabValue(int64_t * tabValue) {
-	int64_t j;
+void BinarySample::setDataTabValue(int * tabValue) {
+	int j;
 	for (j = 0; j < _pbDimension; j++)
 		_value[j] = tabValue[j];
 }
@@ -78,7 +78,7 @@ void BinarySample::setDataTabValue(int64_t * tabValue) {
 //----------
 // set value
 //----------
-void BinarySample::setDataValue(int64_t idxDim, int64_t iValue) {
+void BinarySample::setDataValue(int idxDim, int iValue) {
 	_value[idxDim] = iValue;
 }
 

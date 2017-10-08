@@ -46,7 +46,7 @@ LearnInput::LearnInput(const LearnInput & cInput)
 // Initialisation Constructor
 //---------------------------
 LearnInput::LearnInput(DataDescription * learnData, LabelDescription * knownLabelDescription)
-: Input(std::vector<int64_t>(1, knownLabelDescription->getNbCluster()), *learnData) 
+: Input(std::vector<int>(1, knownLabelDescription->getNbCluster()), *learnData) 
 {
 	// set partition
 	setKnownLabelDescription(*knownLabelDescription);
@@ -155,7 +155,7 @@ void LearnInput::addCriterion(const CriterionName criterionName) {
 // ---------------------------
 // set the number of CV blocks
 // ---------------------------
-void LearnInput::setNbCVBlock(int64_t nbCVBlock) {
+void LearnInput::setNbCVBlock(int nbCVBlock) {
 	_nbCVBlock = nbCVBlock;
 }
 

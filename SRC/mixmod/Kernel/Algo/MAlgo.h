@@ -45,7 +45,7 @@ public:
 	MAlgo(const MAlgo & mAlgo);
 
 	/// Constructor
-	MAlgo(AlgoStopName algoStopName, double epsilon, int64_t nbIteration);
+	MAlgo(AlgoStopName algoStopName, float epsilon, int nbIteration);
 
 	/// Destructor
 	virtual ~MAlgo();
@@ -58,20 +58,20 @@ public:
 
 	virtual const AlgoName getAlgoName() const;
 
-	virtual void setEpsilon(double epsilon);
+	virtual void setEpsilon(float epsilon);
 
-	virtual const double getEpsilon() const;
+	virtual const float getEpsilon() const;
 };
 
 inline const AlgoName MAlgo::getAlgoName() const {
 	return M;
 }
 
-inline const double MAlgo::getEpsilon() const {
+inline const float MAlgo::getEpsilon() const {
 	THROW(OtherException, internalMixmodError);
 }
 
-inline void MAlgo::setEpsilon(double eps) {
+inline void MAlgo::setEpsilon(float eps) {
 	THROW(OtherException, internalMixmodError);
 }
 

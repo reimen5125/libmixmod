@@ -46,7 +46,7 @@ public:
 			delete _value;
 	}
 	
-	double* Store() {
+	float* Store() {
 		return _value->Store();
 	}
 	
@@ -72,11 +72,11 @@ public:
 			delete _value;
 	}
 
-	double* Store() {
+	float* Store() {
 		return _value->Store();
 	}
 	
-	double* GetRow(int index) {
+	float* GetRow(int index) {
 		return _value->Store() + index * _value->Ncols();
 	}
 	
@@ -111,13 +111,13 @@ public:
 			delete _value;
 	}
 	
-	double* Store() {
+	float* Store() {
 		return _value->Store();
 	}
 	
 	// return log(abs(det(M)))
 	// NOTE: NEWMAT also return the sign of det(M)
-	double LogDeterminant() {
+	float LogDeterminant() {
 		return NEWMAT::LogDeterminant(*_value).Value();
 	}
 	
@@ -135,15 +135,15 @@ public:
 	// compute SVD (only matrices U and D, not V)
 	void computeSVD(DiagonalMatrix* D, Matrix* U) {
 		NEWMAT::DiagonalMatrix * D_NEWMAT = new NEWMAT::DiagonalMatrix(D->Nrow());
-		for (int64_t i=0; i<D->Nrow(); i++) 
+		for (int i=0; i<D->Nrow(); i++) 
 			D_NEWMAT->Store()[i] = D->Store()[i];
 		NEWMAT::Matrix * U_NEWMAT = new NEWMAT::Matrix(U->Nrow(),U->Ncol());
-		for (int64_t i=0; i<U->Nrow()*U->Ncol(); i++) 
+		for (int i=0; i<U->Nrow()*U->Ncol(); i++) 
 			U_NEWMAT->Store()[i] = U->Store()[i];
 		NEWMAT::SVD(*_value, *D_NEWMAT, *U_NEWMAT);
-		for (int64_t i=0; i<D->Nrow(); i++) 
+		for (int i=0; i<D->Nrow(); i++) 
 			D->Store()[i] = D_NEWMAT->Store()[i];
-		for (int64_t i=0; i<U->Nrow()*U->Ncol(); i++) 
+		for (int i=0; i<U->Nrow()*U->Ncol(); i++) 
 			U->Store()[i] = U_NEWMAT->Store()[i];
 		delete D_NEWMAT;
 		delete U_NEWMAT;

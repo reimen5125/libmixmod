@@ -41,7 +41,7 @@ BinaryEParameter::BinaryEParameter() {
 // Constructor called by XEMModel
 //-------------------------------
 BinaryEParameter::BinaryEParameter(
-		Model * iModel, ModelType * iModelType, int64_t * tabNbModality) 
+		Model * iModel, ModelType * iModelType, int * tabNbModality) 
 : BinaryParameter(iModel, iModelType, tabNbModality) 
 {
 	_scatter = 0;
@@ -90,8 +90,8 @@ void BinaryEParameter::reset() {
 //-----------
 // getFreeParameter
 //-----------
-int64_t BinaryEParameter::getFreeParameter() const {
-	int64_t nbFreeParameter = 1;
+int BinaryEParameter::getFreeParameter() const {
+	int nbFreeParameter = 1;
 	if (_freeProportion) {
 		nbFreeParameter += _nbCluster - 1;
 	}
@@ -101,9 +101,9 @@ int64_t BinaryEParameter::getFreeParameter() const {
 //-------
 // getPdf
 //-------
-double BinaryEParameter::getPdf(int64_t iSample, int64_t kCluster) const {
-	int64_t j;
-	double bernPdf = 1.0;
+float BinaryEParameter::getPdf(int iSample, int kCluster) const {
+	int j;
+	float bernPdf = 1.0;
 	BinaryData * data = _model->getBinaryData();
 	BinarySample * curSample = (data->_matrix[iSample])->getBinarySample();
 
@@ -123,9 +123,9 @@ double BinaryEParameter::getPdf(int64_t iSample, int64_t kCluster) const {
 //----------
 // getLogPdf
 //----------
-long double BinaryEParameter::getLogPdf(int64_t iSample, int64_t kCluster) const {
-	int64_t j;
-	double bernPdf = 0.0;
+float BinaryEParameter::getLogPdf(int iSample, int kCluster) const {
+	int j;
+	float bernPdf = 0.0;
 	BinaryData * data = _model->getBinaryData();
 	BinarySample * curSample = (data->_matrix[iSample])->getBinarySample();
 
@@ -148,9 +148,9 @@ long double BinaryEParameter::getLogPdf(int64_t iSample, int64_t kCluster) const
 /* Compute normal probability density function
 	   for x vector and kCluster th cluster
  */
-double BinaryEParameter::getPdf(Sample * x, int64_t kCluster) const {
-	int64_t j;
-	double bernPdf = 1.0;
+float BinaryEParameter::getPdf(Sample * x, int kCluster) const {
+	int j;
+	float bernPdf = 1.0;
 	BinarySample * binaryX = x->getBinarySample();
 
 	for (j = 0; j < _pbDimension; j++) {
@@ -168,15 +168,15 @@ double BinaryEParameter::getPdf(Sample * x, int64_t kCluster) const {
 //--------------------
 // getlogLikelihoodOne (one cluster)
 //--------------------
-double BinaryEParameter::getLogLikelihoodOne() const {
-	int64_t i;
-	int64_t j;
-	double logLikelihoodOne = 0.0, value, pdf, Scatter;
-	//int64_t * Center = new int64_t[_pbDimension];
-	//double* tabNbSampleInMajorModality = new double[_pbDimension];
-	std::unique_ptr<int64_t[]> Center(new int64_t[_pbDimension]);
-	std::unique_ptr<double[]> tabNbSampleInMajorModality(new double[_pbDimension]);
-	int64_t nbSample = _model->getNbSample();
+float BinaryEParameter::getLogLikelihoodOne() const {
+	int i;
+	int j;
+	float logLikelihoodOne = 0.0, value, pdf, Scatter;
+	//int * Center = new int[_pbDimension];
+	//float* tabNbSampleInMajorModality = new float[_pbDimension];
+	std::unique_ptr<int[]> Center(new int[_pbDimension]);
+	std::unique_ptr<float[]> tabNbSampleInMajorModality(new float[_pbDimension]);
+	int nbSample = _model->getNbSample();
 	BinaryData * data = _model->getBinaryData();
 
 	// Compute Center fo One cluster //
@@ -207,17 +207,17 @@ double BinaryEParameter::getLogLikelihoodOne() const {
 // Compute scatter 
 //----------------
 void BinaryEParameter::computeScatter() {
-	int64_t j, k;
-	int64_t i;
-	double ** tabCik = _model->getTabCik();
+	int j, k;
+	int i;
+	float ** tabCik = _model->getTabCik();
 
 	BinaryData * data = _model->getBinaryData();
 	Sample ** dataMatrix = data->getDataMatrix();
 	BinarySample * curSample;
-	double totalWeight = data->_weightTotal;
-	int64_t nbSample = _model->getNbSample();
+	float totalWeight = data->_weightTotal;
+	int nbSample = _model->getNbSample();
 
-	double e = 0.0; // nb d'individus prenant la modalite majoritaire 
+	float e = 0.0; // nb d'individus prenant la modalite majoritaire 
 	                // (pour toutes les classes, pour toutes les variables)
 	for (k = 0; k < _nbCluster; k++) {
 		for (j = 0; j < _pbDimension; j++) {
@@ -237,10 +237,10 @@ void BinaryEParameter::computeScatter() {
 //----------------------------------------------------
 // Compute scatter(s)  as if there was only one cluster
 //---------------------------------------------------
-/*void XEMBinaryEParameter::computeScatterIfOneCluster(double totalWeight, 
-     double * tabNbSampleInMajorModality, double ** tabNbSamplePerModality){
-  double value = 0.0;
-  for (int64_t j=0; j<_pbDimension; j++){
+/*void XEMBinaryEParameter::computeScatterIfOneCluster(float totalWeight, 
+     float * tabNbSampleInMajorModality, float ** tabNbSamplePerModality){
+  float value = 0.0;
+  for (int j=0; j<_pbDimension; j++){
 	cout<<"tabNbSampleInMajorModality[j] : "<<tabNbSampleInMajorModality[j]<<endl;
 	value += tabNbSampleInMajorModality[j];
 }
@@ -252,8 +252,8 @@ void BinaryEParameter::computeScatter() {
 // Compute random scatter(s) 
 //---------------------------
 void BinaryEParameter::computeRandomScatter() {
-	int64_t minNbModality = _tabNbModality[0];
-	for (int64_t j = 1; j < _pbDimension; j++) {
+	int minNbModality = _tabNbModality[0];
+	for (int j = 1; j < _pbDimension; j++) {
 		if (_tabNbModality[j] < minNbModality) {
 			minNbModality = _tabNbModality[j];
 		}
@@ -271,7 +271,7 @@ void BinaryEParameter::recopyScatter(Parameter * iParam) {
 	if (typeid (*iParam) != typeid (*this)) {
 		THROW(OtherException, badBinaryParameterClass);
 	}
-	double iScatter = ((BinaryEParameter*) iParam)->getScatter();
+	float iScatter = ((BinaryEParameter*) iParam)->getScatter();
 	_scatter = iScatter;
 }
 
@@ -279,9 +279,9 @@ void BinaryEParameter::recopyScatter(Parameter * iParam) {
 //create scatter from Scatter Ekjh 
 //---------------
 //on fait une moyenne
-void BinaryEParameter::createScatter(double *** scatter) {
+void BinaryEParameter::createScatter(float *** scatter) {
 	_scatter = 0.0;
-	int64_t k, j, h;
+	int k, j, h;
 	for (k = 0; k < _nbCluster; k++) {
 		for (j = 0; j < _pbDimension; j++) {
 			h = _tabCenter[k][j];
@@ -294,8 +294,8 @@ void BinaryEParameter::createScatter(double *** scatter) {
 //------------
 // editScatter (for debug)
 //------------
-void BinaryEParameter::editScatter(int64_t k) {
-	int64_t j, h;
+void BinaryEParameter::editScatter(int k) {
+	int j, h;
 	for (j = 0; j < _pbDimension; j++) {
 		for (h = 1; h <= _tabNbModality[j]; h++) {
 			if (h == _tabCenter[k][j]) {
@@ -311,8 +311,8 @@ void BinaryEParameter::editScatter(int64_t k) {
 
 // editScatter 
 //------------
-void BinaryEParameter::editScatter(std::ofstream & oFile, int64_t k, bool text) {
-	int64_t j, h;
+void BinaryEParameter::editScatter(std::ofstream & oFile, int k, bool text) {
+	int j, h;
 	if (text) {
 		oFile << "\t\t\tScattering : \n";
 	}
@@ -323,9 +323,9 @@ void BinaryEParameter::editScatter(std::ofstream & oFile, int64_t k, bool text) 
 		}
 		for (h = 1; h <= _tabNbModality[j]; h++) {
 			if (h == _tabCenter[k][j])
-				putDoubleInStream(oFile, _scatter, "  ");
+				putFloatInStream(oFile, _scatter, "  ");
       else
-				putDoubleInStream(oFile, _scatter / (_tabNbModality[j] - 1), "  ");
+				putFloatInStream(oFile, _scatter / (_tabNbModality[j] - 1), "  ");
 		}
 		oFile << endl;
 	}
@@ -333,23 +333,23 @@ void BinaryEParameter::editScatter(std::ofstream & oFile, int64_t k, bool text) 
 
 // Read Scatter in input file
 //---------------------------
-void BinaryEParameter::inputScatter(std::ifstream & fi, int64_t k) {
+void BinaryEParameter::inputScatter(std::ifstream & fi, int k) {
 	THROW(OtherException, internalMixmodError);
 }
 
 // Read Scatter in input containers
 //---------------------------
-void BinaryEParameter::inputScatter(double *** scatters) {
+void BinaryEParameter::inputScatter(float *** scatters) {
 	THROW(OtherException, internalMixmodError);
 }
 
-double *** BinaryEParameter::scatterToArray() const {
-	double*** tabScatter = new double**[_nbCluster];
-	int64_t k, j, h;
+float *** BinaryEParameter::scatterToArray() const {
+	float*** tabScatter = new float**[_nbCluster];
+	int k, j, h;
 	for (k = 0; k < _nbCluster; k++) {
-		tabScatter[k] = new double*[_pbDimension];
+		tabScatter[k] = new float*[_pbDimension];
 		for (j = 0; j < _pbDimension; j++) {
-			tabScatter[k][j] = new double[_tabNbModality[j] ];
+			tabScatter[k][j] = new float[_tabNbModality[j] ];
 			for (h = 1; h <= _tabNbModality[j]; h++) {
 				if (h == _tabCenter[k][j]) {
 					tabScatter[k][j][h - 1] = _scatter;

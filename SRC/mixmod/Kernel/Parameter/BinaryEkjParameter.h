@@ -40,7 +40,7 @@ public:
 
 	/// Constructor
 	// called by XEMModel
-	BinaryEkjParameter(Model * iModel, ModelType * iModelType, int64_t * tabNbModality);
+	BinaryEkjParameter(Model * iModel, ModelType * iModelType, int * tabNbModality);
 
 	/// Constructor
 	BinaryEkjParameter(const BinaryEkjParameter * iParameter);
@@ -58,22 +58,22 @@ public:
 	Parameter * clone() const;
 
 	/// selector :  return scatter value
-	double ** getScatter() const;
+	float ** getScatter() const;
 
 	/// getFreeParameter
-	int64_t getFreeParameter() const;
+	int getFreeParameter() const;
 
-	double getPdf(int64_t iSample, int64_t kCluster) const;
+	float getPdf(int iSample, int kCluster) const;
 
-	long double getLogPdf(int64_t iSample, int64_t kCluster) const;
+	float getLogPdf(int iSample, int kCluster) const;
 
 	/** Compute normal probability density function
 		 for x vector and kCluster th cluster
 	 */
-	double getPdf(Sample * x, int64_t kCluster) const;
+	float getPdf(Sample * x, int kCluster) const;
 
 	/// getlogLikelihoodOne (one cluster)
-	double getLogLikelihoodOne() const;
+	float getLogLikelihoodOne() const;
 
 	/// Compute scatter(s) 
 	void computeScatter();
@@ -85,27 +85,27 @@ public:
 	void recopyScatter(Parameter * iParam);
 
 	///create Scatter from "Binary Parameter Ekjh"
-	void createScatter(double *** scatter);
+	void createScatter(float *** scatter);
 
 	/// editScatter (for debug)
-	void editScatter(int64_t k);
+	void editScatter(int k);
 
 	/// editScatter 
-	void editScatter(std::ofstream & oFile, int64_t k, bool text = false);
+	void editScatter(std::ofstream & oFile, int k, bool text = false);
 
 	// Read Scatter in input file
-	void inputScatter(std::ifstream & fi, int64_t k);
-	void inputScatter(double *** scatters);
+	void inputScatter(std::ifstream & fi, int k);
+	void inputScatter(float *** scatters);
 
-	double *** scatterToArray() const;
+	float *** scatterToArray() const;
 
 private:
 	
 	/// scatter
-	double ** _scatter;
+	float ** _scatter;
 };
 
-inline double ** BinaryEkjParameter::getScatter() const {
+inline float ** BinaryEkjParameter::getScatter() const {
 	return _scatter;
 }
 

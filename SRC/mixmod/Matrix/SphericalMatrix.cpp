@@ -36,7 +36,7 @@ SphericalMatrix::SphericalMatrix() {
 	THROW(OtherException, wrongConstructorType);
 }
 
-SphericalMatrix::SphericalMatrix(int64_t pbDimension, double initValue) : Matrix(pbDimension) {
+SphericalMatrix::SphericalMatrix(int pbDimension, float initValue) : Matrix(pbDimension) {
 	_store = initValue;
 }
 
@@ -50,12 +50,12 @@ SphericalMatrix::SphericalMatrix(SphericalMatrix * A) : Matrix(A) {
 SphericalMatrix::~SphericalMatrix() {
 }
 
-double SphericalMatrix::determinant(Exception& errorType) {
-	double det;
+float SphericalMatrix::determinant(Exception& errorType) {
+	float det;
 #ifdef __APPLE__
 	det = pow(_store, (int) _s_pbDimension);
 #else
-	det = pow(_store, (double) _s_pbDimension);
+	det = pow(_store, (float) _s_pbDimension);
 #endif
 	if (det < minDeterminantValue) {
 		throw NumericException(dynamic_cast<NumericException&> (errorType));
@@ -63,19 +63,19 @@ double SphericalMatrix::determinant(Exception& errorType) {
 	return det;
 }
 
-double* SphericalMatrix::getDiagonalStore() {
+float* SphericalMatrix::getDiagonalStore() {
 	THROW(OtherException, wrongMatrixType);
 }
 
-double* SphericalMatrix::getSymmetricStore() {
+float* SphericalMatrix::getSymmetricStore() {
 	THROW(OtherException, wrongMatrixType);
 }
 
-double* SphericalMatrix::getGeneralStore() {
+float* SphericalMatrix::getGeneralStore() {
 	THROW(OtherException, wrongMatrixType);
 }
 
-double SphericalMatrix::getSphericalStore() {
+float SphericalMatrix::getSphericalStore() {
 	return (_store);
 }
 
@@ -83,9 +83,9 @@ void SphericalMatrix::computeSVD(DiagMatrix* & S, GeneralMatrix* & O) {
 	THROW(OtherException, nonImplementedMethod);
 }
 
-void SphericalMatrix::equalToMatrixMultiplyByDouble(Matrix* D, double d) {
+void SphericalMatrix::equalToMatrixMultiplyByFloat(Matrix* D, float d) {
 	//THROW(XEMInputException,nonImplementedMethod);
-	double store_D = D->putSphericalValueInStore(_store);
+	float store_D = D->putSphericalValueInStore(_store);
 	_store = store_D*d;
 }
 
@@ -108,27 +108,27 @@ void SphericalMatrix::inverse(Matrix * & Inv) {
 	}
 
 	// Inv = new XEMSphericalMatrix(_s_pbDimension);
-	double store_Inv = 1.0 / _store; // = A->getSphericalStore();
+	float store_Inv = 1.0 / _store; // = A->getSphericalStore();
 	Inv->setSphericalStore(store_Inv); // virtual
 }
 
-void SphericalMatrix::compute_product_Lk_Wk(Matrix* Wk, double L) {
+void SphericalMatrix::compute_product_Lk_Wk(Matrix* Wk, float L) {
 	THROW(OtherException, nonImplementedMethod);
 }
 
-double SphericalMatrix::computeTrace() {
-	double trace = _s_pbDimension * _store;
+float SphericalMatrix::computeTrace() {
+	float trace = _s_pbDimension * _store;
 	return trace;
 }
 
-void SphericalMatrix::addToValue(double a) {
+void SphericalMatrix::addToValue(float a) {
 	_store += a;
 }
 
-double SphericalMatrix::norme(double * xMoinsMean) {
-	int64_t p;
-	double termesDiag = 0.0;
-	double xMoinsMean_p;
+float SphericalMatrix::norme(float * xMoinsMean) {
+	int p;
+	float termesDiag = 0.0;
+	float xMoinsMean_p;
 
 	for (p = 0; p < _s_pbDimension; p++) {
 		xMoinsMean_p = xMoinsMean[p];
@@ -139,33 +139,33 @@ double SphericalMatrix::norme(double * xMoinsMean) {
 }
 
 // (this) will be A / d
-void SphericalMatrix::equalToMatrixDividedByDouble(Matrix * A, double d) {
+void SphericalMatrix::equalToMatrixDividedByFloat(Matrix * A, float d) {
 	_store = (A->getSphericalStore()) / d;
 }
 
-void SphericalMatrix::compute_as__multi_O_S_O(double multi, GeneralMatrix* & O, DiagMatrix *& S) {
+void SphericalMatrix::compute_as__multi_O_S_O(float multi, GeneralMatrix* & O, DiagMatrix *& S) {
 	THROW(OtherException, nonImplementedMethod);
 }
 
-double SphericalMatrix::trace_this_O_Sm1_O(GeneralMatrix* & O, DiagMatrix* & S) {
+float SphericalMatrix::trace_this_O_Sm1_O(GeneralMatrix* & O, DiagMatrix* & S) {
 	THROW(OtherException, nonImplementedMethod);
 }
 
-double SphericalMatrix::compute_trace_W_C(Matrix * C) {
+float SphericalMatrix::compute_trace_W_C(Matrix * C) {
 	THROW(OtherException, nonImplementedMethod);
 }
 
 void SphericalMatrix::computeShape_as__diag_Ot_this_O(
-		DiagMatrix* & Shape, GeneralMatrix* & Ori, double diviseur) 
+		DiagMatrix* & Shape, GeneralMatrix* & Ori, float diviseur) 
 {
 	THROW(OtherException, nonImplementedMethod);
 }
 
 // add :  cik * xMoinsMean * xMoinsMean'  to this
-void SphericalMatrix::add(double * xMoinsMean, double cik) {
+void SphericalMatrix::add(float * xMoinsMean, float cik) {
 
-	int64_t p;
-	double xMoinsMean_p, tmp;
+	int p;
+	float xMoinsMean_p, tmp;
 
 	tmp = 0.0;
 	for (p = 0; p < _s_pbDimension; p++) {
@@ -177,10 +177,10 @@ void SphericalMatrix::add(double * xMoinsMean, double cik) {
 }
 
 // add : diag( cik * xMoinsMean * xMoinsMean' )  to this
-void SphericalMatrix::addDiag(double * xMoinsMean, double cik) {
+void SphericalMatrix::addDiag(float * xMoinsMean, float cik) {
 
-	int64_t p;
-	double xMoinsMean_p, tmp;
+	int p;
+	float xMoinsMean_p, tmp;
 
 	tmp = 0.0;
 	for (p = 0; p < _s_pbDimension; p++) {
@@ -192,17 +192,17 @@ void SphericalMatrix::addDiag(double * xMoinsMean, double cik) {
 }
 
 // set the value of (d x Identity) to this  
-void SphericalMatrix::operator=(const double& d) {
+void SphericalMatrix::operator=(const float& d) {
 	_store = d;
 }
 
 // divide each element by d
-void SphericalMatrix::operator/=(const double& d) {
+void SphericalMatrix::operator/=(const float& d) {
 	_store /= d;
 }
 
 // multiply each element by d
-void SphericalMatrix::operator*=(const double& d) {
+void SphericalMatrix::operator*=(const float& d) {
 	_store *= d;
 }
 
@@ -215,59 +215,59 @@ void SphericalMatrix::operator=(Matrix* M) {
 	M->putSphericalValueInStore(_store);
 }
 
-double SphericalMatrix::putSphericalValueInStore(double & store) {
+float SphericalMatrix::putSphericalValueInStore(float & store) {
 	store = _store;
 	return (store);
 }
 
-double SphericalMatrix::addSphericalValueInStore(double & store) {
+float SphericalMatrix::addSphericalValueInStore(float & store) {
 	store += _store;
 	return (store);
 }
 
-double* SphericalMatrix::putDiagonalValueInStore(double * store) {
+float* SphericalMatrix::putDiagonalValueInStore(float * store) {
 	THROW(OtherException, wrongMatrixType);
 }
 
-double* SphericalMatrix::addDiagonalValueInStore(double * store) {
+float* SphericalMatrix::addDiagonalValueInStore(float * store) {
 	THROW(OtherException, wrongMatrixType);
 }
 
-double* SphericalMatrix::putSymmetricValueInStore(double * store) {
+float* SphericalMatrix::putSymmetricValueInStore(float * store) {
 	THROW(OtherException, wrongMatrixType);
 }
 
-double* SphericalMatrix::addSymmetricValueInStore(double * store) {
+float* SphericalMatrix::addSymmetricValueInStore(float * store) {
 	THROW(OtherException, wrongMatrixType);
 }
 
-double* SphericalMatrix::putGeneralValueInStore(double * store) {
+float* SphericalMatrix::putGeneralValueInStore(float * store) {
 	THROW(OtherException, wrongMatrixType);
 }
 
-double* SphericalMatrix::addGeneralValueInStore(double * store) {
+float* SphericalMatrix::addGeneralValueInStore(float * store) {
 	THROW(OtherException, wrongMatrixType);
 }
 
 void SphericalMatrix::input(std::ifstream & fi) {
-	int64_t p, q;
-	double garbage;
+	int p, q;
+	float garbage;
 
 	for (p = 0; p < _s_pbDimension; p++) {
 		// useless because all are 0
 		for (q = 0; q < _s_pbDimension; q++) {
 			if (p == 0 && q == 0)
-				_store = getDoubleFromStream(fi);
+				_store = getFloatFromStream(fi);
       else {
 				// we don't use the value (garbage)
-				getDoubleFromStream(fi);
+				getFloatFromStream(fi);
 			}
 		}
 	}
 }
 
-void SphericalMatrix::input(double ** variances) {
-	int64_t p, q;
+void SphericalMatrix::input(float ** variances) {
+	int p, q;
 
 	for (p = 0; p < _s_pbDimension; p++) {
 		// useless because all are 0
@@ -279,16 +279,16 @@ void SphericalMatrix::input(double ** variances) {
 	}
 }
 
-double SphericalMatrix::detDiag(Exception& errorType) {
+float SphericalMatrix::detDiag(Exception& errorType) {
 	return determinant(errorType);
 }
 
-double** SphericalMatrix::storeToArray() const {
+float** SphericalMatrix::storeToArray() const {
 
-	int64_t i, j;
-	double** newStore = new double*[_s_pbDimension];
+	int i, j;
+	float** newStore = new float*[_s_pbDimension];
 	for (i = 0; i < _s_pbDimension; ++i) {
-		newStore[i] = new double[_s_pbDimension];
+		newStore[i] = new float[_s_pbDimension];
 
 		for (j = 0; j < _s_pbDimension; ++j) {
 			if (i == j) {

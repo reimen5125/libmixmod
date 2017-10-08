@@ -49,21 +49,21 @@ public:
 	BinaryModel(BinaryModel * iModel);
 
 	/// Constructor
-	BinaryModel(ModelType * modelType, int64_t nbCluster, Data *& data, Partition * knownPartition, std::vector<int64_t> const & correspondenceOriginDataToReduceData);
+	BinaryModel(ModelType * modelType, int nbCluster, Data *& data, Partition * knownPartition, std::vector<int> const & correspondenceOriginDataToReduceData);
 
 	/// Destructor
 	virtual ~BinaryModel();
 
 	// get the reduced data vector
 
-	inline const std::vector<int64_t> & getCorrespondenceOriginDataToReduceData() const {
+	inline const std::vector<int> & getCorrespondenceOriginDataToReduceData() const {
 		return _correspondenceOriginDataToReduceData;
 	}
 
 private:
 	
 	// reduced data
-	std::vector<int64_t> _correspondenceOriginDataToReduceData;
+	std::vector<int> _correspondenceOriginDataToReduceData;
 };
 
 }

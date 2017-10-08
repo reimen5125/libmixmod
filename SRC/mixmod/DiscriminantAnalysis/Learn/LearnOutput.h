@@ -75,7 +75,7 @@ public:
 
 	std::vector<LearnModelOutput*> const & getLearnModelOutput() const;
 
-	int64_t getNbLearnModelOutput() const;
+	int getNbLearnModelOutput() const;
 
 	void setLearnModelOutput(std::vector<LearnModelOutput *> & learnModelOutput);
 
@@ -98,7 +98,7 @@ inline  LearnModelOutput *  LearnOutput::getLearnModelOutput(unsigned int index)
 	}
 }
 
-inline int64_t LearnOutput::getNbLearnModelOutput() const {
+inline int LearnOutput::getNbLearnModelOutput() const {
 	return _learnModelOutput.size();
 }
 

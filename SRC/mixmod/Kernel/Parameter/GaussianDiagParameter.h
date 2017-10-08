@@ -73,25 +73,25 @@ public:
 	//     SELECTORS
 	// ------ / -------- //
 
-	double * getTabLambda() const;
+	float * getTabLambda() const;
 
-	//double ** getTabShape();
+	//float ** getTabShape();
 	DiagMatrix** getTabShape() const;
 
-	double getLogLikelihoodOne() const;
+	float getLogLikelihoodOne() const;
 
-	int64_t getFreeParameter() const;
+	int getFreeParameter() const;
 
 protected:
 	
 	/// Table of volume of each cluster
-	double * _tabLambda; // Volume
+	float * _tabLambda; // Volume
 
-	//double ** _tabShape;  
+	//float ** _tabShape;  
 	DiagMatrix** _tabShape;
 };
 
-inline double * GaussianDiagParameter::getTabLambda() const {
+inline float * GaussianDiagParameter::getTabLambda() const {
 	return _tabLambda;
 }
 

@@ -33,7 +33,7 @@ namespace XEM {
 
 struct IndividualDescription {
 
-	int64_t num;
+	int num;
 	std::string name;
 };
 
@@ -51,7 +51,7 @@ public:
 	IndividualColumnDescription();
 
 	/// initialization constructor
-	IndividualColumnDescription(int64_t index);
+	IndividualColumnDescription(int index);
 
 	/// Destructor
 	virtual ~IndividualColumnDescription();

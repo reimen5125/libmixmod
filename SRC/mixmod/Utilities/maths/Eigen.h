@@ -39,7 +39,7 @@ public:
 	
 	DiagonalMatrix(int dim) {
 		_dim = dim;
-		_value = new double[dim];
+		_value = new float[dim];
 	}
 	
 	~DiagonalMatrix() {
@@ -47,7 +47,7 @@ public:
 			delete [] _value;
 	}
 	
-	double* Store() {
+	float* Store() {
 		return _value;
 	}
 	
@@ -57,8 +57,8 @@ public:
 	
 private:
 	
-	int64_t _dim;
-	double* _value;
+	int _dim;
+	float* _value;
 };
 
 class Matrix {
@@ -74,11 +74,11 @@ public:
 			delete _value;
 	}
 
-	double* Store() {
+	float* Store() {
 		return _value->data();
 	}
 	
-	double* GetRow(int index) {
+	float* GetRow(int index) {
 		return _value->data() + index * _value->cols();
 	}
 	
@@ -109,12 +109,12 @@ public:
 			delete _value;
 	}
 	
-	double* Store() {
+	float* Store() {
 		return _value->data();
 	}
 	
 	// return log(abs(det(M)))
-	double LogDeterminant() {
+	float LogDeterminant() {
 		return log(_value->determinant());
 	}
 	
@@ -123,7 +123,7 @@ public:
 		int _s_pbDimension = _value->rows();
 		SymmetricMatrix* invMat = new SymmetricMatrix(_s_pbDimension);
 		auto eigenInverse = (Eigen::MatrixXd)(_value->inverse());
-		for (int64_t i=0; i<eigenInverse.rows()*eigenInverse.cols(); i++)
+		for (int i=0; i<eigenInverse.rows()*eigenInverse.cols(); i++)
 			invMat->Store()[i] = eigenInverse.data()[i];
 		return invMat;
 	}
@@ -134,9 +134,9 @@ public:
 		auto svd = new Eigen::JacobiSVD<Eigen::MatrixXd>(*_value, Eigen::ComputeFullU);
 		auto eigenD = svd->singularValues();
 		auto eigenU = svd->matrixU();
-		for (int64_t i=0; i<eigenD.rows(); i++) 
+		for (int i=0; i<eigenD.rows(); i++) 
 			D->Store()[i] = eigenD.data()[i];
-		for (int64_t i=0; i<eigenU.rows()*eigenU.cols(); i++)
+		for (int i=0; i<eigenU.rows()*eigenU.cols(); i++)
 			U->Store()[i] = eigenU.data()[i];
 		delete svd;
 	}

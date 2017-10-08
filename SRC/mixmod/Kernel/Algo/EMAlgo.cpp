@@ -33,7 +33,7 @@ namespace XEM {
 EMAlgo::EMAlgo() {
 }
 
-EMAlgo::EMAlgo(AlgoStopName algoStopName, double epsilon, int64_t nbIteration)
+EMAlgo::EMAlgo(AlgoStopName algoStopName, float epsilon, int nbIteration)
 : Algo(algoStopName, epsilon, nbIteration) {
 }
 

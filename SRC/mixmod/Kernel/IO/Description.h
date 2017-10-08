@@ -46,7 +46,7 @@ public:
 	Description();
 
 	///constructor by initilization
-	Description(int64_t nbSample, int64_t nbColumn, 
+	Description(int nbSample, int nbColumn, 
 			std::vector<ColumnDescription *> columnDescription, 
 			FormatNumeric::FormatNumericFile format, 
 			std::string filename, std::string InfoName = "");
@@ -68,23 +68,23 @@ public:
 	std::string getInfoName()const;
 
 	//get NbSample
-	int64_t getNbSample() const;
+	int getNbSample() const;
 
 	//get FileName
 	std::string getFileName()const;
 
 	//get NbColumn
-	int64_t getNbColumn()const;
+	int getNbColumn()const;
 
 	//get Format
 	FormatNumeric::FormatNumericFile getFormat() const;
 
 	//get ColumnDescription
-	const ColumnDescription * getColumnDescription(int64_t index)const;
+	const ColumnDescription * getColumnDescription(int index)const;
 
 	const std::vector<ColumnDescription*> getAllColumnDescription()const;
 
-	int64_t getPbDimension() const;
+	int getPbDimension() const;
 
 	///set
 	//set InfoName
@@ -95,8 +95,8 @@ public:
 protected:
 
 	std::string _infoName;
-	int64_t _nbSample;
-	int64_t _nbColumn;
+	int _nbSample;
+	int _nbColumn;
 	std::string _fileName; //numeric file name
 	FormatNumeric::FormatNumericFile _format; //format of  numeric file
 	std::vector<ColumnDescription*> _columnDescription; //each variable has a description
@@ -106,11 +106,11 @@ inline std::string Description::getInfoName()const {
 	return _infoName;
 }
 
-inline int64_t Description::getNbSample()const {
+inline int Description::getNbSample()const {
 	return _nbSample;
 }
 
-inline int64_t Description::getNbColumn()const {
+inline int Description::getNbColumn()const {
 	return _nbColumn;
 }
 
@@ -118,7 +118,7 @@ inline std::string Description::getFileName()const {
 	return _fileName;
 }
 
-inline const ColumnDescription * Description::getColumnDescription(int64_t index)const {
+inline const ColumnDescription * Description::getColumnDescription(int index)const {
 	if (index >= 0 && index <= _nbColumn)
 		return _columnDescription[index];
 	else THROW(InputException, wrongIndexInGetMethod);

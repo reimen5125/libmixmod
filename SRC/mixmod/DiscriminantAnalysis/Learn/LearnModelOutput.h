@@ -49,13 +49,13 @@ public:
 	LearnModelOutput(Model * estimation);
 
 	/// Initialization Constructor 2
-	LearnModelOutput(ModelType & modelType, int64_t nbCluster, 
-			std::vector<CriterionOutput*> & criterionOutput, double likelihood, 
+	LearnModelOutput(ModelType & modelType, int nbCluster, 
+			std::vector<CriterionOutput*> & criterionOutput, float likelihood, 
 			ParameterDescription & parameterDescription, LabelDescription & labelDescription,
 			ProbaDescription & probaDescription);
 
 	/// Initialization Constructor 3
-	LearnModelOutput(ModelType & modelType, int64_t nbCluster, Exception& error);
+	LearnModelOutput(ModelType & modelType, int nbCluster, Exception& error);
 
 	/// Copy Constructor
 	LearnModelOutput(const LearnModelOutput & cModelOutput);
@@ -66,7 +66,7 @@ public:
 
 
 	/// set CV Labels
-	void setCVLabel(Model * estimation, std::vector<int64_t> & cvLabel);
+	void setCVLabel(Model * estimation, std::vector<int> & cvLabel);
 
 	/// get CV Label
 	const LabelDescription * getCVLabel() const;

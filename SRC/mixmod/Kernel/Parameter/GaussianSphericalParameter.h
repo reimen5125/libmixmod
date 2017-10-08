@@ -63,9 +63,9 @@ public:
 	// NB : compute also lambda, shpae, orientation, wk, w
 	void computeTabSigma();
 
-	double getLogLikelihoodOne() const;
+	float getLogLikelihoodOne() const;
 
-	int64_t getFreeParameter() const;
+	int getFreeParameter() const;
 };
 
 }

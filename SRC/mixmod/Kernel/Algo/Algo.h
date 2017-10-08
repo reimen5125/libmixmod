@@ -48,7 +48,7 @@ public:
 	Algo(const Algo & algo);
 
 	/// Constructor
-	Algo(AlgoStopName algoStopName, double epsilon, int64_t nbIteration);
+	Algo(AlgoStopName algoStopName, float epsilon, int nbIteration);
 
 	/// Destructor
 	virtual ~Algo();
@@ -68,13 +68,13 @@ public:
 
 	virtual void setAlgoStopName(AlgoStopName algoStopName);
 
-	virtual void setNbIteration(int64_t nbIteration);
+	virtual void setNbIteration(int nbIteration);
 
-	virtual const int64_t getNbIteration() const;
+	virtual const int getNbIteration() const;
 
-	virtual void setEpsilon(double epsilon);
+	virtual void setEpsilon(float epsilon);
 
-	virtual const double getEpsilon() const;
+	virtual const float getEpsilon() const;
 
 	friend std::ostream & operator <<(std::ostream & fo, Algo & algo);
 
@@ -84,22 +84,22 @@ protected:
 	AlgoStopName _algoStopName;
 
 	/// Number of iterations
-	int64_t _nbIteration;
+	int _nbIteration;
 
 	/// Current iteration number
-	int64_t _indexIteration;
+	int _indexIteration;
 
 	/// Value of Epsilon (default 1.e-4)
-	double _epsilon;
+	float _epsilon;
 
 	/** @brief Selector
 	@return     1 if algorithm not reached else 0
 	 */
 	bool continueAgain();
 
-	double _xml_old;
+	float _xml_old;
 
-	double _xml;
+	float _xml;
 
 #if SAVE_ALL_MODELS
 	Model ** _tabModel; // aggregate
@@ -110,7 +110,7 @@ inline void Algo::setAlgoStopName(AlgoStopName algoStopName) {
 	_algoStopName = algoStopName;
 }
 
-inline void Algo::setNbIteration(int64_t nbIteration) {
+inline void Algo::setNbIteration(int nbIteration) {
 	if (nbIteration < minNbIteration) {
 		THROW(InputException, nbIterationTooSmall);
 	}
@@ -122,11 +122,11 @@ inline void Algo::setNbIteration(int64_t nbIteration) {
 	}
 }
 
-inline const int64_t Algo::getNbIteration() const {
+inline const int Algo::getNbIteration() const {
 	return _nbIteration;
 }
 
-inline const double Algo::getEpsilon() const {
+inline const float Algo::getEpsilon() const {
 	return _epsilon;
 }
 

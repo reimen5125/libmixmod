@@ -50,9 +50,9 @@ PredictModelOutput::PredictModelOutput(Model * estimation) : ModelOutput(estimat
 //  Initialization Constructor
 //-----------------
 PredictModelOutput::PredictModelOutput(ModelType & modelType, 
-		int64_t nbCluster, 
+		int nbCluster, 
 		std::vector< CriterionOutput* >& criterionOutput, 
-		double likelihood, 
+		float likelihood, 
 		ParameterDescription& parameterDescription, 
 		LabelDescription& labelDescription, 
 		ProbaDescription& probaDescription)
@@ -63,7 +63,7 @@ PredictModelOutput::PredictModelOutput(ModelType & modelType,
 //-----------------
 //  Initialization Constructor
 //-----------------
-PredictModelOutput::PredictModelOutput(ModelType& modelType, int64_t nbCluster, Exception& error) 
+PredictModelOutput::PredictModelOutput(ModelType& modelType, int nbCluster, Exception& error) 
 : ModelOutput(modelType, nbCluster, error) {
 }
 

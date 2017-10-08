@@ -47,7 +47,7 @@ public:
 	CriterionOutput(CriterionName criterionName);
 
 	/// Constructor
-	CriterionOutput(CriterionName criterionName, double criterionValue, Exception& criterionErrorType);
+	CriterionOutput(CriterionName criterionName, float criterionValue, Exception& criterionErrorType);
 
 	/// Destructor
 	virtual ~CriterionOutput();
@@ -71,7 +71,7 @@ public:
 	CriterionName const getCriterionName() const;
 
 	/// getValue
-	double const getValue() const;
+	float const getValue() const;
 
 	/// getError
 	Exception & getError() const;
@@ -83,7 +83,7 @@ public:
 	void setCriterionName(CriterionName criterionName);
 
 	/// setValue
-	void setValue(double value);
+	void setValue(float value);
 
 	/// setError
 	void setError(Exception& e);
@@ -91,7 +91,7 @@ public:
 private:
 	
 	/// Criterion value
-	double _value;
+	float _value;
 
 	/// Error type in calculation of criterion value
 	Exception * _error;
@@ -104,7 +104,7 @@ inline CriterionName const CriterionOutput::getCriterionName() const {
 	return _criterionName;
 }
 
-inline double const CriterionOutput::getValue() const {
+inline float const CriterionOutput::getValue() const {
 	return _value;
 }
 
@@ -116,7 +116,7 @@ inline void CriterionOutput::setCriterionName(CriterionName criterionName) {
 	_criterionName = criterionName;
 }
 
-inline void CriterionOutput::setValue(double value) {
+inline void CriterionOutput::setValue(float value) {
 	_value = value;
 }
 

@@ -50,7 +50,7 @@ public:
 	DataDescription();
 
 	///constructor by initilization
-	DataDescription(int64_t nbSample, int64_t nbColumn, 
+	DataDescription(int nbSample, int nbColumn, 
 			std::vector<ColumnDescription *> columnDescription, 
 			FormatNumeric::FormatNumericFile format, 
 			std::string filename, std::string infoName = "");

@@ -24,8 +24,8 @@
 
 //#define DO_FREE_CHECK                   // check news and deletes balance
 
-#define USING_DOUBLE                    // elements of type double
-//#define USING_FLOAT                   // elements of type float
+// #define USING_DOUBLE                    // elements of type double
+#define USING_FLOAT                   // elements of type float
 
 #define bool_LIB 0                      // for compatibility with my older libraries
 
@@ -39,7 +39,7 @@
 
 //#define HAS_INT64                     // if unsigned _int64 is recognised
                                         // used by newran03
-                                        
+
 // comment out next line if Exception causes a problem
 #define TypeDefException
 

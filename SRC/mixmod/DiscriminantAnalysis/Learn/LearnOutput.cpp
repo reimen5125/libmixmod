@@ -51,7 +51,7 @@ LearnOutput::LearnOutput(const LearnOutput & lOutput)
 LearnOutput::LearnOutput(std::vector<Model*> const & estimations)
 : _learnModelOutput(estimations.size()) 
 {
-	int64_t sizeEstimation = estimations.size();
+	int sizeEstimation = estimations.size();
 	// loop over the estimations
 	for (unsigned int i = 0; i < sizeEstimation; i++) {
 		_learnModelOutput[i] = new LearnModelOutput(estimations[i]);

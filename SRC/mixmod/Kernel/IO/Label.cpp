@@ -42,7 +42,7 @@ Label::Label() {
 //------------
 // Constructor
 //------------
-Label::Label(int64_t nbSample) {
+Label::Label(int nbSample) {
 	_nbSample = nbSample;
 	_label.resize(_nbSample);
 }
@@ -58,23 +58,23 @@ Label::Label(Model * model) {
 
 	// compute tabLabel
 	//-----------------
-	//int64_t * tabLabel_p = NULL;
-    std::unique_ptr<int64_t[]>  tabLabel;
-	int64_t nbCluster = model->getNbCluster();
+	//int * tabLabel_p = NULL;
+    std::unique_ptr<int[]>  tabLabel;
+	int nbCluster = model->getNbCluster();
 	ModelType * modelType = model->getModelType();
 	bool binary = isBinary(modelType->_nameModel);
 
 	if (!binary || (binary && !DATA_REDUCE)) {
 		_nbSample = model->getNbSample();
-		//int64_t ** tabPartition = new int64_t*[_nbSample];
-        std::unique_ptr<int64_t*[], TabDeleter<int64_t>>  tabPartition(new int64_t*[_nbSample], TabDeleter<int64_t>(_nbSample));
-		for (int64_t i = 0; i < _nbSample; i++) {
-			tabPartition[i] = new int64_t[nbCluster];
+		//int ** tabPartition = new int*[_nbSample];
+        std::unique_ptr<int*[], TabDeleter<int>>  tabPartition(new int*[_nbSample], TabDeleter<int>(_nbSample));
+		for (int i = 0; i < _nbSample; i++) {
+			tabPartition[i] = new int[nbCluster];
 		}
-		//tabLabel = new int64_t[_nbSample];
-        tabLabel.reset(new int64_t[_nbSample]); //provides exception-safe deletion
+		//tabLabel = new int[_nbSample];
+        tabLabel.reset(new int[_nbSample]); //provides exception-safe deletion
 		model->getLabelAndPartitionByMAPOrKnownPartition(tabLabel.get(), tabPartition.get());
-		//for (int64_t i = 0; i < _nbSample; i++) {
+		//for (int i = 0; i < _nbSample; i++) {
 		//	delete [] tabPartition[i];
 		//}
 		//delete [] tabPartition;
@@ -82,33 +82,33 @@ Label::Label(Model * model) {
 
 	else {
 		//binary case
-		const vector<int64_t> & correspondenceOriginDataToReduceData =
+		const vector<int> & correspondenceOriginDataToReduceData =
 				dynamic_cast<BinaryModel*> (model)->getCorrespondenceOriginDataToReduceData();
 		_nbSample = correspondenceOriginDataToReduceData.size();
-		//tabLabel = new int64_t[_nbSample];
-        tabLabel.reset(new int64_t[_nbSample]); //provides exception-safe deletion
+		//tabLabel = new int[_nbSample];
+        tabLabel.reset(new int[_nbSample]); //provides exception-safe deletion
 		//label et partition on reduceData
-		int64_t nbSampleOfDataReduce = model->getNbSample();
-		//int64_t * tabLabelReduce = new int64_t[nbSampleOfDataReduce];
-		std::unique_ptr<int64_t[]> tabLabelReduce(new int64_t[nbSampleOfDataReduce]);        
-		//int64_t ** tabPartitionReduce = new int64_t*[nbSampleOfDataReduce];
-        std::unique_ptr<int64_t*[], TabDeleter<int64_t>>  tabPartitionReduce(new int64_t*[nbSampleOfDataReduce], TabDeleter<int64_t>(nbSampleOfDataReduce));
-		for (int64_t i = 0; i < nbSampleOfDataReduce; i++) {
-			tabPartitionReduce[i] = new int64_t[nbCluster];
+		int nbSampleOfDataReduce = model->getNbSample();
+		//int * tabLabelReduce = new int[nbSampleOfDataReduce];
+		std::unique_ptr<int[]> tabLabelReduce(new int[nbSampleOfDataReduce]);        
+		//int ** tabPartitionReduce = new int*[nbSampleOfDataReduce];
+        std::unique_ptr<int*[], TabDeleter<int>>  tabPartitionReduce(new int*[nbSampleOfDataReduce], TabDeleter<int>(nbSampleOfDataReduce));
+		for (int i = 0; i < nbSampleOfDataReduce; i++) {
+			tabPartitionReduce[i] = new int[nbCluster];
 		}
 		model->getLabelAndPartitionByMAPOrKnownPartition(tabLabelReduce.get(), tabPartitionReduce.get());
 
-		//  double ** tabPostProbaReduce = NULL;
+		//  float ** tabPostProbaReduce = NULL;
 		//  tabPostProbaReduce = copyTab(estimation->getModel()->getPostProba(),
 		//  nbSampleOfDataReduce, nbCluster); // copy
 
 		// convert labelReduce, partitionReduce, postProbaReduce to label, partition, postProba
-		for (int64_t i = 0; i < _nbSample; i++) {
+		for (int i = 0; i < _nbSample; i++) {
 			tabLabel[i] = tabLabelReduce[correspondenceOriginDataToReduceData[i]];
 		}
 
 		//delete //deletion is made by unique_ptr
-		//for (int64_t i = 0; i < nbSampleOfDataReduce; i++) {
+		//for (int i = 0; i < nbSampleOfDataReduce; i++) {
 		//	delete [] tabPartitionReduce[i];
 		//}
 		//delete [] tabPartitionReduce;
@@ -139,7 +139,7 @@ Label::~Label() {
 //--------------------
 bool Label::operator ==(const Label & label) const {
 	if (_nbSample != label.getNbSample()) return false;
-	for (int64_t i = 0; i < _nbSample; i++) {
+	for (int i = 0; i < _nbSample; i++) {
 		if (_label[i] != label.getLabel()[i]) return false;
 	}
 	return true;
@@ -150,7 +150,7 @@ bool Label::operator ==(const Label & label) const {
 //----------
 void Label::edit(std::ostream & stream) const {
 	stream.setf(ios::fixed, ios::floatfield);
-	for (int64_t i = 0; i < _nbSample; i++) {
+	for (int i = 0; i < _nbSample; i++) {
 		stream << _label[i] << endl;
 	}
 }
@@ -158,8 +158,8 @@ void Label::edit(std::ostream & stream) const {
 //---------
 // getProba
 //---------
-int64_t * Label::getTabLabel() const {
-	int64_t * res;
+int * Label::getTabLabel() const {
+	int * res;
 	recopyVectorToTab(_label, res);
 	return res;
 }
@@ -167,13 +167,13 @@ int64_t * Label::getTabLabel() const {
 //---------
 // get Error Rate
 //---------
-const double Label::getErrorRate(std::vector<int64_t> const & label) const {
-	if (_nbSample != (int64_t) label.size()) {
+const float Label::getErrorRate(std::vector<int> const & label) const {
+	if (_nbSample != (int) label.size()) {
 		THROW(InputException, badNumberOfValuesInLabelInput);
 	}
 
-	double missClass = 0.0;
-	for (int64_t i = 0; i < _nbSample; i++) {
+	float missClass = 0.0;
+	for (int i = 0; i < _nbSample; i++) {
 		if (_label[i] != label[i]) ++missClass;
 	}
 	return missClass / _nbSample;
@@ -182,15 +182,15 @@ const double Label::getErrorRate(std::vector<int64_t> const & label) const {
 //---------
 // get getClassificationTab
 //---------
-int64_t** Label::getClassificationTab(std::vector<int64_t> const & label, int64_t nbCluster) const {
-	if (_nbSample != (int64_t) label.size()) {
+int** Label::getClassificationTab(std::vector<int> const & label, int nbCluster) const {
+	if (_nbSample != (int) label.size()) {
 		THROW(InputException, badNumberOfValuesInLabelInput);
 	}
 
 	// memory allocation
-	int64_t** classTab = new int64_t*[nbCluster];
+	int** classTab = new int*[nbCluster];
 	for (unsigned int i = 0; i < nbCluster; i++) {
-		classTab[i] = new int64_t[nbCluster];
+		classTab[i] = new int[nbCluster];
 	}
 	// initialization
 	for (unsigned int i = 0; i < nbCluster; i++)
@@ -198,7 +198,7 @@ int64_t** Label::getClassificationTab(std::vector<int64_t> const & label, int64_
 			classTab[i][j] = 0;
 
 	// loop over labels
-	for (int64_t i = 0; i < _nbSample; i++) {
+	for (int i = 0; i < _nbSample; i++) {
 	  //cout<<_label[i]<<endl;
       if(label[i] > 0){
 		++classTab[_label[i] - 1][label[i] - 1];
@@ -212,9 +212,9 @@ int64_t** Label::getClassificationTab(std::vector<int64_t> const & label, int64_
 //input stream
 // read labels between 1 and nbCluster
 // -----------
-void Label::input(std::ifstream & flux, int64_t nbCluster) {
-	int64_t i = 0;
-	int64_t read;
+void Label::input(std::ifstream & flux, int nbCluster) {
+	int i = 0;
+	int read;
 
 	while (i < _nbSample && !flux.eof()) {
 		flux >> read;
@@ -237,8 +237,8 @@ void Label::input(std::ifstream & flux, int64_t nbCluster) {
 // read labels between 1 and nbCluster
 // -----------
 void Label::input(const LabelDescription & labelDescription) {
-	int64_t i = 0;
-	int64_t readLabel;
+	int i = 0;
+	int readLabel;
 
 	std::string labelFilename = labelDescription.getFileName();
 
@@ -250,7 +250,7 @@ void Label::input(const LabelDescription & labelDescription) {
 	}
 
 	while (i < _nbSample && !fi.eof()) {
-		for (int64_t j = 0; j < labelDescription.getNbColumn(); ++j) {
+		for (int j = 0; j < labelDescription.getNbColumn(); ++j) {
 			if (fi.eof()) {
 				THROW(InputException, endDataFileReach);
 			}

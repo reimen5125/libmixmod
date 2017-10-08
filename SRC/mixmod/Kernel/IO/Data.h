@@ -51,10 +51,10 @@ public:
 	Data(const Data & iData);
 
 	/// Constructor
-	Data(int64_t nbSample, int64_t pbDimension);
+	Data(int nbSample, int pbDimension);
 
 	/// Constructor (for dataReduce)
-	Data(int64_t nbSample, int64_t pbDimension, double weightTotal, double * weight);
+	Data(int nbSample, int pbDimension, float weightTotal, float * weight);
 
 	/// Desctructor
 	virtual ~Data();
@@ -75,12 +75,12 @@ public:
 	/** @brief Selector
 			@param weightTotal Value to set total weight of samples
 	 */
-	void setWeightTotal(double weightTotal);
+	void setWeightTotal(float weightTotal);
 
 	/// setWeight
 	void setWeight(std::string weightFileName);
 	/// setWeight
-	void setWeight(double* weight);
+	void setWeight(float* weight);
 
 	/// setWeightDefault
 	void setWeightDefault();
@@ -111,40 +111,40 @@ public:
 	const std::string & getFileName()const;
 
 	/// Problem dimension
-	int64_t _pbDimension;
+	int _pbDimension;
 
 	/// Number of samples
-	int64_t _nbSample;
+	int _nbSample;
 
 	/// Weight total of samples
-	double _weightTotal;
+	float _weightTotal;
 
 	/// Array of samples values (size=nbSample)
 	Sample ** _matrix;
 
 	/// Weight column vector
-	double * _weight;
+	float * _weight;
 
 	/// getMatrix
 	const Sample** getData() const;
 
 	/// getMatrix[i]
-	const Sample* getDataI(int64_t index) const;
+	const Sample* getDataI(int index) const;
 
 	///getWeight
-	const double* getWeight() const;
+	const float* getWeight() const;
 
 	///getWeight[i]
-	const double & getWeightI(int64_t index) const;
+	const float & getWeightI(int index) const;
 
 	///get FilenameWeight
 	const std::string & getFileNameWeight()const;
 
 	/// get dimension
-	int64_t getPbDimension()const;
+	int getPbDimension()const;
 
 	/// get Number of samples
-	int64_t getNbSample()const;
+	int getNbSample()const;
 
 	/// hasDefaultWeight
 	bool hasDefaultWeight() const;
@@ -174,25 +174,25 @@ inline const std::string & Data::getFileName() const {
 	return _fileNameData;
 }
 
-inline const Sample * Data::getDataI(int64_t index) const {
+inline const Sample * Data::getDataI(int index) const {
 	return _matrix[index];
 }
 
-inline const double * Data::getWeight() const {
+inline const float * Data::getWeight() const {
 	return _weight;
 }
 
-inline const double & Data::getWeightI(int64_t index) const {
+inline const float & Data::getWeightI(int index) const {
 	return _weight[index];
 }
 
 /// get dimension
-inline int64_t Data::getPbDimension()const {
+inline int Data::getPbDimension()const {
 	return _pbDimension;
 }
 
 /// get Number of samples
-inline int64_t Data::getNbSample()const {
+inline int Data::getNbSample()const {
 	return _nbSample;
 }
 

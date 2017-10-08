@@ -46,26 +46,26 @@ public:
 	//copy constructor
 	CompositeParameter(const CompositeParameter *);
 	//Actual constructor
-	CompositeParameter(Model*, ModelType*, int64_t*);
+	CompositeParameter(Model*, ModelType*, int*);
 	CompositeParameter(const Parameter * igaussian, const Parameter * ibinary,
 			ModelType * imodelType);
-	void InstantiateBinaryandGaussianParamter(ModelType*, int64_t*);
+	void InstantiateBinaryandGaussianParamter(ModelType*, int*);
 	virtual void setModel(Model * iModel);
 	virtual void reset();
 	virtual CompositeParameter * clone() const;
 	/** Return Product of Pdf's of Gaussian and Binary parameters.*/
-	virtual double getPdf(int64_t iSample, int64_t kCluster) const;
-	virtual void getAllPdf(double ** tabFik, double * tabProportion) const;
+	virtual float getPdf(int iSample, int kCluster) const;
+	virtual void getAllPdf(float ** tabFik, float * tabProportion) const;
 	/** Return Product of Pdf's of Gaussian and Binary parameters.*/
-	virtual double getPdf(Sample * x, int64_t kCluster) const;
-	virtual int64_t getFreeParameter() const;
+	virtual float getPdf(Sample * x, int kCluster) const;
+	virtual int getFreeParameter() const;
 
-	virtual double getLogLikelihoodOne() const;
+	virtual float getLogLikelihoodOne() const;
 	virtual void initUSER(Parameter * iParam);
 	virtual void initForInitRANDOM();
 	virtual void updateForInitRANDOMorUSER_PARTITION(Sample ** tabSampleForInit, bool * tabClusterToInitialze);
 
-	virtual void initForInitUSER_PARTITION(int64_t & nbInitializedCluster, bool * tabNotInitializedCluster, Partition * initPartition) {
+	virtual void initForInitUSER_PARTITION(int & nbInitializedCluster, bool * tabNotInitializedCluster, Partition * initPartition) {
 		THROW(OtherException, FunctionNotYetImplemented);
 	}
 	virtual void MStep();

@@ -38,8 +38,8 @@ GaussianSample::GaussianSample() : Sample() {
 //------------
 // Constructor
 //------------
-GaussianSample::GaussianSample(int64_t pbDimension) : Sample(pbDimension) {
-	_value = new double[pbDimension];
+GaussianSample::GaussianSample(int pbDimension) : Sample(pbDimension) {
+	_value = new float[pbDimension];
 	initToZero(_value, pbDimension);
 }
 
@@ -53,7 +53,7 @@ GaussianSample::GaussianSample(GaussianSample * iSample) : Sample(iSample) {
 //------------
 // Constructor
 //------------
-GaussianSample::GaussianSample(int64_t pbDimension, double * tabValue) : Sample(pbDimension) {
+GaussianSample::GaussianSample(int pbDimension, float * tabValue) : Sample(pbDimension) {
 	_value = copyTab(tabValue, pbDimension);
 }
 
@@ -69,14 +69,14 @@ GaussianSample::~GaussianSample() {
 //--------------
 // set tab value
 //--------------
-void GaussianSample::setDataTabValue(double * tabValue) {
+void GaussianSample::setDataTabValue(float * tabValue) {
 	recopyTab(tabValue, _value, _pbDimension);
 }
 
 //----------
 // set value
 //----------
-void GaussianSample::setDataValue(int64_t idxDim, double value) {
+void GaussianSample::setDataValue(int idxDim, float value) {
 	_value[idxDim] = value;
 }
 

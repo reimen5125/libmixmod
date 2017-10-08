@@ -47,7 +47,7 @@ NECCriterion::~NECCriterion() {
 void NECCriterion::run(CriterionOutput & output) {
 	/* Compute NEC (An Entropy Criterion) */
 	// initialize value
-	double value = 0.0;
+	float value = 0.0;
 	// initialize error
 	Exception * error = &NOERROR;
 
@@ -57,10 +57,10 @@ void NECCriterion::run(CriterionOutput & output) {
 			value = 1;
 		}
 		else {
-			const double entropy = _model->getEntropy();
+			const float entropy = _model->getEntropy();
 			// false : to not compute fik because already done
-			const double loglikelihood = _model->getLogLikelihood(false);
-			const double loglikelihoodOne = _model->getLogLikelihoodOne();
+			const float loglikelihood = _model->getLogLikelihood(false);
+			const float loglikelihoodOne = _model->getLogLikelihoodOne();
 			if (fabs(loglikelihood - loglikelihoodOne) < minValueForLLandLLOne) {
 				THROW(NumericException, pbNEC);
 			}

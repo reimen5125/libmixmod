@@ -26,7 +26,7 @@
 
 namespace XEM {
 
-UnusedColumnDescription::UnusedColumnDescription(int64_t index)
+UnusedColumnDescription::UnusedColumnDescription(int index)
 : ColumnDescription(index)
 { }
 

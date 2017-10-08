@@ -49,23 +49,23 @@ public:
 	BinaryData(const BinaryData & iData);
 
 	/// Constructor
-	BinaryData(int64_t nbSample, int64_t pbDimension, 
-			const std::string & dataFileName, int64_t * tabNbModality);
+	BinaryData(int nbSample, int pbDimension, 
+			const std::string & dataFileName, int * tabNbModality);
 
 	/// Constructor
-	BinaryData(int64_t nbSample, int64_t pbDimension, std::vector<int64_t> nbModality);
+	BinaryData(int nbSample, int pbDimension, std::vector<int> nbModality);
 
 	/// Constructor
-	BinaryData(int64_t nbSample, int64_t pbDimension, 
-			std::vector<int64_t> nbModality, int64_t ** matrix);
+	BinaryData(int nbSample, int pbDimension, 
+			std::vector<int> nbModality, int ** matrix);
 
 	/// Constructor for dataReduce
-	BinaryData(int64_t nbSample, int64_t pbDimension, int64_t * tabNbModality, 
-			double weightTotal, Sample **& matrix, double * weight);
+	BinaryData(int nbSample, int pbDimension, int * tabNbModality, 
+			float weightTotal, Sample **& matrix, float * weight);
 
 
 	/// Constructor (used in DCV context)
-	BinaryData(int64_t nbSample, int64_t pbDimension, Data * originalData, CVBlock & block);
+	BinaryData(int nbSample, int pbDimension, Data * originalData, CVBlock & block);
 
 	/// Desctructor
 	virtual ~BinaryData();
@@ -106,21 +106,21 @@ public:
 		@param idxSample Index of sample to get values
 		@return A vector of XEMSample
 	 */
-	int64_t * getDataTabValue(int64_t idxSample) const;
+	int * getDataTabValue(int idxSample) const;
 
 	/** @brief Get tab modality
 		@return A vector of number of modality
 	 */
-	int64_t * getTabNbModality() const;
+	int * getTabNbModality() const;
 
-	Data * reduceData(std::vector<int64_t> & correspondcenceOriginDataToReduceData, 
+	Data * reduceData(std::vector<int> & correspondcenceOriginDataToReduceData, 
 			Partition * knownPartition, Partition * initPartition, 
 			Partition *& oKnownPartition, Partition *& oInitPartition);
 
 protected:
 
 	/// Array of modality for each dimension
-	int64_t * _tabNbModality;
+	int * _tabNbModality;
 	Data * _reducedData;
 };
 
@@ -132,7 +132,7 @@ inline Sample ** BinaryData::getDataMatrix() const {
 	return _matrix;
 }
 
-inline int64_t * BinaryData::getTabNbModality() const {
+inline int * BinaryData::getTabNbModality() const {
 	return _tabNbModality;
 }
 

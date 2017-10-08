@@ -46,7 +46,7 @@ public:
 	Proba();
 
 	/// Constructor
-	Proba(int64_t nbSample, int64_t nbCluster);
+	Proba(int nbSample, int nbCluster);
 
 	/// Constructor
 	Proba(Model * model);
@@ -63,18 +63,18 @@ public:
 	void edit(std::ostream & stream);
 
 	/// getProba
-	double ** getTabProba() const;
+	float ** getTabProba() const;
 
 	/// getProba
-	std::vector<std::vector<double> > getProba() const;
+	std::vector<std::vector<float> > getProba() const;
 
 	/// set Proba
-	void setProba(double ** proba, int64_t nbSample, int64_t nbCluster);
-	void setProba(std::vector<std::vector<double> > proba);
+	void setProba(float ** proba, int nbSample, int nbCluster);
+	void setProba(std::vector<std::vector<float> > proba);
 
 	/// Selector
-	int64_t getNbSample() const;
-	int64_t getNbCluster() const;
+	int getNbSample() const;
+	int getNbCluster() const;
 
 	///input stream
 	void input(std::ifstream & flux);
@@ -82,25 +82,25 @@ public:
 private:
 
 	/// Number of samples
-	int64_t _nbSample;
+	int _nbSample;
 
 	/// Number of cluster
-	int64_t _nbCluster;
+	int _nbCluster;
 
 	/// dim : _nbSample *_nbCluster
-	std::vector<std::vector<double> > _proba;
+	std::vector<std::vector<float> > _proba;
 
 };
 
-inline std::vector<std::vector<double> > Proba::getProba() const {
+inline std::vector<std::vector<float> > Proba::getProba() const {
 	return _proba;
 }
 
-inline int64_t Proba::getNbSample() const {
+inline int Proba::getNbSample() const {
 	return _nbSample;
 }
 
-inline int64_t Proba::getNbCluster() const {
+inline int Proba::getNbCluster() const {
 	return _nbCluster;
 }
 

@@ -49,7 +49,7 @@ Algo::Algo(const Algo & algo) {
 	_xml = algo._xml;
 }
 
-Algo::Algo(AlgoStopName algoStopName, double espsilon, int64_t nbIteration) {
+Algo::Algo(AlgoStopName algoStopName, float espsilon, int nbIteration) {
 	_indexIteration = 1;
 	_algoStopName = algoStopName;
 	setEpsilon(espsilon);
@@ -64,7 +64,7 @@ Algo::Algo(AlgoStopName algoStopName, double espsilon, int64_t nbIteration) {
 Algo::~Algo() {
 }
 
-void Algo::setEpsilon(double epsilon) {
+void Algo::setEpsilon(float epsilon) {
 	if (epsilon < minEpsilon) {
 		THROW(InputException, epsilonTooSmall);
 	}
@@ -83,7 +83,7 @@ void Algo::setEpsilon(double epsilon) {
 bool Algo::continueAgain() {
 	//cout<<"Algo::continueAgain"<<endl;
 	bool result, res1, res2;
-	double diff;
+	float diff;
 	ofstream progressFile;
 
 	if (_indexIteration == 1) {
@@ -101,7 +101,7 @@ bool Algo::continueAgain() {
 				case NBITERATION:
 					if (MASSICCC == 10) {
 						progressFile.open ("progress.json");
-						progressFile << "{ \"Progress\" : " << ((double)_indexIteration - 1.0)/(double)_nbIteration * 100.0 << "}";
+						progressFile << "{ \"Progress\" : " << ((float)_indexIteration - 1.0)/(float)_nbIteration * 100.0 << "}";
 						progressFile.close();
 					}
 					result = (_indexIteration <= _nbIteration);
@@ -110,7 +110,7 @@ bool Algo::continueAgain() {
 				case EPSILON:
 					if (MASSICCC == 10) {
 						progressFile.open ("progress.json");
-						progressFile << "{ \"Progress\" : " << ((double)_indexIteration - 1.0)/1000.0 * 100.0 << "}";
+						progressFile << "{ \"Progress\" : " << ((float)_indexIteration - 1.0)/1000.0 * 100.0 << "}";
 						progressFile.close();
 					}
 					if (_indexIteration <= 3) {
@@ -132,7 +132,7 @@ bool Algo::continueAgain() {
 				case NBITERATION_EPSILON:
 					if (MASSICCC == 10) {
 						progressFile.open ("progress.json");
-						progressFile << "{ \"Progress\" : " << ((double)_indexIteration - 1.0)/(double)_nbIteration * 100.0 << "}";
+						progressFile << "{ \"Progress\" : " << ((float)_indexIteration - 1.0)/(float)_nbIteration * 100.0 << "}";
 						progressFile.close();
 					}
 					res1 = (_indexIteration <= _nbIteration);

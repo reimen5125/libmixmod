@@ -36,7 +36,7 @@ ModelType::ModelType() {
 	_subDimensionEqual = 0;
 }
 
-ModelType::ModelType(ModelName name, int64_t nbSubDimensionFree) {
+ModelType::ModelType(ModelName name, int nbSubDimensionFree) {
 	_nbSubDimensionFree = nbSubDimensionFree;
 	_tabSubDimensionFree = NULL;
 	_subDimensionEqual = 0;
@@ -49,7 +49,7 @@ ModelType::ModelType(const ModelType & iModelType) {
 	_subDimensionEqual = iModelType._subDimensionEqual;
 	_nbSubDimensionFree = iModelType._nbSubDimensionFree;
 	if ((_nbSubDimensionFree != 0) && (iModelType._tabSubDimensionFree)) {
-		_tabSubDimensionFree = new int64_t[_nbSubDimensionFree];
+		_tabSubDimensionFree = new int[_nbSubDimensionFree];
 		recopyTab(iModelType._tabSubDimensionFree, _tabSubDimensionFree, _nbSubDimensionFree);
 	}
 	else {
@@ -74,18 +74,18 @@ bool ModelType::operator ==(const ModelType & modelType) const {
 	if (_nbSubDimensionFree != modelType._nbSubDimensionFree) return false;
 	if (_subDimensionEqual != modelType._subDimensionEqual) return false;
 	if (_tabSubDimensionFree) {
-		for (int64_t i = 0; i < _nbSubDimensionFree; i++) {
+		for (int i = 0; i < _nbSubDimensionFree; i++) {
 			if (_tabSubDimensionFree[i] != modelType.getTabSubDimensionFreeI(i)) return false;
 		}
 	}
 	return true;
 }
 
-void ModelType::input(std::ifstream & fi, int64_t nbCluster) {
+void ModelType::input(std::ifstream & fi, int nbCluster) {
 
 	_nbSubDimensionFree = nbCluster;
 	std::string keyWord = "";
-	int64_t dim;
+	int dim;
 	std::string a = "";
 
 	fi >> a;
@@ -284,8 +284,8 @@ void ModelType::input(std::ifstream & fi, int64_t nbCluster) {
 		fi >> keyWord;
 		ConvertBigtoLowString(keyWord);
 		if (keyWord.compare("subdimensionfree") == 0) {
-			_tabSubDimensionFree = new int64_t[_nbSubDimensionFree];
-			for (int64_t k = 0; k < _nbSubDimensionFree; k++) {
+			_tabSubDimensionFree = new int[_nbSubDimensionFree];
+			for (int k = 0; k < _nbSubDimensionFree; k++) {
 				fi >> dim;
 				_tabSubDimensionFree[k] = dim;
 			}
@@ -299,8 +299,8 @@ void ModelType::input(std::ifstream & fi, int64_t nbCluster) {
 		fi >> keyWord;
 		ConvertBigtoLowString(keyWord);
 		if (keyWord.compare("subdimensionfree") == 0) {
-			_tabSubDimensionFree = new int64_t[_nbSubDimensionFree];
-			for (int64_t k = 0; k < _nbSubDimensionFree; k++) {
+			_tabSubDimensionFree = new int[_nbSubDimensionFree];
+			for (int k = 0; k < _nbSubDimensionFree; k++) {
 				fi >> dim;
 				_tabSubDimensionFree[k] = dim;
 			}
@@ -386,8 +386,8 @@ void ModelType::input(std::ifstream & fi, int64_t nbCluster) {
 		fi >> keyWord;
 		ConvertBigtoLowString(keyWord);
 		if (keyWord.compare("subdimensionfree") == 0) {
-			_tabSubDimensionFree = new int64_t[_nbSubDimensionFree];
-			int64_t k;
+			_tabSubDimensionFree = new int[_nbSubDimensionFree];
+			int k;
 			for (k = 0; k < _nbSubDimensionFree; k++) {
 				fi >> dim;
 				_tabSubDimensionFree[k] = dim;
@@ -402,8 +402,8 @@ void ModelType::input(std::ifstream & fi, int64_t nbCluster) {
 		fi >> keyWord;
 		ConvertBigtoLowString(keyWord);
 		if (keyWord.compare("subdimensionfree") == 0) {
-			_tabSubDimensionFree = new int64_t [_nbSubDimensionFree];
-			for (int64_t k = 0; k < _nbSubDimensionFree; k++) {
+			_tabSubDimensionFree = new int [_nbSubDimensionFree];
+			for (int k = 0; k < _nbSubDimensionFree; k++) {
 				fi >> dim;
 				_tabSubDimensionFree[k] = dim;
 			}
@@ -431,7 +431,7 @@ std::ostream & operator<<(std::ostream & fo, ModelType & modelType) {
 	}
 	if (modelType._nbSubDimensionFree != 0 && modelType._tabSubDimensionFree) {
 		fo << "subDimensionFree : " << endl;
-		for (int64_t i = 0; i < modelType._nbSubDimensionFree; i++) {
+		for (int i = 0; i < modelType._nbSubDimensionFree; i++) {
 			fo << modelType._tabSubDimensionFree[i] << endl;
 		}
 		fo << endl;
@@ -939,10 +939,10 @@ void ModelType::edit(std::ostream & oFile) {
 	oFile << "\t\t\t----------" << endl << endl;
 }
 
-void ModelType::setTabSubDimensionFree(int64_t iTabSubDimensionFree, int64_t position) {
+void ModelType::setTabSubDimensionFree(int iTabSubDimensionFree, int position) {
 	if (!isHD(_nameModel) || !isFreeSubDimension(_nameModel)) THROW(InputException,wrongModelInSetSubDimensionFree);	if (position>=0 && position<_nbSubDimensionFree){
     if (_tabSubDimensionFree == NULL) {
-      _tabSubDimensionFree = new int64_t[_nbSubDimensionFree];
+      _tabSubDimensionFree = new int[_nbSubDimensionFree];
     }
     _tabSubDimensionFree[position] = iTabSubDimensionFree;
 	}
@@ -951,7 +951,7 @@ void ModelType::setTabSubDimensionFree(int64_t iTabSubDimensionFree, int64_t pos
 	}
 }
 
-void ModelType::setSubDimensionEqual(int64_t iSubDimensionEqual) {
+void ModelType::setSubDimensionEqual(int iSubDimensionEqual) {
   if (!isHD(_nameModel) || isFreeSubDimension(_nameModel)) THROW (InputException,wrongModelInSetSubDimensionEqual);
 	_subDimensionEqual = iSubDimensionEqual;
 }

@@ -54,10 +54,10 @@ public:
 	ClusteringOutput* clone();
 
 	// Add one ClusteringModelOutput (incremental construction). Count is needed because vector.puch_back won't work with openMP
-	void addEstimation(ClusteringModelOutput* cmoutput, int64_t count);
+	void addEstimation(ClusteringModelOutput* cmoutput, int count);
 
 	// Resize ClusteringModelOutput vector
-	void clusteringModelOutputResize(int64_t size);
+	void clusteringModelOutputResize(int size);
 
 	/// Initialization constructor
 	ClusteringOutput(std::vector<Model*> const & estimations, std::vector<CriterionName> const & criterionName);
@@ -81,9 +81,9 @@ public:
 
 	/// return the index'th' ClusteringModelOutput
 	/// Note : index is between 0 and size(ClusteringModelOutput)-1
-	ClusteringModelOutput * getClusteringModelOutput(const int64_t index) const;
+	ClusteringModelOutput * getClusteringModelOutput(const int index) const;
 
-	int64_t getNbClusteringModelOutput() const;
+	int getNbClusteringModelOutput() const;
 
 	std::vector<ClusteringModelOutput*> const &  getClusteringModelOutput() const;
 
@@ -106,11 +106,11 @@ inline std::vector<ClusteringModelOutput*> const & ClusteringOutput::getClusteri
 	return _clusteringModelOutput;
 }
 
-inline ClusteringModelOutput * ClusteringOutput::getClusteringModelOutput(const int64_t index) const {
+inline ClusteringModelOutput * ClusteringOutput::getClusteringModelOutput(const int index) const {
 	return _clusteringModelOutput[index];
 }
 
-inline int64_t ClusteringOutput::getNbClusteringModelOutput() const {
+inline int ClusteringOutput::getNbClusteringModelOutput() const {
 	return _clusteringModelOutput.size();
 }
 

@@ -42,7 +42,7 @@ class CVCriterion : public Criterion {
 public:
 
 	/// Default constructor
-	CVCriterion(Model * model, const int64_t nbCVBlock);
+	CVCriterion(Model * model, const int nbCVBlock);
 
 	/// Destructor
 	virtual ~CVCriterion();
@@ -51,7 +51,7 @@ public:
 	virtual void run(CriterionOutput & output);
 
 	/// Accessor
-	std::vector<int64_t> & getCVLabel();
+	std::vector<int> & getCVLabel();
 
 private:
 
@@ -61,16 +61,16 @@ private:
 	CVBlock* _tabCVBlock;
 
 	// pointer to a XEMLabelDescription
-	std::vector<int64_t> _cvLabel;
+	std::vector<int> _cvLabel;
 
 	// number of CV Blocks  
-	int64_t _nbCVBlock;
+	int _nbCVBlock;
 
 	// initialisation method of cv blocks
 	CVinitBlocks _CVinitBlocks;
 };
 
-inline std::vector<int64_t> & CVCriterion::getCVLabel() {
+inline std::vector<int> & CVCriterion::getCVLabel() {
 	return _cvLabel;
 }
 

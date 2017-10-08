@@ -43,7 +43,7 @@ public:
 	ColumnDescription();
 
 	/// Initialization constructor
-	ColumnDescription(int64_t index);
+	ColumnDescription(int index);
 
 	/// Destructor
 	virtual ~ColumnDescription();
@@ -55,7 +55,7 @@ public:
 	///selector
 
 	///get index of column
-	const int64_t & getIndex()const;
+	const int & getIndex()const;
 
 	///get name of column 
 	const std::string & getName()const;
@@ -66,13 +66,13 @@ public:
 protected:
 
 	///index of column (0 to XEMDataDescription::_nbColumn-1)
-	int64_t _index;
+	int _index;
 
 	///name of column (optional)
 	std::string _name;
 };
 
-inline const int64_t & ColumnDescription::getIndex()const {
+inline const int & ColumnDescription::getIndex()const {
 	return _index;
 }
 

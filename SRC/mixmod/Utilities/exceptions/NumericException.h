@@ -52,7 +52,7 @@ public:
 	{
 		std::map<NumericError, const char*> m;
 		
-		m.insert(std::make_pair(int64_t_max_error, "int64_t limits reached"));
+		m.insert(std::make_pair(int64_t_max_error, "int limits reached"));
 		m.insert(std::make_pair(CEM_INIT_error, "Error : error in CEM_INIT initialization : in all tries occurs an error"));
 		m.insert(std::make_pair(SEM_MAX_error, "Error : error in SEM_MAX initialization : in all tries occurs an error"));
 		m.insert(std::make_pair(SMALL_EM_error, "Error : error in SMALL_EM initialization : in all tries occurs an error"));

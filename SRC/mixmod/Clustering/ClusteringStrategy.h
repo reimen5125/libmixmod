@@ -68,44 +68,44 @@ public:
 	void setStrategyInit(ClusteringStrategyInit * iStrategyInit);
 
 	/// setStrategyInit
-	void setStrategyInit(StrategyInitName  initName, Data *& data, int64_t nbNbCluster,
-			int64_t * tabNbCluster, ModelType * modelType);
+	void setStrategyInit(StrategyInitName  initName, Data *& data, int nbNbCluster,
+			int * tabNbCluster, ModelType * modelType);
 
 	/// setStrategyInitName
 	void setStrategyInitName(StrategyInitName initName);
 
 	/// setInitParam
-	void setInitParam(std::string & paramFileName, int64_t position);
+	void setInitParam(std::string & paramFileName, int position);
 
 	/// setInitParam
-	void setTabInitParameter(Parameter ** tabInitParameter, int64_t nbInitParameter);
+	void setTabInitParameter(Parameter ** tabInitParameter, int nbInitParameter);
 
 	/// setInitPartition
-	void setInitPartition(std::string & partitionFileName, int64_t position);
+	void setInitPartition(std::string & partitionFileName, int position);
 
 	/// setInitPartition
-	void setInitPartition(Partition * part, int64_t position);
+	void setInitPartition(Partition * part, int position);
 
 	/// setTabPartition
-	void setTabPartition(Partition ** tabPartition, int64_t nbPartition);
+	void setTabPartition(Partition ** tabPartition, int nbPartition);
 
 	/// getNbTryInInit
-	const int64_t getNbTryInInit() const;
+	const int getNbTryInInit() const;
 
 	/// setNbTryInInit
-	void setNbTryInInit(int64_t nbTry);
+	void setNbTryInInit(int nbTry);
 
 	/// getNbIterationInInit
-	const int64_t getNbIterationInInit() const;
+	const int getNbIterationInInit() const;
 
 	/// set NbIterationInInit
-	void setNbIterationInInit(int64_t nbIteration);
+	void setNbIterationInInit(int nbIteration);
 
 	/// getEpsilonInInit
-	const double getEpsilonInInit() const;
+	const float getEpsilonInInit() const;
 
 	/// setEpsilonInInit
-	void setEpsilonInInit(double epsilon);
+	void setEpsilonInInit(float epsilon);
 
 	/// getStopNameInInit
 	const AlgoStopName getStopNameInInit() const;
@@ -118,10 +118,10 @@ public:
 	///--------------------------------
 
 	///getAlgo[i]
-	const Algo * getAlgo(int64_t index) const;
+	const Algo * getAlgo(int index) const;
 
 	/// setAlgo
-	void setAlgo(AlgoName algoName, int64_t position);
+	void setAlgo(AlgoName algoName, int position);
 
 	/// addAlgo (and the end of the list)
 	void addAlgo(AlgoName algoName);
@@ -134,23 +134,23 @@ public:
 	std::vector<Algo*> & getTabAlgo();
 
 	/// insertAlgo
-	void insertAlgo(AlgoName algoName, int64_t position);
+	void insertAlgo(AlgoName algoName, int position);
 
 	/// setAlgoStopRuleTypeValue
-	void setAlgoStopRule(AlgoStopName stopName, int64_t position);
-	void setAlgoIteration(  int64_t position, int64_t nbIterationValue);
-	void setAlgoEpsilon( int64_t position, double epsilonValue);
+	void setAlgoStopRule(AlgoStopName stopName, int position);
+	void setAlgoIteration(  int position, int nbIterationValue);
+	void setAlgoEpsilon( int position, float epsilonValue);
 
 	///nbTry
-	const int64_t getNbTry()const;
-	void setNbTry(int64_t nbTry);
+	const int getNbTry()const;
+	void setNbTry(int nbTry);
 
-	const int64_t getNbAlgo() const;
+	const int getNbAlgo() const;
 
 	/// Input strategy (FLAT FORMAT)
 	// TODO XEMInput : a enlever
-	void input_FLAT_FORMAT(std::ifstream & fi, Data *& data, int64_t nbNbCluster,
-			int64_t * tabNbCluster, ModelType * modelType);
+	void input_FLAT_FORMAT(std::ifstream & fi, Data *& data, int nbNbCluster,
+			int * tabNbCluster, ModelType * modelType);
 
 	/// Run method
 	void run(Model *& model) const;
@@ -165,13 +165,13 @@ public:
 private:
 
 	/// Number of try in the strategy
-	int64_t _nbTry;
+	int _nbTry;
 
 	/// strategyInit
 	ClusteringStrategyInit * _strategyInit;
 
 	/// Number of algorithm in the strategy
-	int64_t _nbAlgo;
+	int _nbAlgo;
 
 	/// Table of algorithm
 	std::vector<Algo*> _tabAlgo;    // aggregate
@@ -184,7 +184,7 @@ inline const ClusteringStrategyInit * ClusteringStrategy::getStrategyInit() cons
 	return _strategyInit;
 }
 
-inline const Algo * ClusteringStrategy::getAlgo(int64_t index) const {
+inline const Algo * ClusteringStrategy::getAlgo(int index) const {
 	return _tabAlgo[index];
 }
 
@@ -196,11 +196,11 @@ inline std::vector<Algo*> & ClusteringStrategy::getTabAlgo() {
 	return _tabAlgo;
 }
 
-inline const int64_t ClusteringStrategy::getNbAlgo() const {
+inline const int ClusteringStrategy::getNbAlgo() const {
 	return _nbAlgo;
 }
 
-inline const int64_t ClusteringStrategy::getNbTry()const {
+inline const int ClusteringStrategy::getNbTry()const {
 	return _nbTry;
 }
 

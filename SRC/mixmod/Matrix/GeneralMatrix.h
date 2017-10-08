@@ -46,7 +46,7 @@ public:
 
 	/// constructor : d*Id
 	///default value = Id
-	GeneralMatrix(int64_t pbDimension, double d = 1.0);
+	GeneralMatrix(int pbDimension, float d = 1.0);
 
 	GeneralMatrix(GeneralMatrix * A);
 
@@ -54,73 +54,73 @@ public:
 	virtual ~GeneralMatrix();
 
 	/// compute determinant of general matrix
-	double determinant(Exception& errorType);
+	float determinant(Exception& errorType);
 
 	/// return store of general matrix
-	double * getStore();
+	float * getStore();
 
 	/// return newmat general matrix
 	MATH::Matrix * getValue();
 
 	/// return dimension of store
-	int64_t getStoreDim();
+	int getStoreDim();
 
 	/// inverse general matrix
 	void inverse(Matrix * & A);
 
-	void compute_product_Lk_Wk(Matrix* Wk, double L);
+	void compute_product_Lk_Wk(Matrix* Wk, float L);
 
 	/// compute (x - mean)' this (x - mean) 
-	double norme(double * xMoinsMean);
+	float norme(float * xMoinsMean);
 
 	/// this =  A / d
-	void equalToMatrixDividedByDouble(Matrix * A, double d);
+	void equalToMatrixDividedByFloat(Matrix * A, float d);
 	/// this =   A * d
-	void equalToMatrixMultiplyByDouble(Matrix*D, double d);
+	void equalToMatrixMultiplyByFloat(Matrix*D, float d);
 
 
 	/// add :  cik * xMoinsMean * xMoinsMean'  to this
-	void add(double * xMoinsMean, double cik);
+	void add(float * xMoinsMean, float cik);
 
 	// add : diag( cik * xMoinsMean * xMoinsMean' )  to this
-	//void addDiag(double * xMoinsMean, double cik);
+	//void addDiag(float * xMoinsMean, float cik);
 
 	/// return store of a spherical matrix in a general one
-	double putSphericalValueInStore(double & store);
+	float putSphericalValueInStore(float & store);
 	/// add store of a spherical matrix in a general one
-	double addSphericalValueInStore(double & store);
+	float addSphericalValueInStore(float & store);
 
-	double getSphericalStore();
-
-	/// Return store of a diagonal matrix
-	double* putDiagonalValueInStore(double * store);
-	/// Add store of a diagonal matrix in a diagonal one
-	double* addDiagonalValueInStore(double * store);
-
-	double* getDiagonalStore();
+	float getSphericalStore();
 
 	/// Return store of a diagonal matrix
-	double* putSymmetricValueInStore(double * store);
+	float* putDiagonalValueInStore(float * store);
 	/// Add store of a diagonal matrix in a diagonal one
-	double* addSymmetricValueInStore(double * store);
+	float* addDiagonalValueInStore(float * store);
 
-	double* getSymmetricStore();
+	float* getDiagonalStore();
 
 	/// Return store of a diagonal matrix
-	double* putGeneralValueInStore(double * store);
+	float* putSymmetricValueInStore(float * store);
 	/// Add store of a diagonal matrix in a diagonal one
-	double* addGeneralValueInStore(double * store);
+	float* addSymmetricValueInStore(float * store);
 
-	double* getGeneralStore();
+	float* getSymmetricStore();
+
+	/// Return store of a diagonal matrix
+	float* putGeneralValueInStore(float * store);
+	/// Add store of a diagonal matrix in a diagonal one
+	float* addGeneralValueInStore(float * store);
+
+	float* getGeneralStore();
 
 	/// this =  (d x Identity)
-	void operator=(const double& d);
+	void operator=(const float& d);
 
 	/// this =  this / (d x Identity)
-	void operator/=(const double& d);
+	void operator/=(const float& d);
 
 	/// this =  this * (d x Identity)
-	void operator*=(const double& d);
+	void operator*=(const float& d);
 
 	/// this =  this + matrix
 	void operator+=(Matrix* M);
@@ -130,71 +130,71 @@ public:
 
 
 	/// edit general matrix
-	void edit(std::ostream& flux, std::string before, std::string sep, int64_t dim);
+	void edit(std::ostream& flux, std::string before, std::string sep, int dim);
 
 	/// read general matrix from input file
 	void input(std::ifstream & fi);
 	/// read general matrix from input file
-	void input(std::ifstream & fi, int64_t dim);
-	virtual void input(double ** variances);
+	void input(std::ifstream & fi, int dim);
+	virtual void input(float ** variances);
 
 	
 	/// compute general matrix SVD decomposition
 	void computeSVD(DiagMatrix* & S, GeneralMatrix* & O);
 
 	/// compute Shape as diag(Ot . this . O ) / diviseur
-	void computeShape_as__diag_Ot_this_O(DiagMatrix* & Shape, GeneralMatrix* & Ori, double diviseur = 1.0);
+	void computeShape_as__diag_Ot_this_O(DiagMatrix* & Shape, GeneralMatrix* & Ori, float diviseur = 1.0);
 
 	/// compute this as : multi * (O * S * O' )
-	void compute_as__multi_O_S_O(double multi, GeneralMatrix* & O, DiagMatrix *& S);
+	void compute_as__multi_O_S_O(float multi, GeneralMatrix* & O, DiagMatrix *& S);
 
 	/// compute this as O * S *O'
-	void compute_as_O_S_O(GeneralMatrix* & O, double* & S_store);
+	void compute_as_O_S_O(GeneralMatrix* & O, float* & S_store);
 
 	/// compute trace of this
-	double computeTrace();
+	float computeTrace();
 
 	/// compute this as matrix * matrix'
-	void compute_as_M_tM(GeneralMatrix* M, int64_t d);
+	void compute_as_M_tM(GeneralMatrix* M, int d);
 
 	/// compute this as matrix * vector
-	void compute_as_M_V(GeneralMatrix* M, double * V);
+	void compute_as_M_V(GeneralMatrix* M, float * V);
 	/// compute this as vector multiplied by matrix
-	void multiply(double * V, int64_t nk, GeneralMatrix * Q);
+	void multiply(float * V, int nk, GeneralMatrix * Q);
 
 	/// compute M as : M = ( O * S^{-1} * O' ) * this
 	void compute_M_as__O_Sinverse_Ot_this(GeneralMatrix & M, GeneralMatrix* & O, DiagMatrix* & S);
-	double compute_trace_W_C(Matrix * C);
-	//  void computeShape_as__diag_Ot_this_O(XEMDiagMatrix* & Shape, XEMGeneralMatrix* & Ori, double diviseur = 1.0);
+	float compute_trace_W_C(Matrix * C);
+	//  void computeShape_as__diag_Ot_this_O(XEMDiagMatrix* & Shape, XEMGeneralMatrix* & Ori, float diviseur = 1.0);
 	/// gives : det(diag(this))
-	double detDiag(Exception& errorType);
+	float detDiag(Exception& errorType);
 
 	/// trace( this * O * S^{-1} * O' )
-	double trace_this_O_Sm1_O(GeneralMatrix* & O, DiagMatrix* & S);
+	float trace_this_O_Sm1_O(GeneralMatrix* & O, DiagMatrix* & S);
 
 	//void refreshStore();  
 
-	void setSymmetricStore(double * store);
-	void setGeneralStore(double * store);
-	void setDiagonalStore(double * store);
-	void setSphericalStore(double store);
+	void setSymmetricStore(float * store);
+	void setGeneralStore(float * store);
+	void setDiagonalStore(float * store);
+	void setSphericalStore(float store);
 
-	double** storeToArray() const;
+	float** storeToArray() const;
 
 protected:
 
 	// General matrix as in mathematical library
 	MATH::Matrix * _value;
 
-	double * _store;
+	float * _store;
 
-	int64_t _s_storeDim;
+	int _s_storeDim;
 };
 
 // TODO static :
-// int64_t XEMGeneralMatrix::_s_storeDim = 0;
+// int XEMGeneralMatrix::_s_storeDim = 0;
 
-inline double * GeneralMatrix::getStore() {
+inline float * GeneralMatrix::getStore() {
 	return _store;
 }
 
@@ -202,24 +202,24 @@ inline MATH::Matrix * GeneralMatrix::getValue() {
 	return _value;
 }
 
-inline int64_t GeneralMatrix::getStoreDim() {
+inline int GeneralMatrix::getStoreDim() {
 	return _s_storeDim;
 }
 
-inline void GeneralMatrix::setSymmetricStore(double * store) {
+inline void GeneralMatrix::setSymmetricStore(float * store) {
 	THROW(OtherException, wrongMatrixType);
 }
 
-inline void GeneralMatrix::setSphericalStore(double store) {
+inline void GeneralMatrix::setSphericalStore(float store) {
 	THROW(OtherException, wrongMatrixType);
 }
 
-inline void GeneralMatrix::setGeneralStore(double * store) {
+inline void GeneralMatrix::setGeneralStore(float * store) {
 	//_store = store;
 	recopyTab(store, _store, _s_storeDim);
 }
 
-inline void GeneralMatrix::setDiagonalStore(double * store) {
+inline void GeneralMatrix::setDiagonalStore(float * store) {
 	THROW(OtherException, wrongMatrixType);
 }
 

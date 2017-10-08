@@ -33,7 +33,7 @@ Matrix::Matrix() {
 	_s_pbDimension = 0;
 }
 
-Matrix::Matrix(int64_t pbDimension) {
+Matrix::Matrix(int pbDimension) {
 	_s_pbDimension = pbDimension;
 }
 
@@ -49,13 +49,13 @@ Matrix::~Matrix() {
 
 void Matrix::edit(std::ostream& flux, std::string before) {
 
-	int64_t i;
-	int64_t j;
-	double** store = storeToArray();
+	int i;
+	int j;
+	float** store = storeToArray();
 	for (i = 0; i < _s_pbDimension; i++) {
 		flux << '\t' << '\t' << '\t' << '\t';
 		for (j = 0; j < _s_pbDimension; j++)
-			putDoubleInStream(flux, store[i][j], " ");
+			putFloatInStream(flux, store[i][j], " ");
 		flux << '\n';
 	}
 

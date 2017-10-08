@@ -50,11 +50,11 @@ Data::Data(const Data & iData) {
 //------------
 // Constructor
 //------------
-Data::Data(int64_t nbSample, int64_t pbDimension) {
+Data::Data(int nbSample, int pbDimension) {
 	_nbSample = nbSample;
 	_weightTotal = _nbSample; // true if there is no weight else it will be changed
 	_pbDimension = pbDimension;
-	_weight = new double[_nbSample];
+	_weight = new float[_nbSample];
 	_defaultWeight = true;
 	setWeightDefault();
 	_fileNameWeight = "";
@@ -64,11 +64,11 @@ Data::Data(int64_t nbSample, int64_t pbDimension) {
 //------------
 // Constructor for dataReduce
 //------------
-Data::Data(int64_t nbSample, int64_t pbDimension, double weightTotal, double * weight) {
+Data::Data(int nbSample, int pbDimension, float weightTotal, float * weight) {
 	_nbSample = nbSample;
 	_pbDimension = pbDimension;
 	_weightTotal = weightTotal;
-	//_weight = new double[_nbSample]; This is commented because copyTab returns back new memory
+	//_weight = new float[_nbSample]; This is commented because copyTab returns back new memory
 	_defaultWeight = false; // TODO
 	_weight = copyTab(weight, _nbSample);
 	_fileNameWeight = "";
@@ -88,7 +88,7 @@ Data::~Data() {
 //---------
 // selector
 //---------
-void Data::setWeightTotal(double weightTotal) {
+void Data::setWeightTotal(float weightTotal) {
 	_weightTotal = weightTotal;
 }
 
@@ -110,7 +110,7 @@ void Data::setWeight(std::string weightFileName) {
 			_fileNameWeight = "";
 			THROW(InputException, wrongWeightFileName);
 		}
-		int64_t i = 0;
+		int i = 0;
 		while (i < _nbSample && !weightFile.eof()) {
 			weightFile >> _weight[i];
 			if (_weight[i] != 1) {
@@ -131,11 +131,11 @@ void Data::setWeight(std::string weightFileName) {
 //----------
 // setWeight
 //----------
-void Data::setWeight(double* weight) {
+void Data::setWeight(float* weight) {
 	_defaultWeight = true;
 	_weightTotal = 0.0;
 
-	int64_t i = 0;
+	int i = 0;
 	while (i < _nbSample) {
 		_weight[i] = weight[i];
 		if (_weight[i] != 1) {
@@ -152,7 +152,7 @@ void Data::setWeight(double* weight) {
 void Data::setWeightDefault() {
 	_defaultWeight = true;
 	_fileNameWeight = "";
-	for (int64_t i = 0; i < _nbSample; ++i) {
+	for (int i = 0; i < _nbSample; ++i) {
 		_weight[i] = 1;
 	}
 }
@@ -161,7 +161,7 @@ bool Data::verify() const {
 	bool res = true;
 
 	// _weightTotal must be an integer
-	int64_t iWeightTotal = (int64_t) _weightTotal;
+	int iWeightTotal = (int) _weightTotal;
 	if (_weightTotal - iWeightTotal != 0) {
 		res = false;
 		THROW(InputException, weightTotalIsNotAnInteger);

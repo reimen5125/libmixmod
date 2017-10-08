@@ -75,7 +75,7 @@ CompositeParameter::CompositeParameter(const Parameter * igaussian, const Parame
 }
 
 CompositeParameter::CompositeParameter(Model* iModel, ModelType* iModelType,
-		int64_t * tabNbModality) : Parameter(iModel, iModelType)
+		int * tabNbModality) : Parameter(iModel, iModelType)
 {
 	_parameterComponent.resize(2);
 	_parameterModelType.resize(2);
@@ -90,7 +90,7 @@ CompositeParameter::~CompositeParameter() {
 	}
 }
 
-double CompositeParameter::getLogLikelihoodOne() const
+float CompositeParameter::getLogLikelihoodOne() const
 {
 	// TODO: adjust likelihoods combination
 	return _parameterComponent[0]->getLogLikelihoodOne()
@@ -98,7 +98,7 @@ double CompositeParameter::getLogLikelihoodOne() const
 }
 
 void CompositeParameter::InstantiateBinaryandGaussianParamter(
-		ModelType* modeltype, int64_t * tabNbModality)
+		ModelType* modeltype, int * tabNbModality)
 {
 	ModelName modelname = modeltype->getModelName();
 	switch (modelname) {
@@ -467,10 +467,10 @@ void CompositeParameter::InstantiateBinaryandGaussianParamter(
 	}
 }
 
-void CompositeParameter::getAllPdf(double** tabFik, double* tabProportion)const {
-	int64_t nbSample = _model->getNbSample();
-	int64_t i;
-	int64_t k;
+void CompositeParameter::getAllPdf(float** tabFik, float* tabProportion)const {
+	int nbSample = _model->getNbSample();
+	int i;
+	int k;
 
 	for (i = 0; i < nbSample; i++) {
 		for (k = 0; k < _nbCluster; k++) {
@@ -479,12 +479,12 @@ void CompositeParameter::getAllPdf(double** tabFik, double* tabProportion)const 
 	}
 }
 
-double CompositeParameter::getPdf(int64_t iSample, int64_t Kcluster) const {
+float CompositeParameter::getPdf(int iSample, int Kcluster) const {
 	return _parameterComponent[1]->getPdf(iSample, Kcluster)
 			* _parameterComponent[0]->getPdf(iSample, Kcluster);
 }
 
-double CompositeParameter::getPdf(Sample* x, int64_t kcluster) const {
+float CompositeParameter::getPdf(Sample* x, int kcluster) const {
 	Sample * GSample_ = x->getGaussianSample();
 	assert(GSample_ != NULL);
 	Sample * BSample_ = x->getBinarySample();
@@ -502,8 +502,8 @@ void CompositeParameter::MStep() {
 	_parameterComponent[1]->MStep();
 
 #ifndef NDEBUG
-	double * binarytabprop_ = _parameterComponent[0]->getTabProportion();
-	double * gaussiantabprop_ = _parameterComponent[1]->getTabProportion();
+	float * binarytabprop_ = _parameterComponent[0]->getTabProportion();
+	float * gaussiantabprop_ = _parameterComponent[1]->getTabProportion();
 	for (int i = 0; i < _nbCluster; ++i) {
 		assert(binarytabprop_[i] == gaussiantabprop_[i]);
 	}
@@ -515,8 +515,8 @@ CompositeParameter * CompositeParameter::clone() const {
 	return newparam;
 }
 
-int64_t CompositeParameter::getFreeParameter() const {
-	int64_t freeparam = _parameterComponent[1]->getFreeParameter()
+int CompositeParameter::getFreeParameter() const {
+	int freeparam = _parameterComponent[1]->getFreeParameter()
 			+ _parameterComponent[0]->getFreeParameter()-(_nbCluster - 1);
 	return freeparam;
 }
@@ -551,7 +551,7 @@ void CompositeParameter::updateForCV(Model* originalModel, CVBlock&CVBlock) {
 }
 
 void CompositeParameter::initUSER(Parameter * iParam) {
-	double * iTabProportion = iParam->getTabProportion();
+	float * iTabProportion = iParam->getTabProportion();
 	for (int k = 0; k < _nbCluster; k++) {
 		// proportion (no respecting model type)
 		if (!hasFreeProportion(_modelType->_nameModel)) {

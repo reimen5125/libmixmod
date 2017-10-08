@@ -97,9 +97,9 @@ ParameterDescription::ParameterDescription(ModelOutput* iEstimation) {
 //constructor by initialization for Binary
 // ---------------------------
 ParameterDescription::ParameterDescription(
-		int64_t nbCluster, 
-		int64_t nbVariable, 
-		std::vector< int64_t > nbFactor, 
+		int nbCluster, 
+		int nbVariable, 
+		std::vector< int > nbFactor, 
 		FormatNumeric::FormatNumericFile format, 
 		std::string filename, 
 		std::string infoName, 
@@ -116,7 +116,7 @@ ParameterDescription::ParameterDescription(
 	if (!fi.is_open()) {
 		THROW(InputException, wrongLabelFileName);
 	}
-	int64_t * tabNbFactor = new int64_t[_nbVariable];
+	int * tabNbFactor = new int[_nbVariable];
 	recopyVectorToTab(nbFactor, tabNbFactor);
 	// create _parameter : always a XEMBinaryEkjhParameter is created
 	_parameter = new BinaryEkjhParameter(
@@ -127,8 +127,8 @@ ParameterDescription::ParameterDescription(
 //constructor by initialization for Gaussian
 // ----------------------------------------
 ParameterDescription::ParameterDescription(
-		int64_t nbCluster, 
-		int64_t nbVariable, 
+		int nbCluster, 
+		int nbVariable, 
 		FormatNumeric::FormatNumericFile format, 
 		std::string filename, 
 		std::string infoName, 
@@ -153,10 +153,10 @@ ParameterDescription::ParameterDescription(
 //constructor by initialization for Composite
 // ---------------------------
 ParameterDescription::ParameterDescription(
-		int64_t nbCluster,
-		int64_t nbVariable_binary,
-		int64_t nbVariable_gaussian,
-		std::vector< int64_t > nbFactor,
+		int nbCluster,
+		int nbVariable_binary,
+		int nbVariable_gaussian,
+		std::vector< int > nbFactor,
 		FormatNumeric::FormatNumericFile format,
 		std::string filename,
 		std::string infoName,
@@ -173,7 +173,7 @@ ParameterDescription::ParameterDescription(
 	if (!fi.is_open()) {
 		THROW(InputException, wrongLabelFileName);
 	}
-	int64_t * tabNbFactor = new int64_t[nbVariable_binary];
+	int * tabNbFactor = new int[nbVariable_binary];
 	recopyVectorToTab(nbFactor, tabNbFactor);
 
 	GaussianGeneralParameter* gaussian_parameter =
@@ -198,20 +198,20 @@ ParameterDescription::ParameterDescription(Parameter * iparam) {
 
 //constructor for binary data
 ParameterDescription::ParameterDescription(
-	int64_t nbCluster,
-	int64_t nbVariable,
+	int nbCluster,
+	int nbVariable,
 	ModelName& modelName,
-	double * proportions,
-	double ** centers,
-	double *** scatters,
-	std::vector< int64_t> nbFactor)
+	float * proportions,
+	float ** centers,
+	float *** scatters,
+	std::vector< int> nbFactor)
 {
 	_infoName = "Parameter";
 	_nbVariable = nbVariable;
 	_filename = "";
 	_nbCluster = nbCluster;
 	_format = FormatNumeric::defaultFormatNumericFile;
-	int64_t* tabNbFactor = new int64_t[nbVariable];
+	int* tabNbFactor = new int[nbVariable];
 	recopyVectorToTab(nbFactor, tabNbFactor);
 	_modelType = new ModelType(modelName);
 
@@ -225,12 +225,12 @@ ParameterDescription::ParameterDescription(
 
 //constructor for Gaussian data
 ParameterDescription::ParameterDescription(
-	int64_t nbCluster,
-	int64_t nbVariable,
+	int nbCluster,
+	int nbVariable,
 	ModelName& modelName,
-	double * proportions,
-	double ** means,
-	double *** variances)
+	float * proportions,
+	float ** means,
+	float *** variances)
 {
 	_infoName = "Parameter";
 	_nbVariable = nbVariable;
@@ -247,23 +247,23 @@ ParameterDescription::ParameterDescription(
 
 //constructor for Heterogeneous data
 ParameterDescription::ParameterDescription(
-	int64_t nbCluster,
-	int64_t nbBinaryVariable,
-	int64_t nbGaussianVariable,
+	int nbCluster,
+	int nbBinaryVariable,
+	int nbGaussianVariable,
 	ModelName& modelName,
-	double * proportions,
-	double ** centers,
-	double *** scatters,
-	double ** means,
-	double *** variances,
-	std::vector< int64_t> nbFactor)
+	float * proportions,
+	float ** centers,
+	float *** scatters,
+	float ** means,
+	float *** variances,
+	std::vector< int> nbFactor)
 {
 	_infoName = "Parameter";
 	_nbVariable = nbBinaryVariable + nbGaussianVariable;
 	_filename = "";
 	_nbCluster = nbCluster;
 	_format = FormatNumeric::defaultFormatNumericFile;
-	int64_t * tabNbFactor = new int64_t[nbBinaryVariable];
+	int * tabNbFactor = new int[nbBinaryVariable];
 	recopyVectorToTab(nbFactor, tabNbFactor);
 	ModelType* _binarymodelType = new ModelType(getBinaryModelNamefromHeterogeneous(modelName));
 	ModelType* _gaussianmodelType = new ModelType(getBinaryModelNamefromHeterogeneous(modelName));

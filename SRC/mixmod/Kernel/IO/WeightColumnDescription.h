@@ -44,7 +44,7 @@ public:
 	WeightColumnDescription();
 
 	/// initialization constructor
-	WeightColumnDescription(int64_t index);
+	WeightColumnDescription(int index);
 
 	/// Destructor
 	virtual ~WeightColumnDescription();

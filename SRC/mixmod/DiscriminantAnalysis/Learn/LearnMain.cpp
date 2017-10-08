@@ -87,16 +87,16 @@ void LearnMain::run(int seed, IoMode iomode, int verbose, int massiccc) {
 	}
 
 	// get the number of models
-	int64_t nbModelType = _input->getModelType().size();
+	int nbModelType = _input->getModelType().size();
 	// get the list of number of clusters
-	std::vector<int64_t> vNbCluster = _input->getNbCluster();
+	std::vector<int> vNbCluster = _input->getNbCluster();
 	// get the size of the cluster's list
-	//  int64_t nbNbCluster = vNbCluster.size();
+	//  int nbNbCluster = vNbCluster.size();
 	// compute the total number of estimation to run
-	int64_t nbEstimation = nbModelType;
+	int nbEstimation = nbModelType;
 
 	// get number of cluster
-	int64_t nbCluster = vNbCluster[0];
+	int nbCluster = vNbCluster[0];
 
 	// get data
 	Data * inputData = (_input->getDataDescription()).getData();
@@ -116,7 +116,7 @@ void LearnMain::run(int seed, IoMode iomode, int verbose, int massiccc) {
 
 		Data * workingData = inputData;
 		Partition * workingKnownPartition = inputKnownPartition;
-		std::vector<int64_t> correspondenceOriginDataToReduceData;
+		std::vector<int> correspondenceOriginDataToReduceData;
 		//------------
 		//Reduce Data
 		//------------
@@ -178,7 +178,7 @@ void LearnMain::run(int seed, IoMode iomode, int verbose, int massiccc) {
 	// 2. run Estimations
 	//-------------------
 	// loop over the number of estimation to do
-	int64_t iEstimation = 0;
+	int iEstimation = 0;
 	while (iEstimation < nbEstimation) {
 		try {
 			learnStrategy.run(estimations[iEstimation]);
@@ -253,10 +253,10 @@ void LearnMain::run(int seed, IoMode iomode, int verbose, int massiccc) {
         //Write progress in file
         if (MASSICCC == 1) {
           progressFile.open ("progress.json");
-          progressFile << "{ \"Progress\" :  " << ((double)iCriterion + 1 + (double)iModel * (double)criterion.size())/((double)criterion.size() * (double)nbEstimation) * 100.0;
+          progressFile << "{ \"Progress\" :  " << ((float)iCriterion + 1 + (float)iModel * (float)criterion.size())/((float)criterion.size() * (float)nbEstimation) * 100.0;
           std::time_t currTime;
           std::time(&currTime);
-          double timePerModel = std::difftime(currTime, startTime) / ((double)iCriterion + 1 + (double)iModel * (double)criterion.size());
+          float timePerModel = std::difftime(currTime, startTime) / ((float)iCriterion + 1 + (float)iModel * (float)criterion.size());
           progressFile << ", \"Estimated remaining time\" : " << timePerModel * (criterion.size() - iCriterion - 1) +  (nbEstimation - iModel - 1) * criterion.size() * timePerModel << " } ";
           progressFile.close();
         }

@@ -47,7 +47,7 @@ public:
 
 	/// contructor
 	/// default initialisation : Id
-	SphericalMatrix(int64_t pbDimension, double initValue = 1.0);
+	SphericalMatrix(int pbDimension, float initValue = 1.0);
 
 	SphericalMatrix(SphericalMatrix * A);
 
@@ -55,47 +55,47 @@ public:
 	virtual ~SphericalMatrix();
 
 	/// compute determinant of spherical matrix
-	double determinant(Exception& errorType);
+	float determinant(Exception& errorType);
 
 	/// return store of spherical matrix
-	double getStore();
+	float getStore();
 
 
 	/// inverse spherical matrix
 	void inverse(Matrix * & A);
 
-	void compute_product_Lk_Wk(Matrix* Wk, double L);
+	void compute_product_Lk_Wk(Matrix* Wk, float L);
 
 	/// add a to the value of this
-	void addToValue(double a);
+	void addToValue(float a);
 
 	/// compute (x - mean)' this (x - mean) 
-	double norme(double * xMoinsMean);
+	float norme(float * xMoinsMean);
 
 	/// (this) will be A / d
-	void equalToMatrixDividedByDouble(Matrix * A, double d);
+	void equalToMatrixDividedByFloat(Matrix * A, float d);
 
 	/// (this) will be A * d
-	void equalToMatrixMultiplyByDouble(Matrix*D, double d);
+	void equalToMatrixMultiplyByFloat(Matrix*D, float d);
 
 	/// compute trace of spherical matrix
-	double computeTrace();
+	float computeTrace();
 
 
 	/// add :  cik * xMoinsMean * xMoinsMean'  to this
-	void add(double * xMoinsMean, double cik);
+	void add(float * xMoinsMean, float cik);
 
 	/// add : diag( cik * xMoinsMean * xMoinsMean' )  to this
-	void addDiag(double * xMoinsMean, double cik);
+	void addDiag(float * xMoinsMean, float cik);
 
 	/// this  = d * Identity
-	void operator=(const double& d);
+	void operator=(const float& d);
 
 	/// this = this / (d * Identity)
-	void operator/=(const double& d);
+	void operator/=(const float& d);
 
 	/// this = this *  (d * Identity)
-	void operator*=(const double& d);
+	void operator*=(const float& d);
 	/// this = this + matrix
 	void operator+=(Matrix* M);
 	/// this = matrix
@@ -104,75 +104,75 @@ public:
 
 	/// read spherical matrix store in file
 	void input(std::ifstream & fi);
-	virtual void input(double ** variances);
+	virtual void input(float ** variances);
 
 	/// return store of a spherical matrix
-	double putSphericalValueInStore(double & store);
+	float putSphericalValueInStore(float & store);
 	/// add store of a spherical matrix
-	double addSphericalValueInStore(double & store);
+	float addSphericalValueInStore(float & store);
 
-	double getSphericalStore();
-
-	/// Return store of a diagonal matrix
-	double* putDiagonalValueInStore(double * store);
-	/// Add store of a diagonal matrix in a diagonal one
-	double* addDiagonalValueInStore(double * store);
-
-	double* getDiagonalStore();
+	float getSphericalStore();
 
 	/// Return store of a diagonal matrix
-	double* putSymmetricValueInStore(double * store);
+	float* putDiagonalValueInStore(float * store);
 	/// Add store of a diagonal matrix in a diagonal one
-	double* addSymmetricValueInStore(double * store);
+	float* addDiagonalValueInStore(float * store);
 
-	double* getSymmetricStore();
+	float* getDiagonalStore();
 
 	/// Return store of a diagonal matrix
-	double* putGeneralValueInStore(double * store);
+	float* putSymmetricValueInStore(float * store);
 	/// Add store of a diagonal matrix in a diagonal one
-	double* addGeneralValueInStore(double * store);
+	float* addSymmetricValueInStore(float * store);
 
-	double* getGeneralStore();
+	float* getSymmetricStore();
+
+	/// Return store of a diagonal matrix
+	float* putGeneralValueInStore(float * store);
+	/// Add store of a diagonal matrix in a diagonal one
+	float* addGeneralValueInStore(float * store);
+
+	float* getGeneralStore();
 
 
 	/// compute general matrix SVD decomposition
 	void computeSVD(DiagMatrix* & S, GeneralMatrix* & O);
 
-	void compute_as__multi_O_S_O(double multi, GeneralMatrix* & O, DiagMatrix *& S);
-	double trace_this_O_Sm1_O(GeneralMatrix* & O, DiagMatrix* & S);
-	double compute_trace_W_C(Matrix * C);
-	void computeShape_as__diag_Ot_this_O(DiagMatrix* & Shape, GeneralMatrix* & Ori, double diviseur = 1.0);
+	void compute_as__multi_O_S_O(float multi, GeneralMatrix* & O, DiagMatrix *& S);
+	float trace_this_O_Sm1_O(GeneralMatrix* & O, DiagMatrix* & S);
+	float compute_trace_W_C(Matrix * C);
+	void computeShape_as__diag_Ot_this_O(DiagMatrix* & Shape, GeneralMatrix* & Ori, float diviseur = 1.0);
 	/// gives : det(diag(this))
-	double detDiag(Exception& errorType);
+	float detDiag(Exception& errorType);
 
-	void setSymmetricStore(double * store);
-	void setGeneralStore(double * store);
-	void setDiagonalStore(double * store);
-	void setSphericalStore(double store);
-	double** storeToArray() const;
+	void setSymmetricStore(float * store);
+	void setGeneralStore(float * store);
+	void setDiagonalStore(float * store);
+	void setSphericalStore(float store);
+	float** storeToArray() const;
 
 protected:
 
-	double _store;
+	float _store;
 };
 
-inline double SphericalMatrix::getStore() {
+inline float SphericalMatrix::getStore() {
 	return _store;
 }
 
-inline void SphericalMatrix::setSymmetricStore(double * store) {
+inline void SphericalMatrix::setSymmetricStore(float * store) {
 	THROW(OtherException, wrongMatrixType);
 }
 
-inline void SphericalMatrix::setSphericalStore(double store) {
+inline void SphericalMatrix::setSphericalStore(float store) {
 	_store = store;
 }
 
-inline void SphericalMatrix::setGeneralStore(double * store) {
+inline void SphericalMatrix::setGeneralStore(float * store) {
 	THROW(OtherException, wrongMatrixType);
 }
 
-inline void SphericalMatrix::setDiagonalStore(double * store) {
+inline void SphericalMatrix::setDiagonalStore(float * store) {
 	THROW(OtherException, wrongMatrixType);
 }
 

@@ -41,7 +41,7 @@ ProbaDescription::ProbaDescription() : Description() {
 // ---------------------------
 //constructor by initilization
 // ---------------------------
-ProbaDescription::ProbaDescription(int64_t nbSample, int64_t nbCluster, 
+ProbaDescription::ProbaDescription(int nbSample, int nbCluster, 
 		FormatNumeric::FormatNumericFile format, std::string filename, std::string infoName) 
 {
 	_infoName = "infoName";
@@ -50,7 +50,7 @@ ProbaDescription::ProbaDescription(int64_t nbSample, int64_t nbCluster,
 	_fileName = filename;
 	_format = format;
 	_columnDescription.resize(nbCluster);
-	for (int64_t i = 0; i < nbCluster; i++) {
+	for (int i = 0; i < nbCluster; i++) {
 		_columnDescription[i] = new QuantitativeColumnDescription(i);
 		std::string name("Proba cluster=");
 		std::ostringstream sNum;
@@ -77,7 +77,7 @@ ProbaDescription::ProbaDescription(Model * model) : Description() {
 		_fileName = "";
 		_format = FormatNumeric::txt;
 		_columnDescription.resize(_nbColumn);
-		for (int64_t iCol = 0; iCol < _nbColumn; iCol++) {
+		for (int iCol = 0; iCol < _nbColumn; iCol++) {
 			_columnDescription[iCol] = new QuantitativeColumnDescription(iCol);
 			std::string name("Probability for cluster ");
 			std::ostringstream sNum;
@@ -108,7 +108,7 @@ bool ProbaDescription::operator==(ProbaDescription & probaDescription) const {
 	if (_infoName != probaDescription._infoName) return false;
 	if (_nbSample != probaDescription._nbSample) return false;
 	if (_nbColumn != probaDescription._nbColumn) return false;
-	for (int64_t i = 0; i < _nbColumn; ++i) {
+	for (int i = 0; i < _nbColumn; ++i) {
 		if (_columnDescription[i]->getName() 
 				!= probaDescription.getColumnDescription(i)->getName())
 		{
@@ -129,7 +129,7 @@ ProbaDescription & ProbaDescription::operator=(ProbaDescription & probaDescripti
 	_nbSample = probaDescription._nbSample;
 	_nbColumn = probaDescription._nbColumn;
 	_columnDescription.resize(_nbColumn);
-	for (int64_t i = 0; i < _nbColumn; ++i) {
+	for (int i = 0; i < _nbColumn; ++i) {
 		const ColumnDescription * cd = probaDescription.getColumnDescription(i);
 		_columnDescription[i] = cd->clone();
 	}

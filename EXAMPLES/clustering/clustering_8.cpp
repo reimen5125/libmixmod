@@ -28,26 +28,26 @@
 
 XEM::Parameter * createParameter ( int iNbCluster, int iPbDimension, XEM::ModelType * iModelType ) {
     // proportions
-    double * proportions = new double[iNbCluster];
+    float * proportions = new float[iNbCluster];
     for ( int k=0; k<iNbCluster; k++ ) {
         proportions[k] = 1.0/iNbCluster;
     }
 
     //means
-    double ** means = new double*[iNbCluster];
+    float ** means = new float*[iNbCluster];
     for ( int k=0; k<iNbCluster; k++ ) {
-        means[k] = new double[iPbDimension];
+        means[k] = new float[iPbDimension];
         for ( int p=0; p<iPbDimension; p++ ) {
             means[k][p] = k+1;
         }
     }
 
     //variances
-    double *** variances = new double **[iNbCluster];
+    float *** variances = new float **[iNbCluster];
     for ( int k=0; k<iNbCluster; k++ ) {
-        variances[k] = new double*[iPbDimension];
+        variances[k] = new float*[iPbDimension];
         for ( int p=0; p<iPbDimension; p++ ) {
-            variances[k][p] = new double[iPbDimension];
+            variances[k][p] = new float[iPbDimension];
             for ( int l=0; l<iPbDimension; l++ ) {
                 if ( p==l ) {
                     variances[k][p][l] = 1.0;

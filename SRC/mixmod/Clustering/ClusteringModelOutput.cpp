@@ -49,9 +49,9 @@ ClusteringModelOutput::ClusteringModelOutput(Model * estimation) : ModelOutput(e
 //  Initialization Constructor
 //-----------------
 ClusteringModelOutput::ClusteringModelOutput( ModelType & modelType,
-		int64_t nbCluster,
+		int nbCluster,
 		std::vector< CriterionOutput* >& criterionOutput,
-		double likelihood,
+		float likelihood,
 		ParameterDescription& parameterDescription,
 		LabelDescription& labelDescription,
 		ProbaDescription& probaDescription)
@@ -61,7 +61,7 @@ ClusteringModelOutput::ClusteringModelOutput( ModelType & modelType,
 //-----------------
 //  Initialization Constructor
 //-----------------
-ClusteringModelOutput::ClusteringModelOutput(ModelType& modelType, int64_t nbCluster, Exception& error)
+ClusteringModelOutput::ClusteringModelOutput(ModelType& modelType, int nbCluster, Exception& error)
 : ModelOutput(modelType, nbCluster, error) {
 }
 

@@ -42,7 +42,7 @@ MAPAlgo::MAPAlgo(const MAPAlgo & mapAlgo) : Algo(mapAlgo) {
 //------------
 // Constructor
 //------------
-MAPAlgo::MAPAlgo(AlgoStopName algoStopName, double epsilon, int64_t nbIteration)
+MAPAlgo::MAPAlgo(AlgoStopName algoStopName, float epsilon, int nbIteration)
 : Algo(algoStopName, epsilon, nbIteration) {
 }
 

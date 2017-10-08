@@ -45,7 +45,7 @@ public:
 	SEMAlgo(const SEMAlgo & semAlgo);
 
 	/// Constructor
-	SEMAlgo(AlgoStopName algoStopName, int64_t nbIteration);
+	SEMAlgo(AlgoStopName algoStopName, int nbIteration);
 
 	/// Destructor
 	virtual ~SEMAlgo();
@@ -58,22 +58,22 @@ public:
 
 	virtual const AlgoName getAlgoName() const;
 
-	virtual void setNbIteration(int64_t nbIteration);
+	virtual void setNbIteration(int nbIteration);
 
-	virtual void setEpsilon(double epsilon);
+	virtual void setEpsilon(float epsilon);
 
-	virtual const double getEpsilon() const;
+	virtual const float getEpsilon() const;
 };
 
 inline const AlgoName SEMAlgo::getAlgoName() const {
 	return SEM;
 }
 
-inline const double SEMAlgo::getEpsilon() const {
+inline const float SEMAlgo::getEpsilon() const {
 	THROW(OtherException, internalMixmodError);
 }
 
-inline void SEMAlgo::setEpsilon(double eps) {
+inline void SEMAlgo::setEpsilon(float eps) {
 	THROW(InputException, wrongAlgoStopName);
 }
 

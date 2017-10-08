@@ -49,7 +49,7 @@ public:
 
 	/// Constructor
 	// called if USER initialisation
-	GaussianEDDAParameter(int64_t iNbCluster, int64_t iPbDimension, ModelType * iModelType);
+	GaussianEDDAParameter(int iNbCluster, int iPbDimension, ModelType * iModelType);
 
 	/// Constructor
 	GaussianEDDAParameter(const GaussianEDDAParameter * iParameter);
@@ -66,7 +66,7 @@ public:
 	/** @brief Selector
 		 @return Table of inverse of sqrt of determinant of covariance matrix for each cluster
 	 */
-	double * getTabInvSqrtDetSigma() const;
+	float * getTabInvSqrtDetSigma() const;
 
 	/** @brief Selector
 		@return Table of inverse of covariance matrix for each cluster
@@ -80,19 +80,19 @@ public:
 
 	/// Compute normal probability density function
 	///       for iSample the sample and kCluster th cluster
-	double getPdf(int64_t iSample, int64_t kCluster) const;
+	float getPdf(int iSample, int kCluster) const;
 
 	/// compute normal probability density function
 	/// for all i=1,..,n and k=1,..,K
-	void getAllPdf(double ** tabFik, double * tabProportion) const;
+	void getAllPdf(float ** tabFik, float * tabProportion) const;
 
 	/// compute normal probability density function
 	/// for the line x within the kCluster cluster
-	double getPdf(Sample * x, int64_t kCluster) const;
+	float getPdf(Sample * x, int kCluster) const;
 
 	void updateTabInvSigmaAndDet();
 
-	void computeTikUnderflow(int64_t i, double ** tabTik);
+	void computeTikUnderflow(int i, float ** tabTik);
 
 	void edit();
 
@@ -100,7 +100,7 @@ public:
 
 	void recopy(Parameter * otherParameter);
 
-	virtual int64_t getFreeParameter() const = 0;
+	virtual int getFreeParameter() const = 0;
 	virtual void computeTabSigma() = 0;
 
 	void updateForCV(Model * originalModel, CVBlock & CVBlock);
@@ -109,11 +109,11 @@ public:
 	void MStep();
 	void MAPStep();
 	virtual void input(std::ifstream & fi);
-	virtual void input(std::ifstream & fi, int64_t, std::vector< int64_t >); //For Heterogeneous models
+	virtual void input(std::ifstream & fi, int, std::vector< int >); //For Heterogeneous models
 	virtual void input(
-			double * proportions, 
-			double ** means, 
-			double *** variances);
+			float * proportions, 
+			float ** means, 
+			float *** variances);
 
 	
 	//init
@@ -129,7 +129,7 @@ public:
 	/// outputs :
 	/// -  nbInitializedCluster
 	/// - tabNotInitializedCluster (array of size _nbCluster)
-	void initForInitUSER_PARTITION(int64_t & nbInitializedCluster, bool * tabNotInitializedCluster, Partition * initPartition);
+	void initForInitUSER_PARTITION(int & nbInitializedCluster, bool * tabNotInitializedCluster, Partition * initPartition);
 
 protected:
 	
@@ -140,12 +140,12 @@ protected:
 	Matrix ** _tabSigma;
 
 	/// 1/det(Sigma)
-	double * _tabInvSqrtDetSigma;
+	float * _tabInvSqrtDetSigma;
 
 
 };
 
-inline double * GaussianEDDAParameter::getTabInvSqrtDetSigma() const {
+inline float * GaussianEDDAParameter::getTabInvSqrtDetSigma() const {
 	return _tabInvSqrtDetSigma;
 }
 

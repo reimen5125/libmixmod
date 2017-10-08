@@ -30,7 +30,7 @@ namespace XEM {
 QuantitativeColumnDescription::QuantitativeColumnDescription() : ColumnDescription() {
 }
 
-QuantitativeColumnDescription::QuantitativeColumnDescription(int64_t index) 
+QuantitativeColumnDescription::QuantitativeColumnDescription(int index) 
 : ColumnDescription(index) {
 }
 

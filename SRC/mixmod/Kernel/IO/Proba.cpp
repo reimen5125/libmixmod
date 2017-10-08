@@ -41,11 +41,11 @@ Proba::Proba() {
 //------------
 // Constructor
 //------------
-Proba::Proba(int64_t nbSample, int64_t nbCluster) {
+Proba::Proba(int nbSample, int nbCluster) {
 	_nbCluster = nbCluster;
 	_nbSample = nbSample;
 	_proba.resize(_nbSample);
-	for (int64_t i = 0; i < _nbSample; i++) {
+	for (int i = 0; i < _nbSample; i++) {
 		_proba[i].resize(_nbCluster);
 	}
 }
@@ -62,7 +62,7 @@ Proba::Proba(Model * model) {
 
 	// compute tabProba
 	//-----------------
-	double ** tabProba = NULL;
+	float ** tabProba = NULL;
 	ModelType * modelType = model->getModelType();
 	bool binary = isBinary(modelType->_nameModel);
 	
@@ -73,28 +73,28 @@ Proba::Proba(Model * model) {
 	
 	else {
 		//binary + DATA_REDUCE case [currently deactivated ; see Util.h]
-		const std::vector<int64_t> & correspondenceOriginDataToReduceData = 
+		const std::vector<int> & correspondenceOriginDataToReduceData = 
 				dynamic_cast<BinaryModel*> (model)->getCorrespondenceOriginDataToReduceData();
 		_nbSample = correspondenceOriginDataToReduceData.size();
-		tabProba = new double*[_nbSample];
-		for (int64_t i = 0; i < _nbSample; i++) {
-			tabProba[i] = new double[_nbCluster];
+		tabProba = new float*[_nbSample];
+		for (int i = 0; i < _nbSample; i++) {
+			tabProba[i] = new float[_nbCluster];
 		}
-		int64_t nbSampleOfDataReduce = model->getNbSample();
-		double ** tabPostProbaReduce = NULL;
+		int nbSampleOfDataReduce = model->getNbSample();
+		float ** tabPostProbaReduce = NULL;
 		// copy
 		tabPostProbaReduce = copyTab(model->getPostProba(), nbSampleOfDataReduce, _nbCluster);
-		//editTab<double>(tabPostProbaReduce,nbSampleOfDataReduce, _nbCluster);
+		//editTab<float>(tabPostProbaReduce,nbSampleOfDataReduce, _nbCluster);
 		// convert labelReduce, partitionReduce, postProbaReduce to label, partition, postProba
-		for (int64_t i = 0; i < _nbSample; i++) {
-			for (int64_t k = 0; k < _nbCluster; k++) {
-				int64_t index = correspondenceOriginDataToReduceData[i];
+		for (int i = 0; i < _nbSample; i++) {
+			for (int k = 0; k < _nbCluster; k++) {
+				int index = correspondenceOriginDataToReduceData[i];
 				tabProba[i][k] = tabPostProbaReduce[index][k];
 			}
 		}
 
 		//delete
-		for (int64_t i = 0; i < nbSampleOfDataReduce; i++) {
+		for (int i = 0; i < nbSampleOfDataReduce; i++) {
 			delete [] tabPostProbaReduce[i];
 		}
 		delete [] tabPostProbaReduce;
@@ -102,7 +102,7 @@ Proba::Proba(Model * model) {
 
 	// compute _proba
 	recopyTabToVector(tabProba, _proba, _nbSample, _nbCluster);
-	for (int64_t i = 0; i < _nbSample; i++) {
+	for (int i = 0; i < _nbSample; i++) {
 		delete[] tabProba[i];
 	}
 	delete [] tabProba;
@@ -129,8 +129,8 @@ Proba::~Proba() {
 bool Proba::operator ==(const Proba & proba) const {
 	if (_nbSample != proba.getNbSample()) return false;
 	if (_nbCluster != proba.getNbCluster()) return false;
-	for (int64_t i = 0; i < _nbSample; i++) {
-		for (int64_t k = 0; k < _nbCluster; k++) {
+	for (int i = 0; i < _nbSample; i++) {
+		for (int k = 0; k < _nbCluster; k++) {
 			if (_proba[i][k] != proba.getProba()[i][k]) return false;
 		}
 	}
@@ -142,9 +142,9 @@ bool Proba::operator ==(const Proba & proba) const {
 //----------
 void Proba::edit(std::ostream & stream) {
 	stream.setf(ios::fixed, ios::floatfield);
-	for (int64_t i = 0; i < _nbSample; i++) {
-		for (int64_t k = 0; k < _nbCluster; k++)
-			putDoubleInStream(stream, _proba[i][k], "\t");
+	for (int i = 0; i < _nbSample; i++) {
+		for (int k = 0; k < _nbCluster; k++)
+			putFloatInStream(stream, _proba[i][k], "\t");
 		stream << endl;
 	}
 }
@@ -152,8 +152,8 @@ void Proba::edit(std::ostream & stream) {
 //---------
 // getProba
 //---------
-double ** Proba::getTabProba() const {
-	double ** res;
+float ** Proba::getTabProba() const {
+	float ** res;
 	recopyVectorToTab(_proba, res);
 	return res;
 }
@@ -162,13 +162,13 @@ double ** Proba::getTabProba() const {
 //input stream
 // -----------
 void Proba::input(std::ifstream & flux) {
-	int64_t i = 0;
-	int64_t k = 0;
+	int i = 0;
+	int k = 0;
 
 	while (i < _nbSample && !flux.eof()) {
 		k = 0;
 		while (k < _nbCluster && !flux.eof()) {
-			_proba[i][k] = getDoubleFromStream(flux);
+			_proba[i][k] = getFloatFromStream(flux);
 			k++;
 		}
 		if (!flux.eof() && k != _nbCluster) {

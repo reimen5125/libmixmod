@@ -37,7 +37,7 @@ CEMAlgo::CEMAlgo() {
 CEMAlgo::CEMAlgo(const CEMAlgo & cemAlgo) : Algo(cemAlgo) {
 }
 
-CEMAlgo::CEMAlgo(AlgoStopName algoStopName, double epsilon, int64_t nbIteration)
+CEMAlgo::CEMAlgo(AlgoStopName algoStopName, float epsilon, int nbIteration)
 : Algo(algoStopName, epsilon, nbIteration) {
 }
 

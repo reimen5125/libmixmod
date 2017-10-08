@@ -36,9 +36,9 @@ DiagMatrix::DiagMatrix() {
 	THROW(OtherException, wrongConstructorType);
 }
 
-DiagMatrix::DiagMatrix(int64_t pbDimension, double d) : Matrix(pbDimension) {
-	_store = new double[_s_pbDimension];
-	for (int64_t i = 0; i < _s_pbDimension; i++) {
+DiagMatrix::DiagMatrix(int pbDimension, float d) : Matrix(pbDimension) {
+	_store = new float[_s_pbDimension];
+	for (int i = 0; i < _s_pbDimension; i++) {
 		_store[i] = d;
 	}
 }
@@ -57,9 +57,9 @@ DiagMatrix::~DiagMatrix() {
 	_store = NULL;
 }
 
-double DiagMatrix::determinant(Exception& errorType) {
-	int64_t p;
-	double det = _store[0];
+float DiagMatrix::determinant(Exception& errorType) {
+	int p;
+	float det = _store[0];
 	for (p = 1; p < _s_pbDimension; p++) {
 		det *= _store[p];
 	}
@@ -70,7 +70,7 @@ double DiagMatrix::determinant(Exception& errorType) {
 	return det;
 }
 
-void DiagMatrix::compute_product_Lk_Wk(Matrix* Wk, double L) {
+void DiagMatrix::compute_product_Lk_Wk(Matrix* Wk, float L) {
 	THROW(OtherException, nonImplementedMethod);
 }
 
@@ -79,8 +79,8 @@ void DiagMatrix::inverse(Matrix * & Inv) {
 	if (Inv == NULL) {
 		Inv = new DiagMatrix(_s_pbDimension);
 	}
-	double * Inv_store = new double[_s_pbDimension];
-	int64_t p;
+	float * Inv_store = new float[_s_pbDimension];
+	int p;
 	for (p = 0; p < _s_pbDimension; p++) {
 		Inv_store[p] = 1.0 / _store[p];
 	}
@@ -90,26 +90,26 @@ void DiagMatrix::inverse(Matrix * & Inv) {
 	delete [] Inv_store;
 }
 
-double* DiagMatrix::getDiagonalStore() {
+float* DiagMatrix::getDiagonalStore() {
 	return (_store);
 }
 
-double* DiagMatrix::getSymmetricStore() {
+float* DiagMatrix::getSymmetricStore() {
 	THROW(OtherException, wrongMatrixType);
 }
 
-double* DiagMatrix::getGeneralStore() {
+float* DiagMatrix::getGeneralStore() {
 	THROW(OtherException, wrongMatrixType);
 }
 
-double DiagMatrix::getSphericalStore() {
+float DiagMatrix::getSphericalStore() {
 	THROW(OtherException, wrongMatrixType);
 }
 
-double DiagMatrix::norme(double * xMoinsMean) {
-	int64_t p;
-	double termesDiag = 0.0;
-	double xMoinsMean_p;
+float DiagMatrix::norme(float * xMoinsMean) {
+	int p;
+	float termesDiag = 0.0;
+	float xMoinsMean_p;
 
 	for (p = 0; p < _s_pbDimension; p++) {
 		xMoinsMean_p = xMoinsMean[p];
@@ -118,27 +118,27 @@ double DiagMatrix::norme(double * xMoinsMean) {
 	return termesDiag;
 }
 
-void DiagMatrix::compute_as__multi_O_S_O(double multi, GeneralMatrix* & O, DiagMatrix *& S) {
+void DiagMatrix::compute_as__multi_O_S_O(float multi, GeneralMatrix* & O, DiagMatrix *& S) {
 	THROW(OtherException, nonImplementedMethod);
 }
 
-double DiagMatrix::trace_this_O_Sm1_O(GeneralMatrix* & O, DiagMatrix* & S) {
+float DiagMatrix::trace_this_O_Sm1_O(GeneralMatrix* & O, DiagMatrix* & S) {
 	THROW(OtherException, nonImplementedMethod);
 }
 
-double DiagMatrix::compute_trace_W_C(Matrix * C) {
+float DiagMatrix::compute_trace_W_C(Matrix * C) {
 	THROW(OtherException, nonImplementedMethod);
 }
 
 void DiagMatrix::computeShape_as__diag_Ot_this_O(
-		DiagMatrix* & Shape, GeneralMatrix* & Ori, double diviseur) 
+		DiagMatrix* & Shape, GeneralMatrix* & Ori, float diviseur) 
 {
 	THROW(OtherException, nonImplementedMethod);
 }
 
-double DiagMatrix::putSphericalValueInStore(double & store) {
+float DiagMatrix::putSphericalValueInStore(float & store) {
 	store = 0.0;
-	int64_t p;
+	int p;
 	for (p = 0; p < _s_pbDimension; p++) {
 		store += _store[p];
 	}
@@ -146,8 +146,8 @@ double DiagMatrix::putSphericalValueInStore(double & store) {
 	return (store);
 }
 
-double DiagMatrix::addSphericalValueInStore(double & store) {
-	int64_t p;
+float DiagMatrix::addSphericalValueInStore(float & store) {
+	int p;
 	for (p = 0; p < _s_pbDimension; p++) {
 		store += _store[p];
 	}
@@ -155,26 +155,26 @@ double DiagMatrix::addSphericalValueInStore(double & store) {
 	return (store);
 }
 
-double* DiagMatrix::putDiagonalValueInStore(double * store) {
-	for (int64_t p = 0; p < _s_pbDimension; p++) {
+float* DiagMatrix::putDiagonalValueInStore(float * store) {
+	for (int p = 0; p < _s_pbDimension; p++) {
 		store[p] = _store[p];
 	}
 	return (store);
 }
 
-double* DiagMatrix::addDiagonalValueInStore(double * store) {
-	for (int64_t p = 0; p < _s_pbDimension; p++) {
+float* DiagMatrix::addDiagonalValueInStore(float * store) {
+	for (int p = 0; p < _s_pbDimension; p++) {
 		store[p] += _store[p];
 	}
 	return (store);
 }
 
-double* DiagMatrix::addSymmetricValueInStore(double * store) {
+float* DiagMatrix::addSymmetricValueInStore(float * store) {
 	// return the store of of a symmetric matrix with this on the diag
-	//int64_t dimStore = _s_pbDimension*(_s_pbDimension+1)/2;
-	// double * store = new double[dimStore];
+	//int dimStore = _s_pbDimension*(_s_pbDimension+1)/2;
+	// float * store = new float[dimStore];
 
-	int64_t p, q, r;
+	int p, q, r;
 	for (p = 0, r = 0; p < _s_pbDimension; p++, r++) {
 		for (q = 0; q < p; q++, r++) {
 			store[r] = 0.0;
@@ -184,12 +184,12 @@ double* DiagMatrix::addSymmetricValueInStore(double * store) {
 	return (store);
 }
 
-double* DiagMatrix::putSymmetricValueInStore(double * store) {
+float* DiagMatrix::putSymmetricValueInStore(float * store) {
 	// return the store of of a symmetric matrix with this on the diag
-	// int64_t dimStore = _s_pbDimension*(_s_pbDimension+1)/2;
-	// double * store = new double[dimStore];
+	// int dimStore = _s_pbDimension*(_s_pbDimension+1)/2;
+	// float * store = new float[dimStore];
 
-	int64_t p, q, r;
+	int p, q, r;
 	for (p = 0, r = 0; p < _s_pbDimension; p++, r++) {
 		for (q = 0; q < p; q++, r++) {
 			store[r] = 0.0;
@@ -199,11 +199,11 @@ double* DiagMatrix::putSymmetricValueInStore(double * store) {
 	return (store);
 }
 
-double* DiagMatrix::putGeneralValueInStore(double * store) {
+float* DiagMatrix::putGeneralValueInStore(float * store) {
 	THROW(OtherException, wrongMatrixType);
 }
 
-double* DiagMatrix::addGeneralValueInStore(double * store) {
+float* DiagMatrix::addGeneralValueInStore(float * store) {
 	THROW(OtherException, wrongMatrixType);
 }
 
@@ -211,38 +211,38 @@ void DiagMatrix::computeSVD(DiagMatrix* & S, GeneralMatrix* & O) {
 	THROW(OtherException, nonImplementedMethod);
 }
 
-double DiagMatrix::computeTrace() {
+float DiagMatrix::computeTrace() {
 
-	double trace = 0.0;
-	for (int64_t i = 0; i < _s_pbDimension; i++) {
+	float trace = 0.0;
+	for (int i = 0; i < _s_pbDimension; i++) {
 		trace += _store[i];
 	}
 	return trace;
 }
 
 // (this) will be A / d
-void DiagMatrix::equalToMatrixDividedByDouble(Matrix * A, double d) {
+void DiagMatrix::equalToMatrixDividedByFloat(Matrix * A, float d) {
 	A->putDiagonalValueInStore(_store);
 
-	int64_t p;
+	int p;
 	for (p = 0; p < _s_pbDimension; p++) {
 		_store[p] /= d;
 	}
 }
 
-void DiagMatrix::equalToMatrixMultiplyByDouble(Matrix* D, double d) {
+void DiagMatrix::equalToMatrixMultiplyByFloat(Matrix* D, float d) {
 	D->putDiagonalValueInStore(_store);
-	int64_t p;
+	int p;
 	for (p = 0; p < _s_pbDimension; p++) {
 		_store[p] *= d;
 	}
 }
 
 // add :  cik * xMoinsMean * xMoinsMean'  to this
-void DiagMatrix::add(double * xMoinsMean, double cik) {
+void DiagMatrix::add(float * xMoinsMean, float cik) {
 
-	int64_t p;
-	double xMoinsMean_p;
+	int p;
+	float xMoinsMean_p;
 
 	for (p = 0; p < _s_pbDimension; p++) {
 		xMoinsMean_p = xMoinsMean[p];
@@ -251,10 +251,10 @@ void DiagMatrix::add(double * xMoinsMean, double cik) {
 }
 
 // add : diag( cik * xMoinsMean * xMoinsMean' )  to this
-/*void DiagMatrix::addDiag(double * xMoinsMean, double cik){
+/*void DiagMatrix::addDiag(float * xMoinsMean, float cik){
   
-  int64_t p;
-  double xMoinsMean_p;
+  int p;
+  float xMoinsMean_p;
 
   for(p=0; p<_s_pbDimension ; p++){
 	xMoinsMean_p = xMoinsMean[p];
@@ -264,8 +264,8 @@ void DiagMatrix::add(double * xMoinsMean, double cik) {
 }*/
 
 // set the value of (d x Identity) to this  
-void DiagMatrix::operator=(const double& d) {
-	int64_t p;
+void DiagMatrix::operator=(const float& d) {
+	int p;
 
 	for (p = 0; p < _s_pbDimension; p++) {
 		_store[p] = d;
@@ -273,16 +273,16 @@ void DiagMatrix::operator=(const double& d) {
 }
 
 // divide each element by d
-void DiagMatrix::operator/=(const double& d) {
-	int64_t p;
+void DiagMatrix::operator/=(const float& d) {
+	int p;
 	for (p = 0; p < _s_pbDimension; p++) {
 		_store[p] /= d;
 	}
 }
 
 // multiply each element by d
-void DiagMatrix::operator*=(const double& d) {
-	int64_t p;
+void DiagMatrix::operator*=(const float& d) {
+	int p;
 	for (p = 0; p < _s_pbDimension; p++) {
 		_store[p] *= d;
 	}
@@ -298,25 +298,25 @@ void DiagMatrix::operator=(Matrix* M) {
 }
 
 void DiagMatrix::input(std::ifstream & fi) {
-	int64_t p, q;
-	double garbage;
+	int p, q;
+	float garbage;
 
 	for (p = 0; p < _s_pbDimension; p++) {
 		// useless because all are 0
     for (q = 0; q < p; q++)
-			getDoubleFromStream(fi);
+			getFloatFromStream(fi);
 
     // here i==j so we are in the diagonal
-		_store[p] = getDoubleFromStream(fi);
+		_store[p] = getFloatFromStream(fi);
 
     // useless because all are 0
     for (q = p + 1; q < _s_pbDimension; q++)
-			getDoubleFromStream(fi);
+			getFloatFromStream(fi);
   }
 }
 
-void DiagMatrix::input(double ** variances) {
-	int64_t p, q;
+void DiagMatrix::input(float ** variances) {
+	int p, q;
 	for (p = 0; p < _s_pbDimension; p++) {
 		// useless because all are 0
 		for (q = 0; q < p; q++) {
@@ -331,35 +331,35 @@ void DiagMatrix::input(double ** variances) {
 	}
 }
 
-double DiagMatrix::detDiag(Exception& errorType) {
+float DiagMatrix::detDiag(Exception& errorType) {
 	return determinant(errorType);
 }
 
 void DiagMatrix::sortDiagMatrix() {
-	int64_t max;
-	for (int64_t i = 0; i < _s_pbDimension; i++) {
+	int max;
+	for (int i = 0; i < _s_pbDimension; i++) {
 		max = i;
-		for (int64_t j = i + 1; j < _s_pbDimension; j++) {
+		for (int j = i + 1; j < _s_pbDimension; j++) {
 			if (_store[j] > _store[max]) {
 				max = j;
 			}
 		}
 		if (max != i) { // swich
-			double tmp = _store[i];
+			float tmp = _store[i];
 			_store[i] = _store[max];
 			_store[max] = tmp;
 		}
 	}
 
-	/*for (int64_t i=1; i<= _s_pbDimension;i++){
+	/*for (int i=1; i<= _s_pbDimension;i++){
 			//search the max eigenvalue
 			max = i;
-	 for (int64_t j=i; j<_s_pbDimension; j++){
+	 for (int j=i; j<_s_pbDimension; j++){
 				if (_store[j-1] > _store[max-1])
 						max = j;
 				if (max != i){
 					// switch
-					double tmp = _store[max-1];
+					float tmp = _store[max-1];
 					_store[max-1] = _store[i-1];
 					_store[i-1] = tmp;
 				}
@@ -367,12 +367,12 @@ void DiagMatrix::sortDiagMatrix() {
 		}*/
 }
 
-double** DiagMatrix::storeToArray() const {
+float** DiagMatrix::storeToArray() const {
 
-	int64_t i, j;
-	double** newStore = new double*[_s_pbDimension];
+	int i, j;
+	float** newStore = new float*[_s_pbDimension];
 	for (i = 0; i < _s_pbDimension; ++i) {
-		newStore[i] = new double[_s_pbDimension];
+		newStore[i] = new float[_s_pbDimension];
 	}
 	for (i = 0; i < _s_pbDimension; ++i) {
 

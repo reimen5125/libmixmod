@@ -35,7 +35,7 @@ namespace XEM {
 //------------
 // Constructor
 //------------
-CVCriterion::CVCriterion(Model * model, const int64_t nbCVBlock)
+CVCriterion::CVCriterion(Model * model, const int nbCVBlock)
 : Criterion(model), _tabCVBlock(0), _cvLabel(model->getNbSample()), _nbCVBlock(nbCVBlock)
 {
 	_CVinitBlocks = defaultCVinitBlocks;
@@ -53,7 +53,7 @@ CVCriterion::~CVCriterion() {
 //---
 void CVCriterion::run(CriterionOutput & output) {
 	// initialize value
-	double value = 0.0;
+	float value = 0.0;
 	// initialize error
 	Exception* error = &NOERROR;
 
@@ -61,20 +61,20 @@ void CVCriterion::run(CriterionOutput & output) {
 	//Model * CVModel = new Model(_model);
     std::unique_ptr<Model> CVModel(new Model(_model));
 	try {
-		double missClass = 0.0;
+		float missClass = 0.0;
 		Data * data = _model->getData();
 		Sample * x;
-		int64_t i, known_ki;
+		int i, known_ki;
 
 		// create CV blocks
 		createCVBlocks();
 		// loop over the blocks
-		for (int64_t v = 0; v < _nbCVBlock; v++) {
+		for (int v = 0; v < _nbCVBlock; v++) {
       //cout<<"CV block n°"<<v<<endl<<"---------"<<endl;
 			CVModel->updateForCV(_model, _tabCVBlock[v]);
 			//CVModel->getParameter()->edit();
 			// loop over samples
-			for (int64_t ii = 0; ii < _tabCVBlock[v]._nbSample; ii++) {
+			for (int ii = 0; ii < _tabCVBlock[v]._nbSample; ii++) {
 				i = _tabCVBlock[v]._tabWeightedIndividual[ii].val;
 				//cout<<"individu : "<<i<<endl;
 				known_ki = _model->getKnownLabel(i);
@@ -113,13 +113,13 @@ void CVCriterion::run(CriterionOutput & output) {
 //- CreateCVBlock
 //-------------------
 void CVCriterion::createCVBlocks() {
-	int64_t i, v, index;
+	int i, v, index;
 	Data * data = _model->getData();
-	double * weight = data->_weight;
-	int64_t weightTotal = (int64_t) data->_weightTotal;
-	int64_t nbSample = _model->getNbSample();
-	double sumWeight = 0.0;
-	int64_t value = 0, sizeList;
+	float * weight = data->_weight;
+	int weightTotal = (int) data->_weightTotal;
+	int nbSample = _model->getNbSample();
+	float sumWeight = 0.0;
+	int value = 0, sizeList;
 
 	if (_nbCVBlock > weightTotal) {
 		_nbCVBlock = weightTotal;
@@ -153,10 +153,10 @@ void CVCriterion::createCVBlocks() {
 		if (_CVinitBlocks == CV_RANDOM) {
 			//cout<<"CVCriterion CV_RANDOM"<<endl;
 			// random
-			//double * tabRandom = new double[weightTotal];
-			//int64_t * tabIndex = new int64_t[weightTotal];
-          std::unique_ptr<double[]> tabRandom(new double[weightTotal]);
-		  std::unique_ptr<int64_t[]> tabIndex(new int64_t[weightTotal]);
+			//float * tabRandom = new float[weightTotal];
+			//int * tabIndex = new int[weightTotal];
+          std::unique_ptr<float[]> tabRandom(new float[weightTotal]);
+		  std::unique_ptr<int[]> tabIndex(new int[weightTotal]);
 			index = 0;
 			for (i = 0; i < nbSample; i++) {
 				sumWeight = 0.0;
@@ -174,11 +174,11 @@ void CVCriterion::createCVBlocks() {
 			}
 			quickSortWithOrder(tabRandom.get(), tabIndex.get(), 0, (weightTotal) - 1);
 
-			int64_t nbElt = (int64_t) (floor(((double) (weightTotal)) / (double) (_nbCVBlock)));
-			int64_t remaining = weightTotal - nbElt*_nbCVBlock;
-			int64_t index = 0;
-			for (int64_t v = 0; v < _nbCVBlock; v++) {
-				int64_t weightTotalInCVBlock = nbElt;
+			int nbElt = (int) (floor(((float) (weightTotal)) / (float) (_nbCVBlock)));
+			int remaining = weightTotal - nbElt*_nbCVBlock;
+			int index = 0;
+			for (int v = 0; v < _nbCVBlock; v++) {
+				int weightTotalInCVBlock = nbElt;
 				// List
 				list<TWeightedIndividual*> listCVBlock;
 				list<TWeightedIndividual*>::iterator listIterator;
@@ -288,7 +288,7 @@ void CVCriterion::createCVBlocks() {
 			list<TWeightedIndividual*>::iterator listEnd;
 
 
-			int64_t v = 0, i, w, nbTraited = 0;
+			int v = 0, i, w, nbTraited = 0;
 			for (i = 0; i < nbSample; i++) {
 				for (w = 0; w < weight[i]; w++) {
 					// add i in listCVBlock[v]
@@ -355,7 +355,7 @@ void CVCriterion::createCVBlocks() {
 				_tabCVBlock[v]._nbSample = listCVBlock[v].size();
 				_tabCVBlock[v]._tabWeightedIndividual =
 						new TWeightedIndividual[_tabCVBlock[v]._nbSample];
-				double weightTotalBlockV = 0;
+				float weightTotalBlockV = 0;
 
 				listBegin = listCVBlock[v].begin();
 				listEnd = listCVBlock[v].end();
@@ -395,7 +395,7 @@ void CVCriterion::createCVBlocks() {
 	 for (v=0; v<_nbCVBlock; v++){
 	   cout<<endl<<"bloc "<<v<<" taille : "<<_tabCVBlock[v]._nbSample<<endl;
 	   cout<<"bloc "<<v<<" poids total : "<<_tabCVBlock[v]._weightTotal<<endl;
-	   for (int64_t i=0; i<_tabCVBlock[v]._nbSample; i++){
+	   for (int i=0; i<_tabCVBlock[v]._nbSample; i++){
 		 cout<<"individu n : "<<_tabCVBlock[v]._tabWeightedIndividual[i].val
 	     <<" - poids : "<<_tabCVBlock[v]._tabWeightedIndividual[i].weight<<endl;
    }

@@ -50,7 +50,7 @@ public:
 	ClusteringInput(const ClusteringInput & CInput);
 
 	/// Initialisation constructor
-	ClusteringInput(const std::vector<int64_t> & iNbCluster,
+	ClusteringInput(const std::vector<int> & iNbCluster,
 			const DataDescription & iDataDescription);
 
 	/// Destructor

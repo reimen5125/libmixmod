@@ -45,7 +45,7 @@ public:
 	MAPAlgo(const MAPAlgo & mapAlgo);
 
 	/// Constructor
-	MAPAlgo(AlgoStopName algoStopName, double epsilon, int64_t nbIteration);
+	MAPAlgo(AlgoStopName algoStopName, float epsilon, int nbIteration);
 
 	/// Destructor
 	virtual ~MAPAlgo();
@@ -59,25 +59,25 @@ public:
 
 	virtual const AlgoName getAlgoName() const;
 
-	virtual void setEpsilon(double epsilon);
+	virtual void setEpsilon(float epsilon);
 
-	virtual const double getEpsilon() const;
+	virtual const float getEpsilon() const;
 
 protected:
 
 	/// Number of clusters
-	int64_t _nbCluster;
+	int _nbCluster;
 };
 
 inline const AlgoName MAPAlgo::getAlgoName() const {
 	return MAP;
 }
 
-inline const double MAPAlgo::getEpsilon() const {
+inline const float MAPAlgo::getEpsilon() const {
 	THROW(OtherException, internalMixmodError);
 }
 
-inline void MAPAlgo::setEpsilon(double eps) {
+inline void MAPAlgo::setEpsilon(float eps) {
 	THROW(OtherException, internalMixmodError);
 }
 

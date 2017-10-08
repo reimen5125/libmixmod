@@ -30,7 +30,7 @@ namespace XEM {
 IndividualColumnDescription::IndividualColumnDescription() : ColumnDescription() {
 }
 
-IndividualColumnDescription::IndividualColumnDescription(int64_t index) 
+IndividualColumnDescription::IndividualColumnDescription(int index) 
 : ColumnDescription(index) 
 {
 	_index = index;

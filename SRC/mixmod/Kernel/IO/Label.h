@@ -53,7 +53,7 @@ public:
 	Label();
 
 	/// Constructor
-	Label(int64_t nbSample);
+	Label(int nbSample);
 
 	/// Constructor
 	Label(Model * model);
@@ -70,46 +70,46 @@ public:
 	void edit(std::ostream & stream) const;
 
 	/// get label
-	int64_t * getTabLabel() const;
+	int * getTabLabel() const;
 
 	/// get label
-	std::vector<int64_t> const & getLabel() const;
+	std::vector<int> const & getLabel() const;
 
 	/// set Label
-	void setLabel(int64_t * label, int64_t nbSample);
-	void setLabel(std::vector<int64_t> label, int64_t nbSample);
+	void setLabel(int * label, int nbSample);
+	void setLabel(std::vector<int> label, int nbSample);
 
 	/// Selector
-	int64_t getNbSample() const;
+	int getNbSample() const;
 
 	// get Error Rate
-	const double getErrorRate(std::vector<int64_t> const & label) const;
+	const float getErrorRate(std::vector<int> const & label) const;
 
 	// get getClassificationTab
-	int64_t** getClassificationTab(std::vector<int64_t> const & label, int64_t nbCluster) const;
+	int** getClassificationTab(std::vector<int> const & label, int nbCluster) const;
 
 	///input stream
-	void input(std::ifstream & flux, int64_t nbCluster);
+	void input(std::ifstream & flux, int nbCluster);
 	void input(const LabelDescription & labelDescription);
 
 private:
 
 	/// Number of samples
-	int64_t _nbSample;
+	int _nbSample;
 
-	std::vector<int64_t> _label;
+	std::vector<int> _label;
 
 };
 
-inline std::vector<int64_t> const & Label::getLabel() const {
+inline std::vector<int> const & Label::getLabel() const {
 	return _label;
 }
 
-inline int64_t Label::getNbSample() const {
+inline int Label::getNbSample() const {
 	return _nbSample;
 }
 
-inline void Label::setLabel(std::vector<int64_t> label, int64_t nbSample) {
+inline void Label::setLabel(std::vector<int> label, int nbSample) {
 	_nbSample = nbSample;
 	_label = label;
 }

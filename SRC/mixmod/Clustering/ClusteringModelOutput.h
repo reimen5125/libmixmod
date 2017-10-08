@@ -46,13 +46,13 @@ public:
 	ClusteringModelOutput(Model * estimation);
 
 	/// Initialization Constructor 2
-	ClusteringModelOutput(ModelType & modelType, int64_t nbCluster, 
-			std::vector<CriterionOutput*> & criterionOutput, double likelihood, 
+	ClusteringModelOutput(ModelType & modelType, int nbCluster, 
+			std::vector<CriterionOutput*> & criterionOutput, float likelihood, 
 			ParameterDescription & parameterDescription, LabelDescription & labelDescription,  
 			ProbaDescription & probaDescription);
 
 	/// Initialization Constructor 3
-	ClusteringModelOutput(ModelType & modelType, int64_t nbCluster, Exception& error);
+	ClusteringModelOutput(ModelType & modelType, int nbCluster, Exception& error);
 
 	/// Copy Constructor
 	ClusteringModelOutput(const ClusteringModelOutput & cModelOutput);

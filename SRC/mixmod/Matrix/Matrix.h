@@ -45,52 +45,52 @@ public:
 	/// Default constructor
 	Matrix();
 
-	Matrix(int64_t pbDimension);
+	Matrix(int pbDimension);
 
 	Matrix(Matrix * A);
 
 	/// Desctructor
 	virtual ~Matrix();
 
-	int64_t getPbDimension();
+	int getPbDimension();
 
 	// TODO static
-	int64_t _s_pbDimension;
+	int _s_pbDimension;
 
 
 	/// fill this with the inverse matrix of A
 	virtual void inverse(Matrix * & A) = 0;
 
-	virtual void compute_product_Lk_Wk(Matrix* Wk, double L) = 0;
+	virtual void compute_product_Lk_Wk(Matrix* Wk, float L) = 0;
 
 	/// compute (x - mean)' this (x - mean) 
-	virtual double norme(double * xMoinsMean) = 0;
+	virtual float norme(float * xMoinsMean) = 0;
 
 	/// compute determinant
-	virtual double determinant(Exception& errorType) = 0;
+	virtual float determinant(Exception& errorType) = 0;
 
 	/// compute trace
-	virtual double computeTrace() = 0;
+	virtual float computeTrace() = 0;
 
 	/// this will be A / d
-	virtual void equalToMatrixDividedByDouble(Matrix * A, double d) = 0;
+	virtual void equalToMatrixDividedByFloat(Matrix * A, float d) = 0;
 
 	/// this will be A * d
-	virtual void equalToMatrixMultiplyByDouble(Matrix*D, double d) = 0;
+	virtual void equalToMatrixMultiplyByFloat(Matrix*D, float d) = 0;
 
 
 	/// add :  cik * xMoinsMean * xMoinsMean'  to this
-	virtual void add(double * xMoinsMean, double cik) = 0;
+	virtual void add(float * xMoinsMean, float cik) = 0;
 
 	// add : diag( cik * xMoinsMean * xMoinsMean' )  to this
-	//virtual void addDiag(double * xMoinsMean, double cik) = 0;
+	//virtual void addDiag(float * xMoinsMean, float cik) = 0;
 
 	/// this = d * Identity
-	virtual void operator=(const double& d) = 0;
+	virtual void operator=(const float& d) = 0;
 	/// this = this / (d * Identity)
-	virtual void operator/=(const double& d) = 0;
+	virtual void operator/=(const float& d) = 0;
 	/// this = this * (d * Identity)
-	virtual void operator*=(const double& d) = 0;
+	virtual void operator*=(const float& d) = 0;
 	/// this = this + matrix
 	virtual void operator+=(Matrix* M) = 0;
 	/// this = matrix
@@ -100,62 +100,62 @@ public:
 	void edit(std::ostream& flux, std::string before);
 	/// read matrix from an input file
 	virtual void input(std::ifstream & fi) = 0;
-	virtual void input(double ** variances) = 0;
+	virtual void input(float ** variances) = 0;
 
 	// pour ne plus faire de transtypages
 
 	/// return store of a spherical matrix
-	virtual double putSphericalValueInStore(double & store) = 0;
+	virtual float putSphericalValueInStore(float & store) = 0;
 	/// add store of a spherical matrix
-	virtual double addSphericalValueInStore(double & store) = 0;
+	virtual float addSphericalValueInStore(float & store) = 0;
 
-	virtual double getSphericalStore() = 0;
+	virtual float getSphericalStore() = 0;
 
 	/// Return store of a diagonal matrix
-	virtual double* putDiagonalValueInStore(double * store) = 0;
+	virtual float* putDiagonalValueInStore(float * store) = 0;
 	/// Add store of a diagonal matrix 
-	virtual double* addDiagonalValueInStore(double * store) = 0;
+	virtual float* addDiagonalValueInStore(float * store) = 0;
 
-	virtual double* getDiagonalStore() = 0;
-
-	/// Return store of a diagonal matrix
-	virtual double* putSymmetricValueInStore(double * store) = 0;
-	/// Add store of a diagonal matrix in a diagonal one
-	virtual double* addSymmetricValueInStore(double * store) = 0;
-
-	virtual double* getSymmetricStore() = 0;
+	virtual float* getDiagonalStore() = 0;
 
 	/// Return store of a diagonal matrix
-	virtual double* putGeneralValueInStore(double * store) = 0;
+	virtual float* putSymmetricValueInStore(float * store) = 0;
 	/// Add store of a diagonal matrix in a diagonal one
-	virtual double* addGeneralValueInStore(double * store) = 0;
+	virtual float* addSymmetricValueInStore(float * store) = 0;
 
-	virtual double* getGeneralStore() = 0;
+	virtual float* getSymmetricStore() = 0;
 
-	virtual double** storeToArray() const = 0;
+	/// Return store of a diagonal matrix
+	virtual float* putGeneralValueInStore(float * store) = 0;
+	/// Add store of a diagonal matrix in a diagonal one
+	virtual float* addGeneralValueInStore(float * store) = 0;
+
+	virtual float* getGeneralStore() = 0;
+
+	virtual float** storeToArray() const = 0;
 
 	/// gives : det(diag(this))
-	virtual double detDiag(Exception& errorType) = 0;
+	virtual float detDiag(Exception& errorType) = 0;
 
 	///compute singular vector decomposition
 	virtual void computeSVD(DiagMatrix* & S, GeneralMatrix* & O) = 0;
 
-	virtual void compute_as__multi_O_S_O(double multi, GeneralMatrix* & O, DiagMatrix *& S) = 0;
-	virtual double trace_this_O_Sm1_O(GeneralMatrix* & O, DiagMatrix* & S) = 0;
-	virtual double compute_trace_W_C(Matrix * C) = 0;
-	virtual void computeShape_as__diag_Ot_this_O(DiagMatrix* & Shape, GeneralMatrix* & Ori, double diviseur = 1.0) = 0;
+	virtual void compute_as__multi_O_S_O(float multi, GeneralMatrix* & O, DiagMatrix *& S) = 0;
+	virtual float trace_this_O_Sm1_O(GeneralMatrix* & O, DiagMatrix* & S) = 0;
+	virtual float compute_trace_W_C(Matrix * C) = 0;
+	virtual void computeShape_as__diag_Ot_this_O(DiagMatrix* & Shape, GeneralMatrix* & Ori, float diviseur = 1.0) = 0;
 	// temporary table of Size pbDimension, comes from XEMGaussianData
 	// used in norme in the General case
-	double * _tmpTab;
+	float * _tmpTab;
 
 	///set store
-	virtual void setSymmetricStore(double * store) = 0;
-	virtual void setGeneralStore(double * store) = 0;
-	virtual void setDiagonalStore(double * store) = 0;
-	virtual void setSphericalStore(double store) = 0;
+	virtual void setSymmetricStore(float * store) = 0;
+	virtual void setGeneralStore(float * store) = 0;
+	virtual void setDiagonalStore(float * store) = 0;
+	virtual void setSphericalStore(float store) = 0;
 };
 
-inline int64_t Matrix::getPbDimension() {
+inline int Matrix::getPbDimension() {
 	return _s_pbDimension;
 }
 

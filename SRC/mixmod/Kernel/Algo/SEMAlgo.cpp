@@ -43,7 +43,7 @@ SEMAlgo::SEMAlgo(const SEMAlgo & semAlgo) : Algo(semAlgo) {
 //------------
 // Constructor
 //------------
-SEMAlgo::SEMAlgo(AlgoStopName algoStopName, int64_t nbIteration)
+SEMAlgo::SEMAlgo(AlgoStopName algoStopName, int nbIteration)
 : Algo(algoStopName, defaultEpsilon, nbIteration) {
 }
 
@@ -62,7 +62,7 @@ Algo * SEMAlgo::clone() {
 //----------------
 // setNbIteration
 //----------------
-void SEMAlgo::setNbIteration(int64_t nbIteration) {
+void SEMAlgo::setNbIteration(int nbIteration) {
 	if (nbIteration < minNbIterationForSEM) {
 		THROW(InputException, nbIterationTooSmall);
 	}
@@ -98,11 +98,11 @@ void SEMAlgo::run(Model *& model) {
 	
 	//Model * bestModel = new Model(model);
     std::unique_ptr<Model>  bestModel(new Model(model));
-	double bestLL = bestModel->getLogLikelihood(true); // true : to update fik
+	float bestLL = bestModel->getLogLikelihood(true); // true : to update fik
 
 	// others iterations
 	_indexIteration++;
-	double lastLL;
+	float lastLL;
 	while (_indexIteration <= _nbIteration) {
 		model->Estep(); // E Step
 		model->Sstep(); // S Step

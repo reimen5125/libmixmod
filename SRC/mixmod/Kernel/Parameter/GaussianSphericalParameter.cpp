@@ -46,7 +46,7 @@ GaussianSphericalParameter::GaussianSphericalParameter() {
 GaussianSphericalParameter::GaussianSphericalParameter(Model * iModel, ModelType * iModelType) 
 : GaussianEDDAParameter(iModel, iModelType) 
 {
-	int64_t k;
+	int k;
 	_W = new SphericalMatrix(_pbDimension);
 	for (k = 0; k < _nbCluster; k++) {
 		_tabSigma[k] = new SphericalMatrix(_pbDimension); //Id
@@ -62,7 +62,7 @@ GaussianSphericalParameter::GaussianSphericalParameter(
 		const GaussianSphericalParameter * iParameter) 
 : GaussianEDDAParameter(iParameter) 
 {
-	int64_t k;
+	int k;
 
 	_W = new SphericalMatrix((SphericalMatrix *) (iParameter->getW())); // copy constructor
 
@@ -86,14 +86,14 @@ GaussianSphericalParameter::GaussianSphericalParameter(
 GaussianSphericalParameter::~GaussianSphericalParameter() {
 
 	if (_tabSigma) {
-		for (int64_t k = 0; k < _nbCluster; k++) {
+		for (int k = 0; k < _nbCluster; k++) {
 			delete _tabSigma[k];
 			//_tabSigma[k] = NULL;
 		}
 	}
 
 	if (_tabInvSigma) {
-		for (int64_t k = 0; k < _nbCluster; k++) {
+		for (int k = 0; k < _nbCluster; k++) {
 			delete _tabInvSigma[k];
 			// _tabInvSigma[k] = NULL;
 		}
@@ -123,11 +123,11 @@ void GaussianSphericalParameter::computeTabSigma() {
 
 	// Initialization
 	GaussianData * data = _model->getGaussianData();
-	double * tabNk = _model->getTabNk();
-	int64_t k;
-	double sigmaValue;
+	float * tabNk = _model->getTabNk();
+	int k;
+	float sigmaValue;
 
-	double totalWeight = data->_weightTotal;
+	float totalWeight = data->_weightTotal;
 
 	// Variance estimator for each of spherical model
 	switch (_modelType->_nameModel) {
@@ -170,35 +170,35 @@ void GaussianSphericalParameter::computeTabSigma() {
 //-------------------
 //getLogLikelihoodOne
 //-------------------
-double GaussianSphericalParameter::getLogLikelihoodOne() const {
+float GaussianSphericalParameter::getLogLikelihoodOne() const {
 
 	/* Compute log-likelihood for one cluster
 	   useful for NEC criterion */
 
 	/* Initialization */
-	int64_t nbSample = _model->getNbSample();
-	int64_t i;
+	int nbSample = _model->getNbSample();
+	int i;
 	GaussianData * data = _model->getGaussianData();
-	double logLikelihoodOne; // Log-likelihood for k=1
-	//double * Mean = new double[_pbDimension];
-    std::unique_ptr<double[]> Mean(new double[_pbDimension]);
-	double ** y = data->_yStore;
-	double * yi;
+	float logLikelihoodOne; // Log-likelihood for k=1
+	//float * Mean = new float[_pbDimension];
+    std::unique_ptr<float[]> Mean(new float[_pbDimension]);
+	float ** y = data->_yStore;
+	float * yi;
 	//SphericalMatrix * Sigma = new SphericalMatrix(_pbDimension);
 	//SphericalMatrix * W = new SphericalMatrix(_pbDimension);
 	std::unique_ptr<SphericalMatrix> Sigma(new SphericalMatrix(_pbDimension));
 	std::unique_ptr<SphericalMatrix> W(new SphericalMatrix(_pbDimension));
-	double norme;
-	double * weight = data->_weight;
+	float norme;
+	float * weight = data->_weight;
 
 	//  Mean Estimator (empirical estimator)
-	double totalWeight = data->_weightTotal;
+	float totalWeight = data->_weightTotal;
 	computeMeanOne(Mean.get(), weight, y, nbSample, totalWeight);
 	weight = data->_weight;
 
 	/* Compute the Cluster Scattering Matrix W */
-	int64_t p; // parcours
-	double * xiMoinsMuk = data->getTmpTabOfSizePbDimension();
+	int p; // parcours
+	float * xiMoinsMuk = data->getTmpTabOfSizePbDimension();
 	for (i = 0; i < nbSample; i++) {
 		yi = y[i];
 		for (p = 0; p < _pbDimension; p++) {
@@ -210,7 +210,7 @@ double GaussianSphericalParameter::getLogLikelihoodOne() const {
 	/* Compute determinant of diag(W) */
 	//  logDet   = W->detDiag(minDeterminantDiagWValueError);  // virtual
 	//  detDiagW = powAndCheckIfNotNull(logDet ,1.0/_pbDimension);
-	Sigma->equalToMatrixDividedByDouble(W.get(), totalWeight); // virtual
+	Sigma->equalToMatrixDividedByFloat(W.get(), totalWeight); // virtual
 
 	// inverse of Sigma
 	//XEMSphericalMatrix * SigmaMoins1 = new XEMSphericalMatrix( _pbDimension);
@@ -223,7 +223,7 @@ double GaussianSphericalParameter::getLogLikelihoodOne() const {
 	//cout<<"S-1"<<endl;
 	//SigmaMoins1->edit(cout,"");
 	NumericException error = NumericException(minDeterminantSigmaValueError);
-	double detSigma = Sigma->determinant(error); // virtual
+	float detSigma = Sigma->determinant(error); // virtual
 
 	// Compute the log-likelihood for one cluster (k=1)
 	logLikelihoodOne = 0.0;
@@ -251,13 +251,13 @@ double GaussianSphericalParameter::getLogLikelihoodOne() const {
 //----------------
 //getFreeParameter
 //----------------
-int64_t GaussianSphericalParameter::getFreeParameter() const {
-	int64_t nbParameter; // Number of parameters //
-	int64_t k = _nbCluster; // Sample size          //
-	int64_t d = _pbDimension; // Sample dimension     //
+int GaussianSphericalParameter::getFreeParameter() const {
+	int nbParameter; // Number of parameters //
+	int k = _nbCluster; // Sample size          //
+	int d = _pbDimension; // Sample dimension     //
 
-	int64_t alphaR = k*d; // alpha for for models with Restrainct proportions (Gaussian_p_...)
-	int64_t alphaF = (k * d) + k - 1; // alpha for models with Free proportions (Gaussian_pk_...)
+	int alphaR = k*d; // alpha for for models with Restrainct proportions (Gaussian_p_...)
+	int alphaF = (k * d) + k - 1; // alpha for models with Free proportions (Gaussian_pk_...)
 
 	switch (_modelType->_nameModel) {
 	case (Gaussian_p_L_I):

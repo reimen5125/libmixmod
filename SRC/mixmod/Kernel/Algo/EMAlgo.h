@@ -45,7 +45,7 @@ public:
 	EMAlgo(const EMAlgo & emAlgo);
 
 	/// Constructor
-	EMAlgo(AlgoStopName algoStopName, double epsilon, int64_t nbIteration);
+	EMAlgo(AlgoStopName algoStopName, float epsilon, int nbIteration);
 
 	/// Destructor
 	virtual ~EMAlgo();

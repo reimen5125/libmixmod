@@ -47,10 +47,10 @@ GaussianGeneralParameter::GaussianGeneralParameter() {
 GaussianGeneralParameter::GaussianGeneralParameter(Model * iModel, ModelType * iModelType) 
 : GaussianEDDAParameter(iModel, iModelType) 
 {
-	int64_t k;
+	int k;
 	_tabShape = new DiagMatrix*[_nbCluster];
 	_tabOrientation = new GeneralMatrix*[_nbCluster];
-	_tabLambda = new double [_nbCluster];
+	_tabLambda = new float [_nbCluster];
 	_W = new SymmetricMatrix(_pbDimension); //Id
 
 	for (k = 0; k < _nbCluster; k++) {
@@ -69,17 +69,17 @@ GaussianGeneralParameter::GaussianGeneralParameter(Model * iModel, ModelType * i
 //constructeur avec une initialisation USER from file
 //-------------------------------------------------------------------------------------
 GaussianGeneralParameter::GaussianGeneralParameter(
-		int64_t iNbCluster, 
-		int64_t iPbDimension, 
+		int iNbCluster, 
+		int iPbDimension, 
 		ModelType * iModelType, 
 		std::string & iFileName)
 : GaussianEDDAParameter(iNbCluster, iPbDimension, iModelType) 
 {
-	int64_t k;
+	int k;
 	__storeDim = _pbDimension * (_pbDimension + 1) / 2;
 	_tabShape = new DiagMatrix*[_nbCluster];
 	_tabOrientation = new GeneralMatrix*[_nbCluster];
-	_tabLambda = new double [_nbCluster];
+	_tabLambda = new float [_nbCluster];
 
 	for (k = 0; k < _nbCluster; k++) {
 		_tabShape[k] = new DiagMatrix(_pbDimension); //Id
@@ -111,19 +111,19 @@ GaussianGeneralParameter::GaussianGeneralParameter(
 //constructeur avec une initialisation USER from file for heterogeneous models
 //-------------------------------------------------------------------------------------
 GaussianGeneralParameter::GaussianGeneralParameter(
-		int64_t iNbCluster, 
-		int64_t iPbDimension, 
+		int iNbCluster, 
+		int iPbDimension, 
 		ModelType * iModelType, 
 		std::string & iFileName,
-    int64_t iNbVariable_binary,
-    std::vector< int64_t > inbFactor)
+    int iNbVariable_binary,
+    std::vector< int > inbFactor)
 : GaussianEDDAParameter(iNbCluster, iPbDimension, iModelType) 
 {
-	int64_t k;
+	int k;
 	__storeDim = _pbDimension * (_pbDimension + 1) / 2;
 	_tabShape = new DiagMatrix*[_nbCluster];
 	_tabOrientation = new GeneralMatrix*[_nbCluster];
-	_tabLambda = new double [_nbCluster];
+	_tabLambda = new float [_nbCluster];
 
 	for (k = 0; k < _nbCluster; k++) {
 		_tabShape[k] = new DiagMatrix(_pbDimension); //Id
@@ -154,19 +154,19 @@ GaussianGeneralParameter::GaussianGeneralParameter(
 //constructeur avec une initialisation USER from containers
 //-------------------------------------------------------------------------------------
 GaussianGeneralParameter::GaussianGeneralParameter(
-		int64_t iNbCluster, 
-		int64_t iPbDimension, 
+		int iNbCluster, 
+		int iPbDimension, 
 		ModelType * iModelType, 
-		double * proportions, 
-		double ** means, 
-		double *** variances)
+		float * proportions, 
+		float ** means, 
+		float *** variances)
 : GaussianEDDAParameter(iNbCluster, iPbDimension, iModelType) 
 {
-	int64_t k;
+	int k;
 	__storeDim = _pbDimension * (_pbDimension + 1) / 2;
 	_tabShape = new DiagMatrix*[_nbCluster];
 	_tabOrientation = new GeneralMatrix*[_nbCluster];
-	_tabLambda = new double [_nbCluster];
+	_tabLambda = new float [_nbCluster];
 
 	for (k = 0; k < _nbCluster; k++) {
 		_tabShape[k] = new DiagMatrix(_pbDimension); //Id
@@ -192,14 +192,14 @@ GaussianGeneralParameter::GaussianGeneralParameter(
 GaussianGeneralParameter::GaussianGeneralParameter(const GaussianGeneralParameter * iParameter) 
 : GaussianEDDAParameter(iParameter) 
 {
-	int64_t k;
+	int k;
 	__storeDim = _pbDimension * (_pbDimension + 1) / 2;
 	_tabShape = new DiagMatrix*[_nbCluster];
 	_tabOrientation = new GeneralMatrix*[_nbCluster];
-	_tabLambda = new double[_nbCluster];
+	_tabLambda = new float[_nbCluster];
 	DiagMatrix ** iTabShape = iParameter->getTabShape();
 	GeneralMatrix ** iTabOrientation = iParameter->getTabOrientation();
-	double * iTabLambda = iParameter->getTabLambda();
+	float * iTabLambda = iParameter->getTabLambda();
 	Matrix ** iTabSigma = iParameter->getTabSigma();
 	Matrix ** iTabInvSigma = iParameter->getTabInvSigma();
 	Matrix ** iTabWk = iParameter->getTabWk();
@@ -224,7 +224,7 @@ GaussianGeneralParameter::GaussianGeneralParameter(const GaussianGeneralParamete
 /* Destructor */
 /**************/
 GaussianGeneralParameter::~GaussianGeneralParameter() {
-	int64_t k;
+	int k;
 
 	if (_tabShape) {
 		for (k = 0; k < _nbCluster; k++) {
@@ -269,7 +269,7 @@ GaussianGeneralParameter::~GaussianGeneralParameter() {
 // reset to default values
 //------------------------
 void GaussianGeneralParameter::reset() {
-	int64_t k;
+	int k;
 	for (k = 0; k < _nbCluster; k++) {
 		*(_tabShape[k]) = 1.0;
 		*(_tabOrientation[k]) = 1.0;
@@ -296,8 +296,8 @@ void GaussianGeneralParameter::initUSER(Parameter * iParam) {
 	GaussianGeneralParameter * param = (GaussianGeneralParameter *) iParam;
 	DiagMatrix ** iTabShape = param->getTabShape();
 	GeneralMatrix ** iTabOrientation = param->getTabOrientation();
-	double * iTabLambda = param->getTabLambda();
-	int64_t k;
+	float * iTabLambda = param->getTabLambda();
+	int k;
 	for (k = 0; k < _nbCluster; k++) {
 		(*_tabShape[k]) = (iTabShape[k]); // copy constructor
 		(* _tabOrientation[k]) = iTabOrientation[k]; // copy constructor
@@ -309,11 +309,11 @@ void GaussianGeneralParameter::initUSER(Parameter * iParam) {
 /* computeTabSigma_L_C */
 /***********************/
 void GaussianGeneralParameter::computeTabSigma_L_C() {
-	int64_t k;
-	double totalWeight = (_model->getGaussianData())->_weightTotal;
+	int k;
+	float totalWeight = (_model->getGaussianData())->_weightTotal;
 	for (k = 0; k < _nbCluster; k++) {
 		//Sigma_k = W / totalWeight
-		_tabSigma[k]->equalToMatrixDividedByDouble(_W, totalWeight);
+		_tabSigma[k]->equalToMatrixDividedByFloat(_W, totalWeight);
 	}
 }
 
@@ -321,11 +321,11 @@ void GaussianGeneralParameter::computeTabSigma_L_C() {
 /* computeTabSigma_Lkk_Ck */
 /*************************/
 void GaussianGeneralParameter::computeTabSigma_Lk_Ck() {
-	int64_t k;
-	double * tabNk = _model->getTabNk();
+	int k;
+	float * tabNk = _model->getTabNk();
 	for (k = 0; k < _nbCluster; k++) {
 		// Sigma_k = W_k / n_k
-		_tabSigma[k]->equalToMatrixDividedByDouble(_tabWk[k], tabNk[k]);
+		_tabSigma[k]->equalToMatrixDividedByFloat(_tabWk[k], tabNk[k]);
 	}
 }
 
@@ -333,13 +333,13 @@ void GaussianGeneralParameter::computeTabSigma_Lk_Ck() {
 /* computeTabSigma_L_Ck */
 /************************/
 void GaussianGeneralParameter::computeTabSigma_L_Ck() {
-	double lambda = 0.0;
-	int64_t k;
-	double logDet;
+	float lambda = 0.0;
+	int k;
+	float logDet;
 	GaussianData * data = _model->getGaussianData();
-	double totalWeight = data->_weightTotal;
-	double detWk_k, tmp;
-	double * detWk = new double[_nbCluster];
+	float totalWeight = data->_weightTotal;
+	float detWk_k, tmp;
+	float * detWk = new float[_nbCluster];
 
 	try {
 		for (k = 0; k < _nbCluster; k++) {
@@ -358,7 +358,7 @@ void GaussianGeneralParameter::computeTabSigma_L_Ck() {
 		for (k = 0; k < _nbCluster; k++) {
 			_tabLambda[k] = lambda;
 			tmp = detWk[k] / lambda;
-			_tabSigma[k]->equalToMatrixDividedByDouble(_tabWk[k], tmp); //Sigma_k = Wk / tmp
+			_tabSigma[k]->equalToMatrixDividedByFloat(_tabWk[k], tmp); //Sigma_k = Wk / tmp
 		}
 
 		delete [] detWk;
@@ -377,12 +377,12 @@ void GaussianGeneralParameter::computeTabSigma_L_Ck() {
 void GaussianGeneralParameter::computeTabSigma_L_Dk_A_Dk() {
 
 	//Ma modification
-	int64_t k;
+	int k;
 	GaussianData * data = _model->getGaussianData();
 	DiagMatrix* Shape = new DiagMatrix(_pbDimension, 0.0); //0.0
-	double logDet;
-	double detShape;
-	double totalWeight = data->_weightTotal;
+	float logDet;
+	float detShape;
+	float totalWeight = data->_weightTotal;
 	// SVD Decomposition of Cluster Scattering Matrix (Symmetric) Wk: Wk=U*S*U'
 
 	try {
@@ -406,7 +406,7 @@ void GaussianGeneralParameter::computeTabSigma_L_Dk_A_Dk() {
 			}
 
 			// _tabShape[k] = somme sur k de _tabShape / det. de la somme sur k de _tabShape[k]
-			_tabShape[k]->equalToMatrixDividedByDouble(Shape, detShape);
+			_tabShape[k]->equalToMatrixDividedByFloat(Shape, detShape);
 			_tabSigma[k]->compute_as__multi_O_S_O(_tabLambda[k], _tabOrientation[k], _tabShape[k]);
 		}
 
@@ -422,12 +422,12 @@ void GaussianGeneralParameter::computeTabSigma_L_Dk_A_Dk() {
 /* computeTabSigma_Lk_Dk_A_Dk() */
 /********************************/
 void GaussianGeneralParameter::computeTabSigma_Lk_Dk_A_Dk() {
-	int64_t k;
-	int64_t iter = 5;
+	int k;
+	int iter = 5;
 
 	DiagMatrix* Shape = new DiagMatrix(_pbDimension); //Id
 	DiagMatrix* S = new DiagMatrix(_pbDimension); //Id
-	double * tabNk = _model->getTabNk();
+	float * tabNk = _model->getTabNk();
 
 	DiagMatrix ** tabS = new DiagMatrix*[_nbCluster];
 	GeneralMatrix ** tabU = new GeneralMatrix*[_nbCluster];
@@ -436,8 +436,8 @@ void GaussianGeneralParameter::computeTabSigma_Lk_Dk_A_Dk() {
 		tabU[k] = new GeneralMatrix(_pbDimension); //Id
 	}
 
-	double logDet;
-	double detShape;
+	float logDet;
+	float detShape;
 
 	try {
 		// SVD Decomposition of Cluster Scattering Matrix (Symmetric) Wk: Wk=U*S*U'
@@ -448,7 +448,7 @@ void GaussianGeneralParameter::computeTabSigma_Lk_Dk_A_Dk() {
 
 			(*Shape) = 0.0;
 			for (k = 0; k < _nbCluster; k++) {
-				(S)->equalToMatrixDividedByDouble(tabS[k], _tabLambda[k]);
+				(S)->equalToMatrixDividedByFloat(tabS[k], _tabLambda[k]);
 				(*Shape) += S;
 			}
 
@@ -459,7 +459,7 @@ void GaussianGeneralParameter::computeTabSigma_Lk_Dk_A_Dk() {
 
 			for (k = 0; k < _nbCluster; k++) {
 				//A=_tabShape = somme sur k 1/lambdak*Shape
-				_tabShape[k]->equalToMatrixDividedByDouble(Shape, detShape);
+				_tabShape[k]->equalToMatrixDividedByFloat(Shape, detShape);
 				_tabLambda[k] = _tabWk[k]->trace_this_O_Sm1_O(tabU[k], _tabShape[k]);
 				_tabLambda[k] /= (_pbDimension * tabNk[k]);
 
@@ -516,14 +516,14 @@ void GaussianGeneralParameter::computeTabSigma_Lk_Dk_A_Dk() {
 /************************/
 void GaussianGeneralParameter::computeTabSigma_Lk_C() {
 
-	int64_t k;
-	double * tabNk = _model->getTabNk();
+	int k;
+	float * tabNk = _model->getTabNk();
 	SymmetricMatrix * C = new SymmetricMatrix(_pbDimension); //Id
 	Matrix * R = new SymmetricMatrix(_pbDimension);
 	Matrix * Inv;
 	Inv = new SymmetricMatrix(_pbDimension);
-	double logDet, detR;
-	int64_t iter = 5;
+	float logDet, detR;
+	int iter = 5;
 
 	try {
 
@@ -538,7 +538,7 @@ void GaussianGeneralParameter::computeTabSigma_Lk_C() {
 			logDet = R->determinant(error);
 			detR = powAndCheckIfNotNull(logDet, 1.0 / _pbDimension);
 			// C = somme sur k de 1/lambdak * Wk / det (somme sur k de 1/lambdak * Wk )^(1/d)
-			C->equalToMatrixDividedByDouble(R, detR);
+			C->equalToMatrixDividedByFloat(R, detR);
 
 			C->inverse(Inv);
 			for (k = 0; k < _nbCluster; k++) {
@@ -581,11 +581,11 @@ void GaussianGeneralParameter::computeTabSigma_Lk_C() {
 /******************************/
 void GaussianGeneralParameter::computeTabSigma_L_D_Ak_D() {
 	GaussianData * data = _model->getGaussianData();
-	int64_t k;
-	int64_t iter = 5;
-	double diff, FOld, F;
-	double sumTraceM = 0.0;
-	double lambda, logDet, DetDiagQtmp;
+	int k;
+	int iter = 5;
+	float diff, FOld, F;
+	float sumTraceM = 0.0;
+	float lambda, logDet, DetDiagQtmp;
 	DiagMatrix * Shape_0 = new DiagMatrix(_pbDimension); //Id
 
 	/* Flury algorithm                                                          */
@@ -655,8 +655,8 @@ void GaussianGeneralParameter::computeTabSigma_L_D_Ak_D() {
 /*****************************/
 void GaussianGeneralParameter::computeTabSigma_Lk_D_Ak_D() {
 
-	double * tabNk = _model->getTabNk();
-	int64_t k, iter = 5;
+	float * tabNk = _model->getTabNk();
+	int k, iter = 5;
 
 	/* Flury algorithm                                                          */
 	/* SVD Decomposition of Cluster Scattering Matrix (Symmetric) Wk: Wk=U*S*U' */
@@ -664,9 +664,9 @@ void GaussianGeneralParameter::computeTabSigma_Lk_D_Ak_D() {
 
 	_tabWk[0] -> computeSVD(_tabShape[0], _tabOrientation[0]);
 
-	double diff = 10.0;
-	double F = 0.0;
-	double FOld;
+	float diff = 10.0;
+	float F = 0.0;
+	float FOld;
 
 	/* Iterative procedure 1 */
 	while ((iter) && (diff > defaultFluryEpsilon)) {
@@ -744,31 +744,31 @@ void GaussianGeneralParameter::computeTabSigma() {
 // Flury Algorithm
 //----------------
 // TODO: provide references
-double GaussianGeneralParameter::flury(double F) {
+float GaussianGeneralParameter::flury(float F) {
 
 	// coefficients de la matrice a diagonaliser
 	//       [ a     b ]
 	//  M  = [         ]
 	//       [ b     c ]
-	double a, b, c;
+	float a, b, c;
 	// plus petite valeur propre
-	double eigenValueMoins;
+	float eigenValueMoins;
 	// vecteur propre associe a eigenValueMoins
-	double eigenVectorMoins_1;
-	double eigenVectorMoins_2;
-	int64_t k, il, im, iter = 0;
-	double diff = 10;
-	double FOld, tmp, tmp2, termesHorsDiag, termesDiag;
-	double * Wk_store;
-	int64_t p, q, r;
-	double * tabShape_k_store;
-	double * Ori = _tabOrientation[0]->getStore();
+	float eigenVectorMoins_1;
+	float eigenVectorMoins_2;
+	int k, il, im, iter = 0;
+	float diff = 10;
+	float FOld, tmp, tmp2, termesHorsDiag, termesDiag;
+	float * Wk_store;
+	int p, q, r;
+	float * tabShape_k_store;
+	float * Ori = _tabOrientation[0]->getStore();
 	GaussianData * data = _model->getGaussianData();
-	double * D_im = data->getTmpTabOfSizePbDimension();
-	//double * D_il = new double[_pbDimension];
-	std::unique_ptr<double[]> D_il(new double[_pbDimension]);    
-	int64_t il_p, im_p;
-	double iSim_iSil_k;
+	float * D_im = data->getTmpTabOfSizePbDimension();
+	//float * D_il = new float[_pbDimension];
+	std::unique_ptr<float[]> D_il(new float[_pbDimension]);    
+	int il_p, im_p;
+	float iSim_iSil_k;
 
 	while ((iter < maxFluryIter) && (diff > defaultFluryEpsilon)) {
 
@@ -886,35 +886,35 @@ double GaussianGeneralParameter::flury(double F) {
 //-------------------
 //getLogLikelihoodOne
 //-------------------
-double GaussianGeneralParameter::getLogLikelihoodOne() const {
+float GaussianGeneralParameter::getLogLikelihoodOne() const {
 	/* Compute log-likelihood for one cluster
 	   useful for NEC criterion */
 
 	/* Initialization */
-	int64_t nbSample = _model->getNbSample();
-	int64_t i;
+	int nbSample = _model->getNbSample();
+	int i;
 	GaussianData * data = _model->getGaussianData();
-	double logLikelihoodOne; // Log-likelihood for k=1
-	//double * Mean = new double[_pbDimension];
-	std::unique_ptr<double[]> Mean(new double[_pbDimension]);
-	double ** y = data->_yStore;
-	double * yi;
+	float logLikelihoodOne; // Log-likelihood for k=1
+	//float * Mean = new float[_pbDimension];
+	std::unique_ptr<float[]> Mean(new float[_pbDimension]);
+	float ** y = data->_yStore;
+	float * yi;
 	//SymmetricMatrix * Sigma = new SymmetricMatrix(_pbDimension); //Id
 	//SymmetricMatrix * W = new SymmetricMatrix(_pbDimension, 0.0); // 0.0
 	std::unique_ptr<SymmetricMatrix> Sigma(new SymmetricMatrix(_pbDimension)); //Id
 	std::unique_ptr<SymmetricMatrix> W(new SymmetricMatrix(_pbDimension, 0.0)); // 0.0
-	double norme;
-	double * weight = data->_weight;
+	float norme;
+	float * weight = data->_weight;
 
 	//  Mean Estimator (empirical estimator)
-	double totalWeight = data->_weightTotal;
+	float totalWeight = data->_weightTotal;
 	computeMeanOne(Mean.get(), weight, y, nbSample, totalWeight);
 	weight = data->_weight;
 
 	/* Compute the Cluster Scattering Matrix W */
 
-	int64_t p; // parcours
-	double * xiMoinsMuk = data->getTmpTabOfSizePbDimension();
+	int p; // parcours
+	float * xiMoinsMuk = data->getTmpTabOfSizePbDimension();
 
 	for (i = 0; i < nbSample; i++) {
 		yi = y[i];
@@ -927,7 +927,7 @@ double GaussianGeneralParameter::getLogLikelihoodOne() const {
 	//  logDet   = W->detDiag(minDeterminantDiagWValueError);  // virtual
 	//  detDiagW = powAndCheckIfNotNull(logDet ,1.0/_pbDimension);
 
-	Sigma->equalToMatrixDividedByDouble(W.get(), totalWeight); // virtual
+	Sigma->equalToMatrixDividedByFloat(W.get(), totalWeight); // virtual
 
 	// inverse of Sigma
 
@@ -937,7 +937,7 @@ double GaussianGeneralParameter::getLogLikelihoodOne() const {
 	Sigma->inverse(SigmaMoins1_p);
     std::unique_ptr<Matrix> SigmaMoins1(SigmaMoins1_p); //only for a safe deletion of SigmaMoins1_p
 	NumericException error = NumericException(minDeterminantSigmaValueError);
-	double detSigma = Sigma->determinant(error); // virtual
+	float detSigma = Sigma->determinant(error); // virtual
 
 	// Compute the log-likelihood for one cluster (k=1)
 	logLikelihoodOne = 0.0;
@@ -966,14 +966,14 @@ double GaussianGeneralParameter::getLogLikelihoodOne() const {
 //----------------
 //getFreeParameter
 //----------------
-int64_t GaussianGeneralParameter::getFreeParameter() const {
-	int64_t nbParameter; // Number of parameters //
-	int64_t k = _nbCluster; // Sample size          //
-	int64_t d = _pbDimension; // Sample dimension     //
+int GaussianGeneralParameter::getFreeParameter() const {
+	int nbParameter; // Number of parameters //
+	int k = _nbCluster; // Sample size          //
+	int d = _pbDimension; // Sample dimension     //
 
-	int64_t alphaR = k*d; // alpha for for models with Restrainct proportions (Gaussian_p_...)
-	int64_t alphaF = (k * d) + k - 1; // alpha for models with Free proportions (Gaussian_pk_...)
-	int64_t beta = d * (d + 1) / 2;
+	int alphaR = k*d; // alpha for for models with Restrainct proportions (Gaussian_p_...)
+	int alphaF = (k * d) + k - 1; // alpha for models with Free proportions (Gaussian_pk_...)
+	int beta = d * (d + 1) / 2;
 
 	switch (_modelType->_nameModel) {
 	case (Gaussian_p_L_C):

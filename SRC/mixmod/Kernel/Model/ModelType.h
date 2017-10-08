@@ -42,7 +42,7 @@ public:
 	ModelType();
 
 	// constructor
-	ModelType(ModelName name, int64_t nbSubDimensionFree = 0);
+	ModelType(ModelName name, int nbSubDimensionFree = 0);
 
 	// copy constructor
 	ModelType(const ModelType & iModelType);
@@ -54,7 +54,7 @@ public:
 	bool operator ==(const ModelType & modelType) const;
 
 	/// Input model type
-	void input(std::ifstream & fi, int64_t nbCluster);
+	void input(std::ifstream & fi, int nbCluster);
 
 	/// name of the model
 	ModelName _nameModel;
@@ -62,36 +62,36 @@ public:
 	ModelType* clone();
 
 	//// list of number of subDimensionEqual
-	//int64_t _nbSubDimensionEqual;
+	//int _nbSubDimensionEqual;
 	//// list of number of subDimensionFree
-	//int64_t _nbSubDimensionFree;
+	//int _nbSubDimensionFree;
 
 	/// list of subDimensionEqual
-	int64_t _subDimensionEqual;
+	int _subDimensionEqual;
 
 	/// _nbSubDimensionFree : size of array _tabSubDimensionFree
-	int64_t _nbSubDimensionFree;
+	int _nbSubDimensionFree;
 
 	/// array of subDimensionFree
-	int64_t * _tabSubDimensionFree;
+	int * _tabSubDimensionFree;
 
 	/// getModelName
 	const ModelName & getModelName() const;
 
 	/// getSubDimensionEqual
-	const int64_t & getSubDimensionEqual() const;
+	const int & getSubDimensionEqual() const;
 
 	/// getTabSubDimensionFree
-	const int64_t * getTabSubDimensionFree() const;
+	const int * getTabSubDimensionFree() const;
 
 	///getTabSubDimensionFreeI
-	const int64_t & getTabSubDimensionFreeI(int64_t index) const;
+	const int & getTabSubDimensionFreeI(int index) const;
 
 	/// setSubDimensionFree
-	void setTabSubDimensionFree(int64_t iTabSubDimensionFree, int64_t position);
+	void setTabSubDimensionFree(int iTabSubDimensionFree, int position);
 
 	/// setSubDimensionEqual
-	void setSubDimensionEqual(int64_t iSubDimensionEqual);
+	void setSubDimensionEqual(int iSubDimensionEqual);
 
 	/// <<
 	friend std::ostream & operator<<(std::ostream & fo, ModelType & modelType);
@@ -108,15 +108,15 @@ inline const ModelName & ModelType::getModelName() const {
 	return _nameModel;
 }
 
-inline const int64_t & ModelType::getSubDimensionEqual() const {
+inline const int & ModelType::getSubDimensionEqual() const {
 	return _subDimensionEqual;
 }
 
-inline const int64_t * ModelType::getTabSubDimensionFree() const {
+inline const int * ModelType::getTabSubDimensionFree() const {
 	return _tabSubDimensionFree;
 }
 
-inline const int64_t & ModelType::getTabSubDimensionFreeI(int64_t index) const {
+inline const int & ModelType::getTabSubDimensionFreeI(int index) const {
 	return _tabSubDimensionFree[index];
 }
 

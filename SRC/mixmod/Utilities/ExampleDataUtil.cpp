@@ -31,22 +31,22 @@ namespace XEM {
  * @brief Structure to store raw data parsed from text files.
  * @var nbSample samples count (integer)
  * @var bData integer 2D array to store binary data
- * @var gData double 2D array to store continuous data
+ * @var gData float 2D array to store continuous data
  * @var bNbColumn binary data columns count
  * @var gNbColumn continuous data columns count
  * @var modality (pointer to) modalities for binary data.
  * @var labels optional pointer to a vector of labels (used in discriminant analysis case).
  */
 struct GenericData {
-	int64_t nbSample;
-	int64_t** bData;
-	double** gData;
-	int64_t bNbColumn;
-	int64_t gNbColumn;
-	vector<int64_t>* modality;
-	vector<int64_t>* labels;
-	GenericData (int64_t nbSample, int64_t** bData, double** gData, int64_t bNbColumn,
-	             int64_t gNbColumn, vector<int64_t>* modality, vector<int64_t>* labels) {
+	int nbSample;
+	int** bData;
+	float** gData;
+	int bNbColumn;
+	int gNbColumn;
+	vector<int>* modality;
+	vector<int>* labels;
+	GenericData (int nbSample, int** bData, float** gData, int bNbColumn,
+	             int gNbColumn, vector<int>* modality, vector<int>* labels) {
 		this->nbSample = nbSample;
 		this->bData = bData;
 		this->gData = gData;
@@ -79,11 +79,11 @@ GenericData* readGenericData (string fileName) {
 	std::string csvLine;
 	std::getline (file, csvLine);
 	istringstream csvStream (csvLine);
-	int64_t bNbColumn = 0;
-	int64_t gNbColumn = 0;
+	int bNbColumn = 0;
+	int gNbColumn = 0;
 	string val;
-	vector<int64_t>* modality = new vector<int64_t>();
-	vector<int64_t>* labels = 0;
+	vector<int>* modality = new vector<int>();
+	vector<int>* labels = 0;
 	while (std::getline (csvStream, val, ',')) {
 		switch (val[0]) {
 		case 'c':
@@ -103,13 +103,13 @@ GenericData* readGenericData (string fileName) {
 		case 'L':
 			// 'L' or 'l' indicates label (at most one occurrence)
 			columnType.push_back ('L');
-			labels = new vector<int64_t>();
+			labels = new vector<int>();
 			break;
 		}
 	}
 
 	// count samples
-	int64_t nbSample = 0;
+	int nbSample = 0;
 	while (std::getline (file, csvLine)) {
 		if (csvLine.length() <= 1)
 			break; //skip new lines at end of file
@@ -117,18 +117,18 @@ GenericData* readGenericData (string fileName) {
 	}
 	file.close();
 
-	int64_t** bData = 0;
+	int** bData = 0;
 	if (bNbColumn > 0) {
-		bData = new int64_t*[nbSample];
-		for (int64_t i = 0; i < nbSample; ++i) {
-			bData[i] = new int64_t[bNbColumn];
+		bData = new int*[nbSample];
+		for (int i = 0; i < nbSample; ++i) {
+			bData[i] = new int[bNbColumn];
 		}
 	}
-	double** gData = 0;
+	float** gData = 0;
 	if (gNbColumn > 0) {
-		gData = new double*[nbSample];
-		for (int64_t i = 0; i < nbSample; ++i) {
-			gData[i] = new double[gNbColumn];
+		gData = new float*[nbSample];
+		for (int i = 0; i < nbSample; ++i) {
+			gData[i] = new float[gNbColumn];
 		}
 	}
 
@@ -137,10 +137,10 @@ GenericData* readGenericData (string fileName) {
 
 	file.open (fileName.c_str(), std::ios::in);
 	std::getline (file, csvLine); //read away columns descriptors line
-	int64_t row = 0;
+	int row = 0;
 	while (std::getline (file, csvLine)) {
 		std::istringstream csvStream (csvLine);
-		int64_t column = 0, bColumn = 0, gColumn = 0;
+		int column = 0, bColumn = 0, gColumn = 0;
 		while (std::getline (csvStream, val, ',')) {
 			switch (columnType[column]) {
 			case 'C':
@@ -150,7 +150,7 @@ GenericData* readGenericData (string fileName) {
 				break;
 			case 'B': {
 				// binary (categories represented by integers)
-				int64_t binValue = atoi (val.c_str());
+				int binValue = atoi (val.c_str());
 				bData[row][bColumn] = binValue;
 				if (binValue > (*modality) [bColumn]) {
 					(*modality) [bColumn] = binValue;
@@ -212,7 +212,7 @@ DataDescription* getXEMDataDescriptionFromGeneric (GenericData* genericData) {
 	return dataDescription;
 }
 
-ClusteringInput* getClusteringInput (string fileName, const vector<int64_t>& nbCluster) {
+ClusteringInput* getClusteringInput (string fileName, const vector<int>& nbCluster) {
 	// parse informations from file in a generic way
 	GenericData* genericData = readGenericData (fileName);
 	// deduce 'specialized' data description from these informations

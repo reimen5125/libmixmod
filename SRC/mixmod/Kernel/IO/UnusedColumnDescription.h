@@ -33,7 +33,7 @@ class UnusedColumnDescription : public ColumnDescription {
 
 public:
 
-	UnusedColumnDescription(int64_t index);
+	UnusedColumnDescription(int index);
 
 	std::string editType();
 

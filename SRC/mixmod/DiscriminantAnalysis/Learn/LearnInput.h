@@ -53,7 +53,7 @@ public:
 	virtual ~LearnInput();
 
 	// Accessors
-	const int64_t getNbCVBlock() const;
+	const int getNbCVBlock() const;
 
 	/// setCriterionName
 	virtual void setCriterion(std::vector<CriterionName> const & criterionName);
@@ -68,7 +68,7 @@ public:
 	virtual void addCriterion(const CriterionName criterionName);
 
 	/// set the number of CV blocks
-	void setNbCVBlock(int64_t nbCVBlock);
+	void setNbCVBlock(int nbCVBlock);
 
 protected:
 	
@@ -78,10 +78,10 @@ protected:
 private:
 	
 	// number of CV blocks
-	int64_t _nbCVBlock;
+	int _nbCVBlock;
 };
 
-inline const int64_t LearnInput::getNbCVBlock() const {
+inline const int LearnInput::getNbCVBlock() const {
 	return _nbCVBlock;
 }
 

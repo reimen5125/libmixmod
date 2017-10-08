@@ -49,7 +49,7 @@ public:
 	Sample(Sample * iSample);
 
 	/// Constructor
-	Sample(int64_t pbDimension);
+	Sample(int pbDimension);
 
 	/// Destructor
 	virtual ~Sample();
@@ -63,15 +63,15 @@ public:
 	}
 	
 	/// Selector
-	int64_t getPbDimension();
+	int getPbDimension();
 
 protected:
 
 	/// Problem dimension
-	int64_t _pbDimension;
+	int _pbDimension;
 };
 
-inline int64_t Sample::getPbDimension() {
+inline int Sample::getPbDimension() {
 	return _pbDimension;
 }
 

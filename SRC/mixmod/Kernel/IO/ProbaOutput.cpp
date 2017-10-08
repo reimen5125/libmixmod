@@ -59,64 +59,64 @@ ProbaOutput::ProbaOutput(Model * model) {
 	if (!binary || (binary && !DATA_REDUCE)) {
 		// gaussian case 
 		_nbSample = model->getNbSample();
-		_tabLabel = new int64_t[_nbSample];
-		_tabPartition = new int64_t *[_nbSample];
-		for (int64_t i = 0; i < _nbSample; i++) {
-			_tabPartition[i] = new int64_t[_nbCluster];
+		_tabLabel = new int[_nbSample];
+		_tabPartition = new int *[_nbSample];
+		for (int i = 0; i < _nbSample; i++) {
+			_tabPartition[i] = new int[_nbCluster];
 		}
 		model->getLabelAndPartitionByMAPOrKnownPartition(_tabLabel, _tabPartition);
 		// copy
 		_tabPostProba = copyTab(model->getPostProba(), _nbSample, _nbCluster);
 	}
 	else {
-		const std::vector<int64_t> & correspondenceOriginDataToReduceData = 
+		const std::vector<int> & correspondenceOriginDataToReduceData = 
 				dynamic_cast<BinaryModel*> (model)->getCorrespondenceOriginDataToReduceData();
 		//binary case
 		_nbSample = correspondenceOriginDataToReduceData.size();
-		_tabLabel = new int64_t[_nbSample];
-		_tabPartition = new int64_t *[_nbSample];
-		for (int64_t i = 0; i < _nbSample; i++) {
-			_tabPartition[i] = new int64_t[_nbCluster];
+		_tabLabel = new int[_nbSample];
+		_tabPartition = new int *[_nbSample];
+		for (int i = 0; i < _nbSample; i++) {
+			_tabPartition[i] = new int[_nbCluster];
 		}
-		_tabPostProba = new double *[_nbSample];
-		for (int64_t i = 0; i < _nbSample; i++) {
-			_tabPostProba[i] = new double[_nbCluster];
+		_tabPostProba = new float *[_nbSample];
+		for (int i = 0; i < _nbSample; i++) {
+			_tabPostProba[i] = new float[_nbCluster];
 		}
 
 		//label et partition on reduceData
-		int64_t nbSampleOfDataReduce = model->getNbSample();
-		//int64_t ** tabPartitionReduce = new int64_t*[nbSampleOfDataReduce];
-        std::unique_ptr<int64_t*[], TabDeleter<int64_t>>  tabPartitionReduce(new int64_t*[nbSampleOfDataReduce],
-                                                                             TabDeleter<int64_t>(nbSampleOfDataReduce));
-		for (int64_t i = 0; i < nbSampleOfDataReduce; i++) {
-			tabPartitionReduce[i] = new int64_t[_nbCluster];
+		int nbSampleOfDataReduce = model->getNbSample();
+		//int ** tabPartitionReduce = new int*[nbSampleOfDataReduce];
+        std::unique_ptr<int*[], TabDeleter<int>>  tabPartitionReduce(new int*[nbSampleOfDataReduce],
+                                                                             TabDeleter<int>(nbSampleOfDataReduce));
+		for (int i = 0; i < nbSampleOfDataReduce; i++) {
+			tabPartitionReduce[i] = new int[_nbCluster];
 		}
-		//int64_t * tabLabelReduce = new int64_t[nbSampleOfDataReduce];
-        std::unique_ptr<int64_t[]> tabLabelReduce(new int64_t[nbSampleOfDataReduce]);
+		//int * tabLabelReduce = new int[nbSampleOfDataReduce];
+        std::unique_ptr<int[]> tabLabelReduce(new int[nbSampleOfDataReduce]);
 		model->getLabelAndPartitionByMAPOrKnownPartition(tabLabelReduce.get(), tabPartitionReduce.get());
 
-		//double ** tabPostProbaReduce = NULL;
+		//float ** tabPostProbaReduce = NULL;
 		// copy
 		//tabPostProbaReduce = copyTab(model->getPostProba(), nbSampleOfDataReduce, _nbCluster);
-        std::unique_ptr<double*[], TabDeleter<double>>  tabPostProbaReduce(copyTab(model->getPostProba(), nbSampleOfDataReduce, _nbCluster),
-                                                                           TabDeleter<double>(nbSampleOfDataReduce));
+        std::unique_ptr<float*[], TabDeleter<float>>  tabPostProbaReduce(copyTab(model->getPostProba(), nbSampleOfDataReduce, _nbCluster),
+                                                                           TabDeleter<float>(nbSampleOfDataReduce));
 		// convert labelReduce, partitionReduce, postProbaReduce to label, partition, postProba
-		for (int64_t i = 0; i < _nbSample; i++) {
+		for (int i = 0; i < _nbSample; i++) {
 			_tabLabel[i] = tabLabelReduce[correspondenceOriginDataToReduceData[i]];
-			for (int64_t k = 0; k < _nbCluster; k++) {
-				int64_t index = correspondenceOriginDataToReduceData[i];
+			for (int k = 0; k < _nbCluster; k++) {
+				int index = correspondenceOriginDataToReduceData[i];
 				_tabPostProba[i][k] = tabPostProbaReduce[index][k];
 				_tabPartition[i][k] = tabPartitionReduce[index][k];
 			}
 		}
 
 		//delete
-		//for (int64_t i = 0; i < nbSampleOfDataReduce; i++) {
+		//for (int i = 0; i < nbSampleOfDataReduce; i++) {
 		//	delete [] tabPartitionReduce[i];
 		//}
 		//delete [] tabPartitionReduce;
 
-		//for (int64_t i = 0; i < nbSampleOfDataReduce; i++) {
+		//for (int i = 0; i < nbSampleOfDataReduce; i++) {
 		//	delete [] tabPostProbaReduce[i];
 		//}
 		//delete [] tabPostProbaReduce;
@@ -151,7 +151,7 @@ ProbaOutput::~ProbaOutput() {
 		_tabCVLabel = NULL;
 	}
 
-	int64_t i;
+	int i;
 	if (_tabPartition) {
 		for (i = 0; i < _nbSample; i++) {
 			delete[] _tabPartition[i];
@@ -174,9 +174,9 @@ ProbaOutput::~ProbaOutput() {
 //-----------
 // setCVLabel
 //-----------
-void ProbaOutput::setCVLabel(int64_t * CVLabel) {
+void ProbaOutput::setCVLabel(int * CVLabel) {
 	_CVLabelAvailable = true;
-	_tabCVLabel = new int64_t[_nbSample];
+	_tabCVLabel = new int[_nbSample];
 	recopyTab(CVLabel, _tabCVLabel, _nbSample);
 }
 
@@ -184,10 +184,10 @@ void ProbaOutput::setCVLabel(int64_t * CVLabel) {
 // editPartition
 //--------------
 void ProbaOutput::editPartition(std::ofstream & oFile) {
-	int64_t k, i;
+	int k, i;
 
-	int64_t ** p_tabPartition;
-	int64_t * p_tabPartition_i;
+	int ** p_tabPartition;
+	int * p_tabPartition_i;
 
 	p_tabPartition = _tabPartition;
 	for (i = 0; i < _nbSample; i++) {
@@ -205,7 +205,7 @@ void ProbaOutput::editPartition(std::ofstream & oFile) {
 // editLabel
 //----------
 void ProbaOutput::editLabel(std::ofstream & oFile) {
-	int64_t i;
+	int i;
 	for (i = 0; i < _nbSample; i++)
 		oFile << _tabLabel[i] << endl;
 
@@ -215,7 +215,7 @@ void ProbaOutput::editLabel(std::ofstream & oFile) {
 // editLabel (verbose: to standard output)
 //----------
 void ProbaOutput::editLabel() {
-	int64_t i;
+	int i;
 	for (i = 0; i < _nbSample; i++)
 		cout << _tabLabel[i] << endl;
 }
@@ -233,7 +233,7 @@ void ProbaOutput::editPostProba(std::ofstream & oFile) {
 //------------
 void ProbaOutput::editCVLabel(std::ofstream & oFile) {
 	if (_CVLabelAvailable) {
-		int64_t i;
+		int i;
 		for (i = 0; i < _nbSample; i++)
 			oFile << _tabCVLabel[i] << endl;
 	}

@@ -48,7 +48,7 @@ ClusteringInput::ClusteringInput( const ClusteringInput & cInput )
 //---------------------------
 // Initialisation Constructor
 //---------------------------
-ClusteringInput::ClusteringInput( const std::vector<int64_t> & iNbCluster,
+ClusteringInput::ClusteringInput( const std::vector<int> & iNbCluster,
 		const DataDescription & iDataDescription)
 : Input(iNbCluster, iDataDescription)
 {

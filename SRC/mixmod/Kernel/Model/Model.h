@@ -60,7 +60,7 @@ public:
 	Model(Model * iModel);
 
 	/// Constructor
-	Model(ModelType * modelType, int64_t nbCluster, Data *& data, Partition * knownPartition);
+	Model(ModelType * modelType, int nbCluster, Data *& data, Partition * knownPartition);
 
 	/// Destructor
 	virtual ~Model();
@@ -82,7 +82,7 @@ public:
 	/** @brief Selector
 		@return The current number for cluster
 	 */
-	int64_t getNbCluster();
+	int getNbCluster();
 
 	/** @brief Selector
 		@return The current data
@@ -113,29 +113,29 @@ public:
 	/** @brief Selector
 		@return The number of samples
 	 */
-	int64_t getNbSample();
+	int getNbSample();
 
 	/** @brief Selector
 		@return Table of Fik of each cluster : probabilitites: _fik = pk * f(xi,muk,Sk)
 	 */
-	double ** getTabFik();
+	float ** getTabFik();
 
 	/// return _tabSumF
-	double * getTabSumF();
+	float * getTabSumF();
 
 	/** @brief Selector
 	    @return Table of Tik of each cluster :
 	            conditional probabilities that xi arises from the k-th 
 	            mixture component, 0 <= tik[i]k0] <= 1
 	 */
-	double ** getTabTik();
+	float ** getTabTik();
 
 	/** @brief Selector
 		@return Table of Zik zik[i][k0] = 1 if xi arises from the k0-th mixture component, 0 else
 	 */
-	int64_t ** getTabZikKnown();
+	int ** getTabZikKnown();
 
-	double ** getTabCik();
+	float ** getTabCik();
 
 	/// getTabZikKnown
 	bool * getTabZiKnown();
@@ -143,7 +143,7 @@ public:
 	/** @brief Selector
 		@return Table of number of elements in each cluster
 	 */
-	double * getTabNk();
+	float * getTabNk();
 
 	bool getDeleteData();
 
@@ -161,55 +161,55 @@ public:
 	/** @brief Compute the log-likelihood
 		@return The log-likelihood
 	 */
-	double getLogLikelihood(bool fikMustBeComputed);
+	float getLogLikelihood(bool fikMustBeComputed);
 
 
 	/** @brief Compute the log-likelihood with one cluster
 		@return The log-likelihood
 	 */
-	double getLogLikelihoodOne();
+	float getLogLikelihoodOne();
 
 	/** @brief Compute the entropy
 		@return The entropy
 	 */
-	double getEntropy();
+	float getEntropy();
 
 	/** @brief Compute the entropy matrix (for massiccc's visualization)
 		@return The entropy matrix
 	 */
-	vector< vector<double> > getEntropyMatrix();
+	vector< vector<float> > getEntropyMatrix();
 
 	/** @brief Compute the completed log-likelihood
 		@return The completed log-likelihood
 	 */
-	double getCompletedLogLikelihood();
+	float getCompletedLogLikelihood();
 
 	/** get completed LL (if CEM) or LL (elseif)*/
-	double getCompletedLogLikelihoodOrLogLikelihood();
+	float getCompletedLogLikelihoodOrLogLikelihood();
 
 	/// return the number of free parameters
-	int64_t getFreeParameter();
+	int getFreeParameter();
 
 	/** @brief Selector
 		@return Log of the weight total
 	 */
-	double getLogN();
+	float getLogN();
 
 	/// getLabel and partition
 	/// label=1...nbSample
-	void getLabelAndPartitionByMAPOrKnownPartition(int64_t * label, int64_t ** partition);
+	void getLabelAndPartitionByMAPOrKnownPartition(int * label, int ** partition);
 
 	/// get label of the ith individual (i=0 .... nbSample-1) by MAP (or known label)
 	/// return value in [0 nbCluster-1]
-	int64_t getLabelByMAPOrKnownPartition(int64_t i);
+	int getLabelByMAPOrKnownPartition(int i);
 
 	/// get knownLabel of the ith individual (i=0 .... nbSample-1)
 	/// return value in [0 nbCluster-1]
 	/// throw an error if the label is unknown
-	int64_t getKnownLabel(int64_t i);
+	int getKnownLabel(int i);
 
 	/// getPostProba
-	double ** getPostProba();
+	float ** getPostProba();
 
 
 	//--------
@@ -219,12 +219,12 @@ public:
 	/** @brief Compute the label of the i0-th point of the sample
 		@return The label of i0 (i0=0 -> _nBSample -1)
 	 */
-	int64_t computeLabel(int64_t i0);
+	int computeLabel(int i0);
 
 	/** @brief Compute the label of new point x
 		@return The label of x
 	 */
-	int64_t computeLabel(Sample * x);
+	int computeLabel(Sample * x);
 
 
 	//------
@@ -252,7 +252,7 @@ public:
 	//-----
 
 	/// Random center initialization of the parameters of the model
-	void initRANDOM(int64_t nbTry);
+	void initRANDOM(int nbTry);
 
 	/// random step for init RANDOM or USER_PARTITION
 	void randomForInitRANDOMorUSER_PARTITION(
@@ -262,7 +262,7 @@ public:
 	void initUSER(Parameter * initParameter);
 
 	/// User partition initialization of the parameters of the model
-	void initUSER_PARTITION(Partition * initPartition, int64_t nbTryInInit = defaultNbTryInInit);
+	void initUSER_PARTITION(Partition * initPartition, int nbTryInInit = defaultNbTryInInit);
 
 	// set name of the algorithm
 	void setParameter(Parameter * parameter);
@@ -291,10 +291,10 @@ protected:
 	ModelType * _modelType;
 
 	/// Number of clusters
-	int64_t _nbCluster;
+	int _nbCluster;
 
 	/// Number of samples
-	int64_t _nbSample;
+	int _nbSample;
 
 	/// Current data
 	Data * _data;
@@ -305,18 +305,18 @@ protected:
 
 	/// Probabilities: _fik = pk * f(xi,muk,Sk)
 	/// dim : _nbSample * _nbCluster
-	double ** _tabFik;
+	float ** _tabFik;
 
 	/// table of sum of _tabFik for all k (dim : _nbSample)
-	double * _tabSumF;
+	float * _tabSumF;
 
 	/// Conditional probabilities that x(i) arises from the k-th mixture component, 
 	/// 0 <= tik[i][k0] <= 1. dim : _nbSample * _nbCluster
-	double ** _tabTik;
+	float ** _tabTik;
 
 	/// zikKnown : _tabZikKonwn[i][k0] = 1 if xi arises from the k0-th mixture component, 0 else.
 	/// dim : _nbSample * _nbCluster
-	int64_t ** _tabZikKnown;
+	int ** _tabZikKnown;
 
 	/** classification array for individual i and class k
 	  // if zikKnown 
@@ -326,7 +326,7 @@ protected:
 	  //		cik = zik by MAP rule if CEM or MAP
 	  //		cik = 'random' if SEM
 	 */
-	double ** _tabCik;
+	float ** _tabCik;
 
 
 	/// is the label zik known (fixed)
@@ -334,7 +334,7 @@ protected:
 
 
 	/// Number of points in each class
-	double * _tabNk;
+	float * _tabNk;
 
 	// name of the algorithm
 	AlgoName _algoName;
@@ -351,31 +351,31 @@ inline bool * Model::getTabZiKnown() {
 	return _tabZiKnown;
 }
 
-inline int64_t ** Model::getTabZikKnown() {
+inline int ** Model::getTabZikKnown() {
 	return _tabZikKnown;
 }
 
-inline double ** Model::getTabCik() {
+inline float ** Model::getTabCik() {
 	return _tabCik;
 }
 
-inline double ** Model::getTabTik() {
+inline float ** Model::getTabTik() {
 	return _tabTik;
 }
 
-inline double ** Model::getTabFik() {
+inline float ** Model::getTabFik() {
 	return _tabFik;
 }
 
-inline double * Model::getTabSumF() {
+inline float * Model::getTabSumF() {
 	return _tabSumF;
 }
 
-inline double * Model::getTabNk() {
+inline float * Model::getTabNk() {
 	return _tabNk;
 }
 
-inline int64_t Model::getNbCluster() {
+inline int Model::getNbCluster() {
 	return _nbCluster;
 }
 
@@ -403,11 +403,11 @@ inline BinaryParameter * Model::getBinaryParameter() {
 	return _parameter->getBinaryParameter();
 }
 
-inline int64_t Model::getNbSample() {
+inline int Model::getNbSample() {
 	return _nbSample;
 }
 
-inline double ** Model::getPostProba() {
+inline float ** Model::getPostProba() {
 	return _tabTik;
 }
 

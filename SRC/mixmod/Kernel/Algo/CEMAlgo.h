@@ -45,7 +45,7 @@ public:
 	CEMAlgo(const CEMAlgo & cemAlgo);
 
 	/// Constructor
-	CEMAlgo(AlgoStopName algoStopName, double epsilon, int64_t nbIteration);
+	CEMAlgo(AlgoStopName algoStopName, float epsilon, int nbIteration);
 
 	/// Destructor
 	virtual ~CEMAlgo();

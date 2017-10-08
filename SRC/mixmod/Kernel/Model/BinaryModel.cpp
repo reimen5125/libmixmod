@@ -45,10 +45,10 @@ BinaryModel::BinaryModel(BinaryModel * iModel)
 /// Constructor
 BinaryModel::BinaryModel(
 		ModelType * modelType, 
-		int64_t nbCluster, 
+		int nbCluster, 
 		Data *& data, 
 		Partition * knownPartition, 
-		std::vector<int64_t> const & correspondenceOriginDataToReduceData)
+		std::vector<int> const & correspondenceOriginDataToReduceData)
 : Model(modelType, nbCluster, data, knownPartition)
 , _correspondenceOriginDataToReduceData(correspondenceOriginDataToReduceData) 
 {

@@ -43,11 +43,11 @@ GaussianData::GaussianData() {
 // Constructor
 //------------
 GaussianData::GaussianData(const GaussianData & iData) : Data(iData) {
-	int64_t i;
+	int i;
 	Sample ** matrix = iData._matrix;
 
 	_matrix = new Sample*[_nbSample];
-	_yStore = new double* [_nbSample];
+	_yStore = new float* [_nbSample];
 
 	for (i = 0; i < _nbSample; i++) {
 		_matrix[i] = new GaussianSample(matrix[i]->getGaussianSample());
@@ -56,22 +56,22 @@ GaussianData::GaussianData(const GaussianData & iData) : Data(iData) {
 	_Inv2PiPow = iData.getInv2PiPow();
 	_pbDimensionLog2Pi = iData.getPbDimensionLog2Pi();
 	_halfPbDimensionLog2Pi = _pbDimensionLog2Pi / 2.0;
-	__tmpTabOfSizePbDimension = new double[_pbDimension];
+	__tmpTabOfSizePbDimension = new float[_pbDimension];
 	_deleteSamples = true;
 }
 
 //------------
 // Constructor
 //------------
-GaussianData::GaussianData(int64_t nbSample, int64_t pbDimension) : Data(nbSample, pbDimension) {
-	int64_t i;
+GaussianData::GaussianData(int nbSample, int pbDimension) : Data(nbSample, pbDimension) {
+	int i;
 	_Inv2PiPow = 1.0 / pow(2.0 * XEMPI, pbDimension / 2.0);
 	_pbDimensionLog2Pi = pbDimension * log(2.0 * XEMPI);
 	_halfPbDimensionLog2Pi = _pbDimensionLog2Pi / 2.0;
-	__tmpTabOfSizePbDimension = new double[_pbDimension];
+	__tmpTabOfSizePbDimension = new float[_pbDimension];
 
 	_matrix = new Sample*[_nbSample];
-	_yStore = new double * [_nbSample];
+	_yStore = new float * [_nbSample];
 
 	for (i = 0; i < _nbSample; i++) {
 		_weight[i] = 1.0;
@@ -84,20 +84,20 @@ GaussianData::GaussianData(int64_t nbSample, int64_t pbDimension) : Data(nbSampl
 //------------
 // Constructor
 //------------
-GaussianData::GaussianData(int64_t nbSample, int64_t pbDimension, double ** matrix) 
+GaussianData::GaussianData(int nbSample, int pbDimension, float ** matrix) 
 : Data(nbSample, pbDimension) 
 {
-	int64_t i;
+	int i;
 
 	if (matrix == NULL) THROW(OtherException, internalMixmodError);
 
 	_Inv2PiPow = 1.0 / pow(2.0 * XEMPI, pbDimension / 2.0);
 	_pbDimensionLog2Pi = pbDimension * log(2.0 * XEMPI);
 	_halfPbDimensionLog2Pi = _pbDimensionLog2Pi / 2.0;
-	__tmpTabOfSizePbDimension = new double[_pbDimension];
+	__tmpTabOfSizePbDimension = new float[_pbDimension];
 
 	_matrix = new Sample*[_nbSample];
-	_yStore = new double * [_nbSample];
+	_yStore = new float * [_nbSample];
 
 	for (i = 0; i < _nbSample; i++) {
 		_weight[i] = 1.0;
@@ -111,18 +111,18 @@ GaussianData::GaussianData(int64_t nbSample, int64_t pbDimension, double ** matr
 //------------
 // Constructor
 //------------
-GaussianData::GaussianData(int64_t nbSample, int64_t pbDimension, const std::string & dataFileName) 
+GaussianData::GaussianData(int nbSample, int pbDimension, const std::string & dataFileName) 
 : Data(nbSample, pbDimension) 
 {
-	int64_t i;
+	int i;
 
 	_Inv2PiPow = 1.0 / pow(2.0 * XEMPI, pbDimension / 2.0);
 	_pbDimensionLog2Pi = pbDimension * log(2.0 * XEMPI);
 	_halfPbDimensionLog2Pi = _pbDimensionLog2Pi / 2.0;
-	__tmpTabOfSizePbDimension = new double[_pbDimension];
+	__tmpTabOfSizePbDimension = new float[_pbDimension];
 
 	_matrix = new Sample*[_nbSample];
-	_yStore = new double * [_nbSample];
+	_yStore = new float * [_nbSample];
 
 	for (i = 0; i < _nbSample; i++) {
 		_matrix[i] = new GaussianSample(_pbDimension);
@@ -142,8 +142,8 @@ GaussianData::GaussianData(int64_t nbSample, int64_t pbDimension, const std::str
 //------------
 // Constructor for dataReduce
 //------------
-GaussianData::GaussianData(int64_t nbSample, int64_t pbDimension, 
-		double weightTotal, Sample **& matrix, double * weight) 
+GaussianData::GaussianData(int nbSample, int pbDimension, 
+		float weightTotal, Sample **& matrix, float * weight) 
 : Data(nbSample, pbDimension, weightTotal, weight) 
 {
 	// 1/ (2 * pi)^(d/2)
@@ -151,11 +151,11 @@ GaussianData::GaussianData(int64_t nbSample, int64_t pbDimension,
 	_pbDimensionLog2Pi = pbDimension * log(2.0 * XEMPI);
 	_halfPbDimensionLog2Pi = _pbDimensionLog2Pi / 2.0;
 	_pbDimensionLog2Pi = pbDimension * log(2.0 * XEMPI);
-	__tmpTabOfSizePbDimension = new double[_pbDimension];
+	__tmpTabOfSizePbDimension = new float[_pbDimension];
 
 	_matrix = matrix;
-	_yStore = new double *[nbSample];
-	int64_t i;
+	_yStore = new float *[nbSample];
+	int i;
 
 	for (i = 0; i < _nbSample; i++) {
 		_yStore[i] = ((_matrix[i])->getGaussianSample())->getTabValue();
@@ -166,7 +166,7 @@ GaussianData::GaussianData(int64_t nbSample, int64_t pbDimension,
 //------------
 // Constructor (used in DCV context)
 //------------
-GaussianData::GaussianData(int64_t nbSample, int64_t pbDimension, 
+GaussianData::GaussianData(int nbSample, int pbDimension, 
 		Data * originalData, CVBlock & block) 
 : Data(nbSample, pbDimension) 
 {
@@ -177,21 +177,21 @@ GaussianData::GaussianData(int64_t nbSample, int64_t pbDimension,
 	_Inv2PiPow = 1.0 / pow(2.0 * XEMPI, pbDimension / 2.0);
 	_pbDimensionLog2Pi = pbDimension * log(2.0 * XEMPI);
 	_halfPbDimensionLog2Pi = _pbDimensionLog2Pi / 2.0;
-	__tmpTabOfSizePbDimension = new double[_pbDimension];
+	__tmpTabOfSizePbDimension = new float[_pbDimension];
 	_deleteSamples = false;
 
 
 	_weightTotal = block._weightTotal;
 	_matrix = new Sample*[_nbSample];
-	for (int64_t i = 0; i < _nbSample; i++) {
+	for (int i = 0; i < _nbSample; i++) {
 		_matrix[i] = origMatrix[block._tabWeightedIndividual[i].val];
 		//cout<<"ind : "<<block._tabWeightedIndividual[i].val;
 		_weight[i] = block._tabWeightedIndividual[i].weight;
 		//cout<<" - weight : "<<block._tabWeightedIndividual[i].weight<<endl;
 	}
 
-	_yStore = new double *[nbSample];
-	for (int64_t j = 0; j < _nbSample; j++) {
+	_yStore = new float *[nbSample];
+	for (int j = 0; j < _nbSample; j++) {
 		_yStore[j] = ((_matrix[j])->getGaussianSample())->getTabValue();
 	}
 }
@@ -200,7 +200,7 @@ GaussianData::GaussianData(int64_t nbSample, int64_t pbDimension,
 //Destructor
 //----------
 GaussianData::~GaussianData() {
-	int64_t i;
+	int i;
 	if (_matrix) {
 
 		if (_deleteSamples) {
@@ -235,7 +235,7 @@ Data * GaussianData::clone() const {
 // Clone data matrix
 //------------------
 Sample ** GaussianData::cloneMatrix() {
-	int64_t i;
+	int i;
 
 	Sample ** newMatrix = new Sample*[_nbSample];
 	for (i = 0; i < _nbSample; i++) {
@@ -250,10 +250,10 @@ Sample ** GaussianData::cloneMatrix() {
 //------
 void GaussianData::input(std::ifstream & fi) {
 
-	int64_t j;
-	int64_t i;
-	double ** p_y;
-	double * p_y_i;
+	int j;
+	int i;
+	float ** p_y;
+	float * p_y_i;
 
 	p_y = _yStore;
 	for (i = 0; i < _nbSample; i++) {
@@ -274,8 +274,8 @@ void GaussianData::input(std::ifstream & fi) {
 // input
 //------
 void GaussianData::input(const DataDescription & dataDescription) {
-  //double* curSampleValue = new double[_pbDimension];
-  std::unique_ptr<double[]> curSampleValue(new double[_pbDimension]);    
+  //float* curSampleValue = new float[_pbDimension];
+  std::unique_ptr<float[]> curSampleValue(new float[_pbDimension]);    
 	_weightTotal = 0.0;
 
 	_fileNameData = dataDescription.getFileName();
@@ -295,12 +295,12 @@ void GaussianData::input(const DataDescription & dataDescription) {
 	setlocale(LC_NUMERIC, "C");
 
 	string line;
-	for (int64_t i = 0; i < _nbSample; i++) {
+	for (int i = 0; i < _nbSample; i++) {
 		getline(fi, line);
 		istringstream s(line);
 		string atom;
-		int64_t gaussianVariableIndex = 0;
-		for (int64_t j = 0; j < dataDescription.getNbColumn(); j++) {
+		int gaussianVariableIndex = 0;
+		for (int j = 0; j < dataDescription.getNbColumn(); j++) {
 			if (s.eof())
 				THROW(InputException, endDataFileReach);
 			do

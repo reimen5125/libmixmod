@@ -33,8 +33,8 @@ namespace XEM {
 LikelihoodOutput::LikelihoodOutput() {
 }
 
-LikelihoodOutput::LikelihoodOutput(double logLikelihood, 
-		double completeLogLikelihood, double entropy, int64_t nbFreeParam) 
+LikelihoodOutput::LikelihoodOutput(float logLikelihood, 
+		float completeLogLikelihood, float entropy, int nbFreeParam) 
 {
 	_logLikelihood = logLikelihood;
 	_completeLogLikelihood = completeLogLikelihood;

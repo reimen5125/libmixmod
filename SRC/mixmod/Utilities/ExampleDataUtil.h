@@ -47,7 +47,7 @@ namespace XEM {
 
 // @param fileName Input file name. It should be CSV file with first row containing type for corresponding column.
 // Type can be 'C' for continuous (gaussian) or 'B' for binary (categories).
-ClusteringInput* getClusteringInput(string fileName, const vector<int64_t>& nbCluster);
+ClusteringInput* getClusteringInput(string fileName, const vector<int>& nbCluster);
 LearnInput* getLearnInput(string fileName);
 PredictInput* getPredictInput(string fileName, LearnModelOutput* lOutput);
 

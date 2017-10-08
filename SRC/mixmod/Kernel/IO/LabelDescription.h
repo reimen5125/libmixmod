@@ -47,13 +47,13 @@ public:
 	LabelDescription();
 
 	///constructor by initilization
-	LabelDescription(int64_t nbSample, int64_t nbColumn, 
+	LabelDescription(int nbSample, int nbColumn, 
 			std::vector< ColumnDescription* > columnDescription, 
 			FormatNumeric::FormatNumericFile format, 
 			std::string filename, std::string infoName = "");
 
 	/// constructor from a vector of int
-	LabelDescription(int64_t nbSample, std::vector<int64_t> vLabel);
+	LabelDescription(int nbSample, std::vector<int> vLabel);
 
 	///constructor after an estimation->run
 	LabelDescription(Model * estimation);
@@ -73,7 +73,7 @@ public:
 	const Label * getLabel() const;
 	Label * getLabel();
 
-	const int64_t getNbCluster() const;
+	const int getNbCluster() const;
 
 	void saveNumericValues(std::string fileName = "");
 
@@ -81,7 +81,7 @@ private:
 
 	Label * _label;
 	Label * createLabel();
-	int64_t _nbCluster;
+	int _nbCluster;
 };
 
 inline const Label * LabelDescription::getLabel() const {
@@ -92,7 +92,7 @@ inline Label * LabelDescription::getLabel() {
 	return _label;
 }
 
-inline const int64_t LabelDescription::getNbCluster() const {
+inline const int LabelDescription::getNbCluster() const {
 	return _nbCluster;
 }
 

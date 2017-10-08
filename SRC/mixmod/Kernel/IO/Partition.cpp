@@ -59,15 +59,15 @@ Partition::Partition(Partition * iPartition) {
 //----------------------------
 // constructor from a XEMLabel
 //----------------------------
-Partition::Partition(const Label * label, int64_t nbCluster) {
+Partition::Partition(const Label * label, int nbCluster) {
 	if (label != NULL) {
 		_nbSample = label->getNbSample();
 		_nbCluster = nbCluster;
-		_tabValue = new int64_t*[_nbSample];
-		std::vector<int64_t> const & vLabel = label->getLabel();
-		for (int64_t i = 0; i < _nbSample; i++) {
-			_tabValue[i] = new int64_t[_nbCluster];
-			for (int64_t k = 0; k < _nbCluster; k++) {
+		_tabValue = new int*[_nbSample];
+		std::vector<int> const & vLabel = label->getLabel();
+		for (int i = 0; i < _nbSample; i++) {
+			_tabValue[i] = new int[_nbCluster];
+			for (int k = 0; k < _nbCluster; k++) {
 				_tabValue[i][k] = 0;
 			}
 			if (vLabel[i] < 0 || vLabel[i] > _nbCluster) { // rlebret 22/11/2013 - after bug Rmixmod semi-supervised --> replace <= by < here
@@ -93,7 +93,7 @@ Partition::Partition(const Label * label, int64_t nbCluster) {
 //-----------
 //Constructor
 //----------- 
-Partition::Partition(int64_t nbSample, int64_t nbCluster, 
+Partition::Partition(int nbSample, int nbCluster, 
 		const NumericPartitionFile & partitionFile) 
 {
 	_nbSample = nbSample;
@@ -125,11 +125,11 @@ Partition::Partition(Partition * originalPartition, CVBlock & block) {
 	_nbSample = block._nbSample;
 	_nbCluster = originalPartition->_nbCluster;
 
-	_tabValue = new int64_t*[_nbSample];
-	int64_t ** originalTabValue = originalPartition->_tabValue;
-	int64_t indexInOriginalTabValue;
-	for (int64_t i = 0; i < _nbSample; i++) {
-		// _tabValue[i] = new int64_t[_nbCluster];
+	_tabValue = new int*[_nbSample];
+	int ** originalTabValue = originalPartition->_tabValue;
+	int indexInOriginalTabValue;
+	for (int i = 0; i < _nbSample; i++) {
+		// _tabValue[i] = new int[_nbCluster];
 		indexInOriginalTabValue = block._tabWeightedIndividual[i].val;
 		_tabValue[i] = originalTabValue[indexInOriginalTabValue];
 		// _tabValue[i] = copyTab(originalTabValue[indexInOriginalTabValue],_nbCluster);
@@ -143,7 +143,7 @@ Partition::Partition(Partition * originalPartition, CVBlock & block) {
 //Destructor
 //----------
 Partition::~Partition() {
-	int64_t i;
+	int i;
 	if (_tabValue) {
     if (_deleteValues) {
 			for (i = 0; i < _nbSample; i++) {
@@ -158,7 +158,7 @@ Partition::~Partition() {
 //--------------
 // Set attributs
 //--------------
-void Partition::setDimension(int64_t nbSample, int64_t nbCluster) {
+void Partition::setDimension(int nbSample, int nbCluster) {
 	_nbSample = nbSample;
 	_nbCluster = nbCluster;
 }
@@ -172,9 +172,9 @@ void Partition::setPartitionFile(std::string f, TypePartition::TypePartition typ
   -1 : if unknown
   0.... _nbClustrer-1 else
  */
-int64_t Partition::getGroupNumber(int64_t idxSample) {
-	int64_t res = -1;
-	int64_t k = 0;
+int Partition::getGroupNumber(int idxSample) {
+	int res = -1;
+	int k = 0;
 	while (_tabValue[idxSample][k] == 0 && k < _nbCluster) {
 		k++;
 	}
@@ -195,11 +195,11 @@ int64_t Partition::getGroupNumber(int64_t idxSample) {
 //-------------------------------------------
 bool Partition::isComplete() {
 	bool res = true;
-	int64_t i = 0;
-	int64_t k;
+	int i = 0;
+	int k;
 
 	// each line has one (and only one '1'
-	int64_t compteurDe1 = 0;
+	int compteurDe1 = 0;
 	while (i < _nbSample && res) {
 		compteurDe1 = 0;
 		for (k = 0; k < _nbCluster; k++) {
@@ -215,8 +215,8 @@ bool Partition::isComplete() {
 	if (res) {
 		// each cluster appears at least one time
 		i = 0;
-		int64_t nbClusterThatAppearAtLastOneTime = 0;
-		int64_t * tabNbOccurenceOfCluster = new int64_t[_nbCluster];
+		int nbClusterThatAppearAtLastOneTime = 0;
+		int * tabNbOccurenceOfCluster = new int[_nbCluster];
 		for (k = 0; k < _nbCluster; k++) {
 			tabNbOccurenceOfCluster[k] = 0;
 			for (i = 0; i < _nbSample; i++) {
@@ -251,8 +251,8 @@ bool Partition::operator==(Partition & otherPartition) {
 		res = false;
 	}
 	else {
-		int64_t i = 0;
-		int64_t k;
+		int i = 0;
+		int k;
 		while (i < _nbSample && res) {
 			k = 0;
 			while (k < _nbCluster && res) {
@@ -272,15 +272,15 @@ bool Partition::operator==(Partition & otherPartition) {
 // Friend method ifstream >>
 //--------------------------
 std::ifstream & operator >>(std::ifstream & fi, Partition & partition) {
-	int64_t j;
+	int j;
 	/*, nbRows, indice*/;
-	int64_t i;
-	//int64_t compt = 0;
+	int i;
+	//int compt = 0;
 
-	partition._tabValue = new int64_t*[partition._nbSample];
+	partition._tabValue = new int*[partition._nbSample];
 	partition._deleteValues = true;
 	for (i = 0; i < partition._nbSample; i++) {
-		partition._tabValue[i] = new int64_t[partition._nbCluster];
+		partition._tabValue[i] = new int[partition._nbCluster];
 	}
 
   if (partition._partitionFile._type == XEM::TypePartition::partition) {
@@ -297,7 +297,7 @@ std::ifstream & operator >>(std::ifstream & fi, Partition & partition) {
   }
   else if (partition._partitionFile._type == XEM::TypePartition::label) {
     i = 0;
-    int64_t tmp = 0;
+    int tmp = 0;
     while (i < partition._nbSample && !fi.eof()) {
       fi >> tmp;
       for (j = 0; j < partition._nbCluster; j++) {
@@ -320,7 +320,7 @@ std::ifstream & operator >>(std::ifstream & fi, Partition & partition) {
 	}
 
 	// Debug
-	//editTab<int64_t>(partition._tabValue, partition._nbSample, partition._nbCluster);
+	//editTab<int>(partition._tabValue, partition._nbSample, partition._nbCluster);
 	// End Debug
 	/*
 	  if (compt == label._nbSample)
@@ -351,8 +351,8 @@ std::ostream & operator <<(std::ostream & fo, const Partition & partition) {
 
 	fo << "\n Sample size: " << partition._nbSample;
 	fo << "\n Number of Cluster: " << partition._nbCluster << endl;
-	for (int64_t i = 0; i < partition._nbSample; i++) {
-		for (int64_t k = 0; k < partition._nbCluster; k++) {
+	for (int i = 0; i < partition._nbSample; i++) {
+		for (int k = 0; k < partition._nbCluster; k++) {
 			fo << partition._tabValue[i][k] << "\t";
 		}
 		fo << endl;

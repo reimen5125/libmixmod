@@ -37,7 +37,7 @@ GeneralMatrix::GeneralMatrix() {
 	THROW(OtherException, wrongConstructorType);
 }
 
-GeneralMatrix::GeneralMatrix(int64_t pbDimension, double d) : Matrix(pbDimension) {
+GeneralMatrix::GeneralMatrix(int pbDimension, float d) : Matrix(pbDimension) {
 	_value = new MATH::Matrix(pbDimension, pbDimension);
 	_store = _value->Store();
 
@@ -65,17 +65,17 @@ GeneralMatrix::~GeneralMatrix() {
 	_value = NULL;
 }
 
-double GeneralMatrix::determinant(Exception& errorType) {
+float GeneralMatrix::determinant(Exception& errorType) {
 	THROW(OtherException, nonImplementedMethod);
 }
 
-void GeneralMatrix::equalToMatrixMultiplyByDouble(Matrix* D, double d) {
+void GeneralMatrix::equalToMatrixMultiplyByFloat(Matrix* D, float d) {
 	THROW(OtherException, nonImplementedMethod);
 }
 
-void GeneralMatrix::multiply(double * V, int64_t nk, GeneralMatrix * Q) {
-	int64_t indiceV, indiceQ, indice = 0;
-	double * storeQ = Q->getStore();
+void GeneralMatrix::multiply(float * V, int nk, GeneralMatrix * Q) {
+	int indiceV, indiceQ, indice = 0;
+	float * storeQ = Q->getStore();
 
 	for (indiceV = 0; indiceV < _s_pbDimension; indiceV++) {
 		for (indiceQ = 0; indiceQ < nk; indiceQ++) {
@@ -86,28 +86,28 @@ void GeneralMatrix::multiply(double * V, int64_t nk, GeneralMatrix * Q) {
 	}
 }
 
-double* GeneralMatrix::getDiagonalStore() {
+float* GeneralMatrix::getDiagonalStore() {
 	THROW(OtherException, wrongMatrixType);
 }
 
-double* GeneralMatrix::getSymmetricStore() {
+float* GeneralMatrix::getSymmetricStore() {
 	THROW(OtherException, wrongMatrixType);
 }
 
-double* GeneralMatrix::getGeneralStore() {
+float* GeneralMatrix::getGeneralStore() {
 	return (_store);
 }
 
-double GeneralMatrix::getSphericalStore() {
+float GeneralMatrix::getSphericalStore() {
 	THROW(OtherException, wrongMatrixType);
 }
 
-double GeneralMatrix::compute_trace_W_C(Matrix * C) {
+float GeneralMatrix::compute_trace_W_C(Matrix * C) {
 	THROW(OtherException, nonImplementedMethod);
 }
 
 void GeneralMatrix::computeShape_as__diag_Ot_this_O(
-		DiagMatrix* & Shape, GeneralMatrix* & Ori, double diviseur) 
+		DiagMatrix* & Shape, GeneralMatrix* & Ori, float diviseur) 
 {
 	THROW(OtherException, nonImplementedMethod);
 }
@@ -116,74 +116,74 @@ void GeneralMatrix::inverse(Matrix * & A) {
 	THROW(OtherException, nonImplementedMethod);
 }
 
-void GeneralMatrix::compute_product_Lk_Wk(Matrix* Wk, double L) {
+void GeneralMatrix::compute_product_Lk_Wk(Matrix* Wk, float L) {
 	THROW(OtherException, nonImplementedMethod);
 }
 
-double GeneralMatrix::norme(double * xMoinsMean) {
+float GeneralMatrix::norme(float * xMoinsMean) {
 	THROW(OtherException, nonImplementedMethod);
 }
 
 // (this) will be A / d
-void GeneralMatrix::equalToMatrixDividedByDouble(Matrix * A, double d) {
+void GeneralMatrix::equalToMatrixDividedByFloat(Matrix * A, float d) {
 	THROW(OtherException, nonImplementedMethod);
 }
 
 // add :  cik * xMoinsMean * xMoinsMean'  to this
-void GeneralMatrix::add(double * xMoinsMean, double cik) {
+void GeneralMatrix::add(float * xMoinsMean, float cik) {
 	THROW(OtherException, nonImplementedMethod);
 }
 
 // add : diag( cik * xMoinsMean * xMoinsMean' )  to this
-/*void GeneralMatrix::addDiag(double * xMoinsMean, double cik){
+/*void GeneralMatrix::addDiag(float * xMoinsMean, float cik){
   THROW(InputException,nonImplementedMethod);
 }*/
 
-double GeneralMatrix::putSphericalValueInStore(double & store) {
+float GeneralMatrix::putSphericalValueInStore(float & store) {
 	THROW(OtherException, wrongMatrixType);
 }
 
-double GeneralMatrix::addSphericalValueInStore(double & store) {
+float GeneralMatrix::addSphericalValueInStore(float & store) {
 	THROW(OtherException, wrongMatrixType);
 }
 
-double * GeneralMatrix::putDiagonalValueInStore(double * store) {
+float * GeneralMatrix::putDiagonalValueInStore(float * store) {
 	THROW(OtherException, wrongMatrixType);
 }
 
-double * GeneralMatrix::addDiagonalValueInStore(double * store) {
+float * GeneralMatrix::addDiagonalValueInStore(float * store) {
 	THROW(OtherException, wrongMatrixType);
 }
 
-double * GeneralMatrix::putSymmetricValueInStore(double * store) {
+float * GeneralMatrix::putSymmetricValueInStore(float * store) {
 	THROW(OtherException, wrongMatrixType);
 }
 
-double * GeneralMatrix::addSymmetricValueInStore(double * store) {
+float * GeneralMatrix::addSymmetricValueInStore(float * store) {
 	THROW(OtherException, wrongMatrixType);
 }
 
-double* GeneralMatrix::putGeneralValueInStore(double * store) {
-	for (int64_t p = 0; p < _s_storeDim; p++) {
+float* GeneralMatrix::putGeneralValueInStore(float * store) {
+	for (int p = 0; p < _s_storeDim; p++) {
 		store[p] = _store[p];
 	}
 	return (store);
 }
 
-double* GeneralMatrix::addGeneralValueInStore(double * store) {
-	for (int64_t p = 0; p < _s_storeDim; p++) {
+float* GeneralMatrix::addGeneralValueInStore(float * store) {
+	for (int p = 0; p < _s_storeDim; p++) {
 		store[p] += _store[p];
 	}
 	return (store);
 }
 
 // set the value of (d x Identity) to this  
-void GeneralMatrix::operator=(const double& d) {
+void GeneralMatrix::operator=(const float& d) {
 	//THROW(InputException,nonImplementedMethod);
-	int64_t indice = 0;
+	int indice = 0;
 	while (indice < _s_storeDim) {
-		for (int64_t i = 0; i < _s_pbDimension; i++) {
-			for (int64_t j = 0; j < _s_pbDimension; j++) {
+		for (int i = 0; i < _s_pbDimension; i++) {
+			for (int j = 0; j < _s_pbDimension; j++) {
 				if (i == j) {
 					_store[indice] = d;
 				}
@@ -197,12 +197,12 @@ void GeneralMatrix::operator=(const double& d) {
 }
 
 // divide each element by d
-void GeneralMatrix::operator/=(const double& d) {
+void GeneralMatrix::operator/=(const float& d) {
 	THROW(OtherException, nonImplementedMethod);
 }
 
 // multiply each element by d
-void GeneralMatrix::operator*=(const double& d) {
+void GeneralMatrix::operator*=(const float& d) {
 	THROW(OtherException, nonImplementedMethod);
 }
 
@@ -215,17 +215,17 @@ void GeneralMatrix::operator+=(Matrix* M) {
 	M->addGeneralValueInStore(_store);
 }
 
-void GeneralMatrix::edit(std::ostream& flux, std::string before, std::string sep, int64_t dim) {
+void GeneralMatrix::edit(std::ostream& flux, std::string before, std::string sep, int dim) {
 	if (dim <= 0) {
 		//ugly fix [bauder]: TODO = understand why dim can be 0 
 		//(it shouldn't... but it does on example da2), and fix in upper classes.
 		return;
 	}
-	for (int64_t p = 0; p < _s_pbDimension; p++) {
+	for (int p = 0; p < _s_pbDimension; p++) {
 		flux << before;
-		// TODO: << operator for double*
-		double* row = _value->GetRow(p);
-		for (int64_t i=0; i<dim-1; i++) 
+		// TODO: << operator for float*
+		float* row = _value->GetRow(p);
+		for (int i=0; i<dim-1; i++) 
 			flux << row[i] << ",";
 		flux << row[dim-1];
 		flux << sep;
@@ -233,18 +233,18 @@ void GeneralMatrix::edit(std::ostream& flux, std::string before, std::string sep
 }
 
 /// compute this as : multi * (O * S * O' )
-void GeneralMatrix::compute_as__multi_O_S_O(double multi, GeneralMatrix* & O, DiagMatrix* & S) {
+void GeneralMatrix::compute_as__multi_O_S_O(float multi, GeneralMatrix* & O, DiagMatrix* & S) {
 	THROW(OtherException, nonImplementedMethod);
 }
 
 /// compute this as : (O * S * O' )
-//void GeneralMatrix::compute_as_O_S_O(Matrix & O, double* & S_store){
-void GeneralMatrix::compute_as_O_S_O(GeneralMatrix* & O, double* & S_store) {
+//void GeneralMatrix::compute_as_O_S_O(Matrix & O, float* & S_store){
+void GeneralMatrix::compute_as_O_S_O(GeneralMatrix* & O, float* & S_store) {
 	THROW(OtherException, nonImplementedMethod);
 }
 
 //compute trace of a symmetric matrix
-double GeneralMatrix::computeTrace() {
+float GeneralMatrix::computeTrace() {
 	THROW(OtherException, nonImplementedMethod);
 }
 
@@ -252,11 +252,11 @@ void GeneralMatrix::computeSVD(DiagMatrix* & S, GeneralMatrix* & O) {
 	THROW(OtherException, nonImplementedMethod);
 }
 
-void GeneralMatrix::compute_as_M_tM(GeneralMatrix* M, int64_t d) {
+void GeneralMatrix::compute_as_M_tM(GeneralMatrix* M, int d) {
 	THROW(OtherException, nonImplementedMethod);
 }
 
-void GeneralMatrix::compute_as_M_V(GeneralMatrix* M, double * V) {
+void GeneralMatrix::compute_as_M_V(GeneralMatrix* M, float * V) {
 	THROW(OtherException, nonImplementedMethod);
 }
 
@@ -268,16 +268,16 @@ void GeneralMatrix::compute_M_as__O_Sinverse_Ot_this(
 }
 
 void GeneralMatrix::input(std::ifstream & fi) {
-	int64_t i, j, r = 0;
+	int i, j, r = 0;
 
 	for (i = 0; i < _s_pbDimension; i++) {
 		for (j = 0; j < _s_pbDimension; j++, r++)
-			_store[r] = getDoubleFromStream(fi);
+			_store[r] = getFloatFromStream(fi);
 	}
 }
 
-void GeneralMatrix::input(double ** variances) {
-	int64_t i, j, r = 0;
+void GeneralMatrix::input(float ** variances) {
+	int i, j, r = 0;
 
 	for (i = 0; i < _s_pbDimension; i++) {
 		for (j = 0; j < _s_pbDimension; j++, r++) {
@@ -286,12 +286,12 @@ void GeneralMatrix::input(double ** variances) {
 	}
 }
 
-void GeneralMatrix::input(std::ifstream & fi, int64_t dim) {
-	int64_t i, j, r = 0;
+void GeneralMatrix::input(std::ifstream & fi, int dim) {
+	int i, j, r = 0;
 
 	for (i = 0; i < _s_pbDimension; i++) {
 		for (j = 0; j < dim; j++, r++)
-			_store[r] = getDoubleFromStream(fi);
+			_store[r] = getFloatFromStream(fi);
 		for (j = dim; j < _s_pbDimension; j++, r++) {
 			_store[r] = 0.0;
 		}
@@ -299,21 +299,21 @@ void GeneralMatrix::input(std::ifstream & fi, int64_t dim) {
 }
 
 // gives : det(diag(this))
-double GeneralMatrix::detDiag(Exception& errorType) {
+float GeneralMatrix::detDiag(Exception& errorType) {
 	THROW(OtherException, nonImplementedMethod);
 }
 
 // trace( this * O * S^{-1} * O' )
-double GeneralMatrix::trace_this_O_Sm1_O(GeneralMatrix* & O, DiagMatrix* & S) {
+float GeneralMatrix::trace_this_O_Sm1_O(GeneralMatrix* & O, DiagMatrix* & S) {
 	THROW(OtherException, nonImplementedMethod);
 }
 
-double** GeneralMatrix::storeToArray() const {
+float** GeneralMatrix::storeToArray() const {
 
-	int64_t i, j, k = 0;
-	double** newStore = new double*[_s_pbDimension];
+	int i, j, k = 0;
+	float** newStore = new float*[_s_pbDimension];
 	for (i = 0; i < _s_pbDimension; ++i) {
-		newStore[i] = new double[_s_pbDimension];
+		newStore[i] = new float[_s_pbDimension];
 		for (j = 0; j < _s_pbDimension; ++j) {
 			newStore[i][j] = _store[k];
 			k++;
