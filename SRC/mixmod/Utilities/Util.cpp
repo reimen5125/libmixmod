@@ -62,7 +62,7 @@ float getFloatFromStream(std::istream& input)
 
 float powAndCheckIfNotNull(float a, float b, const Exception & errorType) {
 	float res;
-	res = pow(a, b);
+	res = powf(a, b);
 	if (res == 0.0) throw errorType;
 	return res;
 }

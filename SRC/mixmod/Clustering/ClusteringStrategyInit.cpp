@@ -6,7 +6,7 @@
 
 /***************************************************************************
     This file is part of MIXMOD
-    
+
     MIXMOD is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
@@ -20,7 +20,7 @@
     You should have received a copy of the GNU General Public License
     along with MIXMOD.  If not, see <http://www.gnu.org/licenses/>.
 
-    All informations available on : http://www.mixmod.org                                                                                               
+    All informations available on : http://www.mixmod.org
 ***************************************************************************/
 
 #include "mixmod/Clustering/ClusteringStrategyInit.h"
@@ -61,7 +61,7 @@ ClusteringStrategyInit::ClusteringStrategyInit(const ClusteringStrategyInit & st
 	_nbInitParameter  = strategyInit.getNbInitParameter();
 	_nbPartition      = strategyInit.getNbPartition();
 	_tabPartition     = NULL;
-	
+
 	if (_nbPartition != 0) {
 		_tabPartition = new Partition*[_nbPartition];
 		const Partition ** iPartition = strategyInit.getTabPartition();
@@ -111,7 +111,7 @@ ClusteringStrategyInit::~ClusteringStrategyInit() {
 }
 
 //---------------------
-// setStrategyInitName 
+// setStrategyInitName
 //---------------------
 void ClusteringStrategyInit::setStrategyInitName(StrategyInitName initName) {
 
@@ -175,7 +175,7 @@ void ClusteringStrategyInit::setInitParam(std::string & paramFileName, int posit
 // setTabInitParam
 //----------------
 void ClusteringStrategyInit::setTabInitParameter(
-		Parameter ** tabInitParameter, int nbInitParameter) 
+		Parameter ** tabInitParameter, int nbInitParameter)
 {
 	int i;
 	if (_tabInitParameter && _deleteTabParameter) {
@@ -190,7 +190,7 @@ void ClusteringStrategyInit::setTabInitParameter(
 	_nbInitParameter = nbInitParameter;
 }
 
-//------------------  
+//------------------
 //set Init Partition
 //------------------
 void ClusteringStrategyInit::setPartition(Partition * part, int position) {
@@ -268,7 +268,7 @@ void ClusteringStrategyInit::setTabPartition(Partition ** tabPartition, int nbPa
 	_nbPartition = nbPartition;
 }
 
-//------------  
+//------------
 // setStopName
 //-------------
 void ClusteringStrategyInit::setStopName(AlgoStopName stopName) {
@@ -287,7 +287,7 @@ void ClusteringStrategyInit::setStopName(AlgoStopName stopName) {
 // setNbTry
 //---------
 void ClusteringStrategyInit::setNbTry(int nbTry) {
-	if (_strategyInitName == SMALL_EM || _strategyInitName == CEM_INIT 
+	if (_strategyInitName == SMALL_EM || _strategyInitName == CEM_INIT
 			|| _strategyInitName == RANDOM)
 	{
 		if (nbTry > maxNbTryInInit) {
@@ -351,8 +351,8 @@ void ClusteringStrategyInit::setEpsilon(float epsilon) {
 bool ClusteringStrategyInit::verify() const {
 	bool res = true;
 	//if init is USER or PARTITION, nbTry must be 1
-	if ((_strategyInitName == USER_PARTITION || _strategyInitName == USER_PARTITION) 
-			&& _nbTry != 1) 
+	if ((_strategyInitName == USER_PARTITION || _strategyInitName == USER_PARTITION)
+			&& _nbTry != 1)
 	{
 		res = false;
 		THROW(InputException, wrongNbStrategyTryValue);
@@ -372,8 +372,8 @@ bool ClusteringStrategyInit::verify() const {
 }
 
 // input
-void ClusteringStrategyInit::input(std::ifstream & fi, Data *& data, int nbNbCluster, 
-		int * tabNbCluster, ModelType * modelType, bool & alreadyRead) 
+void ClusteringStrategyInit::input(std::ifstream & fi, Data *& data, int nbNbCluster,
+		int * tabNbCluster, ModelType * modelType, bool & alreadyRead)
 {
 	std::string keyWord = "";
 	std::string a = "";
@@ -427,14 +427,14 @@ void ClusteringStrategyInit::input(std::ifstream & fi, Data *& data, int nbNbClu
 					else if (isBinary(modelType->_nameModel)) {
 						int * tabNbModality = (data->getBinaryData())->getTabNbModality();
 						tabInitParameter[k] = new BinaryEkjhParameter(
-								tabNbCluster[k], pbDimension, modelType, 
+								tabNbCluster[k], pbDimension, modelType,
 								tabNbModality, tabFileName[k]);
-                        tabInitParameter[k]->setFilename(tabFileName[k]); //to be factorized when isHeterogeneous is implemented                       
+                        tabInitParameter[k]->setFilename(tabFileName[k]); //to be factorized when isHeterogeneous is implemented
 					}
 					else if (isHD(modelType->_nameModel)) {
 						tabInitParameter[k] = new GaussianHDDAParameter(
 								tabNbCluster[k], pbDimension, modelType, tabFileName[k]);
-                        tabInitParameter[k]->setFilename(tabFileName[k]); //to be factorized when isHeterogeneous is implemented                        
+                        tabInitParameter[k]->setFilename(tabFileName[k]); //to be factorized when isHeterogeneous is implemented
 					}
 					else if (isHeterogeneous(modelType->_nameModel)) {
 						//TODO
@@ -633,14 +633,14 @@ for (int p=0; p<nbPartition; p++){
 /*------------------------------------------------------
  initSMALL_EM
  ------------
- 
- updated in this method : 
+
+ updated in this method :
  - _parameter
- - _tabFik, _tabSumF, _tabCik, _tabTik, _tabNk 
+ - _tabFik, _tabSumF, _tabCik, _tabTik, _tabNk
    (because an Estep is called to choose the bestParameter)
  Note : _tabFik, _tabSumF, _tabCik, _tabTik, _tabNk wil be 're'computed in the following EStep
  So only _parameter have to be updated in this method
- 
+
  -------------------------------------------------------*/
 void ClusteringStrategyInit::initSMALL_EM(Model*& model) {
 	// cout<<"init SMALL_EM, nbTryInInit="<<strategyInit->getNbTry()<<",
@@ -712,14 +712,14 @@ void ClusteringStrategyInit::oneRunOfSmallEM(Model*& model, float & logLikelihoo
 			break;
 		case EPSILON:
 			logLikelihood = model->getLogLikelihood(true);  // true : to compute fik
-			eps = fabs(logLikelihood - lastLogLikelihood);
+			eps = fabsf(logLikelihood - lastLogLikelihood);
 			// on ajoute un test pour ne pas faire trop d'iterations quand meme ....
 			continueAgain = (eps > _epsilon && (nbIteration < maxNbIterationInInit));
 			//continueAgain = (eps > strategyInit->getEpsilon());
 			break;
 		case NBITERATION_EPSILON:
 			logLikelihood = model->getLogLikelihood(true);  // true : to compute fi
-			eps = fabs(logLikelihood - lastLogLikelihood);
+			eps = fabsf(logLikelihood - lastLogLikelihood);
 			continueAgain = ((eps > _epsilon) && (nbIteration < _nbIteration));
 			break;
 		default: THROW(OtherException, internalMixmodError);
@@ -734,13 +734,13 @@ void ClusteringStrategyInit::oneRunOfSmallEM(Model*& model, float & logLikelihoo
 /*---------------------------------------------------
  initCEM_INIT
  ---------------------------------------------------
- updated in this method : 
+ updated in this method :
  - _parameter
- - _tabFik, _tabSumF, _tabCik, _tabTik, _tabNk 
+ - _tabFik, _tabSumF, _tabCik, _tabTik, _tabNk
    (because an Estep and a CStep are called to choose the bestParameter)
  Note : _tabFik, _tabSumF, _tabCik, _tabTik, _tabNk wil be 're'computed in the following EStep
  So only _parameter have to be updated in this method
- 
+
  ---------------------------------------------------*/
 void ClusteringStrategyInit::initCEM_INIT(Model*& model) {
 	//cout<<"init CEM, nbTryInInit="<<strategyInit->getNbTry()<<endl;
@@ -780,9 +780,9 @@ void ClusteringStrategyInit::initCEM_INIT(Model*& model) {
 				}
 			}
 			//cout<<"dans init CEM, nb d'iterations effectuées : "<<nbIter<<endl;
-			// Compute log-likelihood 
+			// Compute log-likelihood
 			cLogLikelihood = model->getCompletedLogLikelihood();
-			// Comparaison of log-likelihood between step p and p-1 
+			// Comparaison of log-likelihood between step p and p-1
 			if ((nbRunOfCEMOk == 1) || (cLogLikelihood > bestCLogLikelihood)) {
 				bestCLogLikelihood = cLogLikelihood;
 				bestParameter->recopy(model->getParameter());
@@ -810,14 +810,14 @@ void ClusteringStrategyInit::initCEM_INIT(Model*& model) {
 /*---------------------------------------------------------
  Initialization by SEM
  ---------------------
- 
- updated in this method : 
+
+ updated in this method :
  - _parameter
- - _tabFik, _tabSumF, _tabCik, _tabTik, _tabNk 
+ - _tabFik, _tabSumF, _tabCik, _tabTik, _tabNk
    (because an Estep and a SStep are called to choose the bestParameter)
  Note : _tabFik, _tabSumF, _tabCik, _tabTik, _tabNk wil be 're'computed in the following EStep
  So, only _parameter have to be updated in this method
- 
+
  -------------------------------------------------------*/
 void ClusteringStrategyInit::initSEM_MAX(Model*& model) {
 	//cout<<"init SEM_MAX, nbTryInInit="<<strategyInit->getNbIteration()<<endl;
@@ -838,7 +838,7 @@ void ClusteringStrategyInit::initSEM_MAX(Model*& model) {
 			model->Estep();
 			model->Sstep();
 			model->Mstep();
-			// Compute log-likelihood 
+			// Compute log-likelihood
 			logLikelihood = model->getLogLikelihood(true);  // true : to compute fik
 			if ((nbRunOfSEMMAXOk == 1) || (logLikelihood > bestLogLikelihood)) {
 				bestLogLikelihood = logLikelihood;

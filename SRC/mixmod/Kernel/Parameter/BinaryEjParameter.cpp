@@ -145,10 +145,10 @@ float BinaryEjParameter::getLogPdf(int iSample, int kCluster) const {
 	for (j = 0; j < _pbDimension; j++) {
 		// iSample have major modality ?//
 		if (curSample->getDataValue(j) == _tabCenter[kCluster][j]) {
-			bernPdf += log(1.0 - _scatter[j]);
+			bernPdf += logf(1.0 - _scatter[j]);
 		}
 		else {
-			bernPdf += log(_scatter[j] / (_tabNbModality[j] - 1.0));
+			bernPdf += logf(_scatter[j] / (_tabNbModality[j] - 1.0));
 		}
 	}
 	return bernPdf;
@@ -205,7 +205,7 @@ float BinaryEjParameter::getLogLikelihoodOne() const {
 	// Compute the log-likelihood for one cluster (k=1) //
 	for (i = 0; i < nbSample; i++) {
       pdf = computePdfOneCluster(data->_matrix[i], Center.get(), Scatter.get(), _tabNbModality);
-		logLikelihoodOne += log(pdf) * data->_weight[i];
+		logLikelihoodOne += logf(pdf) * data->_weight[i];
 	}
 
 	//delete[] Center;

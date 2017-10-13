@@ -291,7 +291,7 @@ void BandLUMatrix::ludcmp()
       Real x = *a; i = k; Real* aj = a;
       if (l < n) l++;
       for (j=k+1; j<l; j++)
-         { aj += w; if (fabs(x) < fabs(*aj)) { x = *aj; i = j; } }
+         { aj += w; if (fabsf(x) < fabsf(*aj)) { x = *aj; i = j; } }
       indx[k] = i;
       if (x==0) { sing = true; return; }
       if (i!=k)
@@ -548,7 +548,7 @@ Real SymmetricBandMatrix::SumAbsoluteValue() const
    CornerClear();
    Real sum1=0.0; Real sum2=0.0; Real* s=store; int i=nrows; int l=lower;
    while (i--)
-      { int j = l; while (j--) sum2 += fabs(*s++); sum1 += fabs(*s++); }
+      { int j = l; while (j--) sum2 += fabsf(*s++); sum1 += fabsf(*s++); }
    ((GeneralMatrix&)*this).tDelete(); return sum1 + 2.0 * sum2;
 }
 

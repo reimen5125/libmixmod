@@ -115,7 +115,7 @@ public:
 		return _value->Store();
 	}
 	
-	// return log(abs(det(M)))
+	// return logf(abs(det(M)))
 	// NOTE: NEWMAT also return the sign of det(M)
 	float LogDeterminant() {
 		return NEWMAT::LogDeterminant(*_value).Value();

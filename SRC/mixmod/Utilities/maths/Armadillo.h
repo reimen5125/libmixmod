@@ -143,7 +143,7 @@ public:
 		return (*_value)(i,j);
 	}
 
-	// return log(abs(det(M)))
+	// return logf(abs(det(M)))
 	Real LogDeterminant()
 	{
 		arma::Mat<Real> L;
@@ -152,7 +152,7 @@ public:
 		arma::lu(L, U, P, *_value);
 		Real logDet = 0.0;
 		for (int i=0; i<_value->n_rows; i++)
-			logDet += log(fabs(U(i,i)));
+			logDet += logf(fabsf(U(i,i)));
 		return logDet;
 	}
 

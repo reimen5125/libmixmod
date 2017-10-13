@@ -65,8 +65,8 @@ GaussianData::GaussianData(const GaussianData & iData) : Data(iData) {
 //------------
 GaussianData::GaussianData(int nbSample, int pbDimension) : Data(nbSample, pbDimension) {
 	int i;
-	_Inv2PiPow = 1.0 / pow(2.0 * XEMPI, pbDimension / 2.0);
-	_pbDimensionLog2Pi = pbDimension * log(2.0 * XEMPI);
+	_Inv2PiPow = 1.0 / powf(2.0 * XEMPI, pbDimension / 2.0);
+	_pbDimensionLog2Pi = pbDimension * logf(2.0 * XEMPI);
 	_halfPbDimensionLog2Pi = _pbDimensionLog2Pi / 2.0;
 	__tmpTabOfSizePbDimension = new float[_pbDimension];
 
@@ -91,8 +91,8 @@ GaussianData::GaussianData(int nbSample, int pbDimension, float ** matrix)
 
 	if (matrix == NULL) THROW(OtherException, internalMixmodError);
 
-	_Inv2PiPow = 1.0 / pow(2.0 * XEMPI, pbDimension / 2.0);
-	_pbDimensionLog2Pi = pbDimension * log(2.0 * XEMPI);
+	_Inv2PiPow = 1.0 / powf(2.0 * XEMPI, pbDimension / 2.0);
+	_pbDimensionLog2Pi = pbDimension * logf(2.0 * XEMPI);
 	_halfPbDimensionLog2Pi = _pbDimensionLog2Pi / 2.0;
 	__tmpTabOfSizePbDimension = new float[_pbDimension];
 
@@ -116,8 +116,8 @@ GaussianData::GaussianData(int nbSample, int pbDimension, const std::string & da
 {
 	int i;
 
-	_Inv2PiPow = 1.0 / pow(2.0 * XEMPI, pbDimension / 2.0);
-	_pbDimensionLog2Pi = pbDimension * log(2.0 * XEMPI);
+	_Inv2PiPow = 1.0 / powf(2.0 * XEMPI, pbDimension / 2.0);
+	_pbDimensionLog2Pi = pbDimension * logf(2.0 * XEMPI);
 	_halfPbDimensionLog2Pi = _pbDimensionLog2Pi / 2.0;
 	__tmpTabOfSizePbDimension = new float[_pbDimension];
 
@@ -147,10 +147,10 @@ GaussianData::GaussianData(int nbSample, int pbDimension,
 : Data(nbSample, pbDimension, weightTotal, weight) 
 {
 	// 1/ (2 * pi)^(d/2)
-	_Inv2PiPow = 1.0 / pow(2.0 * XEMPI, pbDimension / 2.0);
-	_pbDimensionLog2Pi = pbDimension * log(2.0 * XEMPI);
+	_Inv2PiPow = 1.0 / powf(2.0 * XEMPI, pbDimension / 2.0);
+	_pbDimensionLog2Pi = pbDimension * logf(2.0 * XEMPI);
 	_halfPbDimensionLog2Pi = _pbDimensionLog2Pi / 2.0;
-	_pbDimensionLog2Pi = pbDimension * log(2.0 * XEMPI);
+	_pbDimensionLog2Pi = pbDimension * logf(2.0 * XEMPI);
 	__tmpTabOfSizePbDimension = new float[_pbDimension];
 
 	_matrix = matrix;
@@ -174,8 +174,8 @@ GaussianData::GaussianData(int nbSample, int pbDimension,
 	Sample ** origMatrix = origData->_matrix;
 
 	// 1/ (2 * pi)^(d/2)
-	_Inv2PiPow = 1.0 / pow(2.0 * XEMPI, pbDimension / 2.0);
-	_pbDimensionLog2Pi = pbDimension * log(2.0 * XEMPI);
+	_Inv2PiPow = 1.0 / powf(2.0 * XEMPI, pbDimension / 2.0);
+	_pbDimensionLog2Pi = pbDimension * logf(2.0 * XEMPI);
 	_halfPbDimensionLog2Pi = _pbDimensionLog2Pi / 2.0;
 	__tmpTabOfSizePbDimension = new float[_pbDimension];
 	_deleteSamples = false;

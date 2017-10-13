@@ -46,7 +46,7 @@ ReturnMatrix Cholesky(const SymmetricMatrix& S)
       while (k--) { sum += square(*ti++); }
       Real d = *s++ - sum;
       if (d<=0.0)  Throw(NPDException(S));
-      *ti++ = sqrt(d);
+      *ti++ = sqrtf(d);
    }
    T.Release(); return T.ForReturn();
 }
@@ -75,7 +75,7 @@ ReturnMatrix Cholesky(const SymmetricBandMatrix& S)
       while (l--) { sum += square(*ti++); }
       Real d = *s++ - sum;
       if (d<=0.0)  Throw(NPDException(S));
-      *ti++ = sqrt(d);
+      *ti++ = sqrtf(d);
    }
 
    T.Release(); return T.ForReturn();

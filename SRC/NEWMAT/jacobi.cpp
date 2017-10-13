@@ -37,7 +37,7 @@ void Jacobi(const SymmetricMatrix& X, DiagonalMatrix& D, SymmetricMatrix& A,
    for (int i=1; i<=50; i++)
    {
       Real sm=0.0; Real* a = A.Store(); int p = A.Storage();
-      while (p--) sm += fabs(*a++);            // have previously zeroed diags
+      while (p--) sm += fabsf(*a++);            // have previously zeroed diags
       if (sm==0.0) { REPORT converged = true; break; }
       Real tresh = (i<4) ? 0.2 * sm / square(n) : 0.0; a = A.Store();
       for (p = 0; p < n; p++)
@@ -49,22 +49,22 @@ void Jacobi(const SymmetricMatrix& X, DiagonalMatrix& D, SymmetricMatrix& A,
             Real* ap = ap1; Real* aq = a + (q*(q+1))/2;
             Real& zq = Z.element(q); Real& dq = D.element(q);
             Real& apq = A.element(q,p);
-            Real g = 100 * fabs(apq); Real adp = fabs(dp); Real adq = fabs(dq);
+            Real g = 100 * fabsf(apq); Real adp = fabsf(dp); Real adq = fabsf(dq);
 
             if (i>4 && g < epsilon*adp && g < epsilon*adq) { REPORT apq = 0.0; }
-            else if (fabs(apq) > tresh)
+            else if (fabsf(apq) > tresh)
             {
                REPORT
-               Real t; Real h = dq - dp; Real ah = fabs(h);
+               Real t; Real h = dq - dp; Real ah = fabsf(h);
                if (g < epsilon*ah) { REPORT t = apq / h; }
                else
                {
                   REPORT
                   Real theta = 0.5 * h / apq;
-                  t = 1.0 / ( fabs(theta) + sqrt(1.0 + square(theta)) );
+                  t = 1.0 / ( fabsf(theta) + sqrtf(1.0 + square(theta)) );
                   if (theta<0.0) { REPORT t = -t; }
                }
-               Real c = 1.0 / sqrt(1.0 + square(t)); Real s = t * c;
+               Real c = 1.0 / sqrtf(1.0 + square(t)); Real s = t * c;
                Real tau = s / (1.0 + c); h = t * apq;
                zp -= h; zq += h; dp -= h; dq += h; apq = 0.0;
                int j = p;

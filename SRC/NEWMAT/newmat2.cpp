@@ -563,7 +563,7 @@ Real MatrixRowCol::SumAbsoluteValue()
 {
    REPORT
    Real sum = 0.0; Real* elx = data; int l = storage;
-   while (l--) sum += fabs(*elx++);
+   while (l--) sum += fabsf(*elx++);
    return sum;
 }
 
@@ -574,7 +574,7 @@ Real MatrixRowCol::MaximumAbsoluteValue1(Real r, int& i)
 {
    REPORT
    Real* elx = data; int l = storage; int li = -1;
-   while (l--) { Real f = fabs(*elx++); if (r <= f) { r = f; li = l; } }
+   while (l--) { Real f = fabsf(*elx++); if (r <= f) { r = f; li = l; } }
    i = (li >= 0) ? storage - li + skip : 0;
    return r;
 }
@@ -584,7 +584,7 @@ Real MatrixRowCol::MinimumAbsoluteValue1(Real r, int& i)
 {
    REPORT
    Real* elx = data; int l = storage; int li = -1;
-   while (l--) { Real f = fabs(*elx++); if (r >= f) { r = f; li = l; } }
+   while (l--) { Real f = fabsf(*elx++); if (r >= f) { r = f; li = l; } }
    i = (li >= 0) ? storage - li + skip : 0;
    return r;
 }

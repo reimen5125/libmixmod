@@ -22,7 +22,7 @@ namespace NEWMAT {
 
 
 static Real pythag(Real f, Real g, Real& c, Real& s)
-// return z=sqrt(f*f+g*g), c=f/z, s=g/z
+// return z=sqrtf(f*f+g*g), c=f/z, s=g/z
 // set c=1,s=0 if z==0
 // avoid floating point overflow or divide by zero
 {
@@ -32,14 +32,14 @@ static Real pythag(Real f, Real g, Real& c, Real& s)
    if (ag<af)
    {
       REPORT
-      Real h = g/f; Real sq = sqrt(1.0+h*h);
+      Real h = g/f; Real sq = sqrtf(1.0+h*h);
       if (f<0) sq = -sq;           // make return value non-negative
       c = 1.0/sq; s = h/sq; return sq*f;
    }
    else
    {
       REPORT
-      Real h = f/g; Real sq = sqrt(1.0+h*h);
+      Real h = f/g; Real sq = sqrtf(1.0+h*h);
       if (g<0) sq = -sq;
       s = 1.0/sq; c = h/sq; return sq*g;
    }
@@ -71,7 +71,7 @@ void SVD(const Matrix& A, DiagonalMatrix& Q, Matrix& U, Matrix& V,
       else
       {
          REPORT
-         f = UCI.First(); g = -sign(sqrt(s), f); h = f*g-s; UCI.First() = f-g;
+         f = UCI.First(); g = -sign(sqrtf(s), f); h = f*g-s; UCI.First() = f-g;
          Q.element(i) = g; RectMatrixCol UCJ = UCI; int j=n-i;
          while (--j) { UCJ.Right(); UCJ.AddScaled(UCI, (UCI*UCJ)/h); }
       }
@@ -81,12 +81,12 @@ void SVD(const Matrix& A, DiagonalMatrix& Q, Matrix& U, Matrix& V,
       else
       {
          REPORT
-         f = URI.First(); g = -sign(sqrt(s), f); URI.First() = f-g;
+         f = URI.First(); g = -sign(sqrtf(s), f); URI.First() = f-g;
          EI.Divide(URI,f*g-s); RectMatrixRow URJ = URI; int j=m-i;
          while (--j) { URJ.Down(); URJ.AddScaled(EI, URI*URJ); }
       }
 
-      Real y = fabs(Q.element(i)) + fabs(ei); if (x<y) { REPORT x = y; }
+      Real y = fabsf(Q.element(i)) + fabsf(ei); if (x<y) { REPORT x = y; }
       if (++i == n) { REPORT break; }
       UCI.DownDiag(); URI.DownDiag();
    }
@@ -144,9 +144,9 @@ void SVD(const Matrix& A, DiagonalMatrix& Q, Matrix& U, Matrix& V,
          Real c, s; int i; int l1=k; bool tfc=false;
          for (l=k; l>=0; l--)
          {
-//          if (fabs(E.element(l))<=eps) goto test_f_convergence;
-            if (fabs(E.element(l))<=eps) { REPORT tfc=true; break; }
-            if (fabs(Q.element(l-1))<=eps) { REPORT l1=l; break; }
+//          if (fabsf(E.element(l))<=eps) goto test_f_convergence;
+            if (fabsf(E.element(l))<=eps) { REPORT tfc=true; break; }
+            if (fabsf(Q.element(l-1))<=eps) { REPORT l1=l; break; }
             REPORT
          }
          if (!tfc)
@@ -156,8 +156,8 @@ void SVD(const Matrix& A, DiagonalMatrix& Q, Matrix& U, Matrix& V,
             for (i=l; i<=k; i++)
             {
                f = - s * E.element(i); E.element(i) *= c;
-//             if (fabs(f)<=eps) goto test_f_convergence;
-               if (fabs(f)<=eps) { REPORT break; }
+//             if (fabsf(f)<=eps) goto test_f_convergence;
+               if (fabsf(f)<=eps) { REPORT break; }
                g = Q.element(i); h = pythag(g,f,c,s); Q.element(i) = h;
                if (withU)
                {
@@ -173,9 +173,9 @@ void SVD(const Matrix& A, DiagonalMatrix& Q, Matrix& U, Matrix& V,
          x = Q.element(l); y = Q.element(k-1);
          g = E.element(k-1); h = E.element(k);
          f = ((y-z)*(y+z) + (g-h)*(g+h)) / (2*h*y);
-         if (f>1)         { REPORT g = f * sqrt(1 + square(1/f)); }
-         else if (f<-1)   { REPORT g = -f * sqrt(1 + square(1/f)); }
-         else             { REPORT g = sqrt(f*f + 1); }
+         if (f>1)         { REPORT g = f * sqrtf(1 + square(1/f)); }
+         else if (f<-1)   { REPORT g = -f * sqrtf(1 + square(1/f)); }
+         else             { REPORT g = sqrtf(f*f + 1); }
             { REPORT f = ((x-z)*(x+z) + h*(y / ((f<0.0) ? f-g : f+g)-h)) / x; }
 
          c = 1.0; s = 1.0;

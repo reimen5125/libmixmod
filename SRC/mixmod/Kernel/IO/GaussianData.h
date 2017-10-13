@@ -108,7 +108,7 @@ protected:
 	/// 1/ (2 * pi)^(d/2)
 	float _Inv2PiPow;
 
-	/// 0.5 * p * log(2 * PI)
+	/// 0.5 * p * logf(2 * PI)
 	float _halfPbDimensionLog2Pi;
 
 	float _pbDimensionLog2Pi;

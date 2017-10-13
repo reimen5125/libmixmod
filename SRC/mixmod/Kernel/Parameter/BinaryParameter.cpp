@@ -270,7 +270,7 @@ void BinaryParameter::computeTikUnderflow(int i, float ** tabTik) {
 	fkTPrim = 0.0;
 	for (k=0; k<_nbCluster; k++){
 	  lnFkPrim[k] = lnFk[k] - lnFkMax;
-	  fkPrim[k]   = exp(lnFkPrim[k]);
+	  fkPrim[k]   = expf(lnFkPrim[k]);
 	  fkTPrim    += fkPrim[k];
 	}
 

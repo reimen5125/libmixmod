@@ -61,7 +61,7 @@ void NECCriterion::run(CriterionOutput & output) {
 			// false : to not compute fik because already done
 			const float loglikelihood = _model->getLogLikelihood(false);
 			const float loglikelihoodOne = _model->getLogLikelihoodOne();
-			if (fabs(loglikelihood - loglikelihoodOne) < minValueForLLandLLOne) {
+			if (fabsf(loglikelihood - loglikelihoodOne) < minValueForLLandLLOne) {
 				THROW(NumericException, pbNEC);
 			}
 			value = entropy / (loglikelihood - loglikelihoodOne);

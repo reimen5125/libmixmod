@@ -42,7 +42,7 @@ static void tred2(const SymmetricMatrix& A, DiagonalMatrix& D,
       else
       {
          REPORT
-         g = sign(-sqrt(h), f); E.element(i) = g; h -= f*g;
+         g = sign(-sqrtf(h), f); E.element(i) = g; h -= f*g;
          Z.element(i,i-1) = f-g; f = 0.0;
          Real* zji = z + i; Real* zij = z + i*n; Real* ej = E.Store();
          int j;
@@ -107,16 +107,16 @@ static void tql2(DiagonalMatrix& D, DiagonalMatrix& E, Matrix& Z)
    {
       int i,j;
       Real& dl = D.element(l); Real& el = E.element(l);
-      Real h = eps * ( fabs(dl) + fabs(el) );
+      Real h = eps * ( fabsf(dl) + fabsf(el) );
       if (b < h) { REPORT b = h; }
       int m;
-      for (m=l; m<n; m++) if (fabs(E.element(m)) <= b) break;
+      for (m=l; m<n; m++) if (fabsf(E.element(m)) <= b) break;
       bool test = false;
       for (j=0; j<30; j++)
       {
          if (m==l) { REPORT test = true; break; }
          Real& dl1 = D.element(l+1);
-         Real g = dl; Real p = (dl1-g) / (2.0*el); Real r = sqrt(p*p + 1.0);
+         Real g = dl; Real p = (dl1-g) / (2.0*el); Real r = sqrtf(p*p + 1.0);
          dl = el / (p < 0.0 ? p-r : p+r); Real h = g - dl; f += h;
          Real* dlx = &dl1; i = n-l-1; while (i--) *dlx++ -= h;
 
@@ -126,16 +126,16 @@ static void tql2(DiagonalMatrix& D, DiagonalMatrix& E, Matrix& Z)
             Real ei = E.element(i); Real di = D.element(i);
             Real& ei1 = E.element(i+1);
             g = c * ei; h = c * p;
-            if ( fabs(p) >= fabs(ei))
+            if ( fabsf(p) >= fabsf(ei))
             {
                REPORT
-               c = ei / p; r = sqrt(c*c + 1.0);
+               c = ei / p; r = sqrtf(c*c + 1.0);
                ei1 = s*p*r; s = c/r; c = 1.0/r;
             }
             else
             {
                REPORT
-               c = p / ei; r = sqrt(c*c + 1.0);
+               c = p / ei; r = sqrtf(c*c + 1.0);
                ei1 = s * ei * r; s = 1.0/r; c /= r;
             }
             p = c * di - s*g; D.element(i+1) = h + s * (c*g + s*di);
@@ -150,7 +150,7 @@ static void tql2(DiagonalMatrix& D, DiagonalMatrix& E, Matrix& Z)
             }
          }
          el = s*p; dl = c*p;
-         if (fabs(el) <= b) { REPORT; test = true; break; }
+         if (fabsf(el) <= b) { REPORT; test = true; break; }
       }
       if (!test) Throw ( ConvergenceException(D) );
       dl += f;
@@ -194,7 +194,7 @@ static void tred3(const SymmetricMatrix& X, DiagonalMatrix& D,
       else
       {
          REPORT
-         Real g = sign(-sqrt(h), f); *(--ei) = g; h -= f*g;
+         Real g = sign(-sqrtf(h), f); *(--ei) = g; h -= f*g;
          f -= g; *(d-1) = f; *(a-1) = f; f = 0.0;
          Real* dj = D.Store(); Real* ej = E.Store(); int j;
          for (j = 0; j < i; j++)
@@ -231,16 +231,16 @@ static void tql1(DiagonalMatrix& D, DiagonalMatrix& E)
    {
       int i,j;
       Real& dl = D.element(l); Real& el = E.element(l);
-      Real h = eps * ( fabs(dl) + fabs(el) );
+      Real h = eps * ( fabsf(dl) + fabsf(el) );
       if (b < h) b = h;
       int m;
-      for (m=l; m<n; m++) if (fabs(E.element(m)) <= b) break;
+      for (m=l; m<n; m++) if (fabsf(E.element(m)) <= b) break;
       bool test = false;
       for (j=0; j<30; j++)
       {
          if (m==l) { REPORT test = true; break; }
          Real& dl1 = D.element(l+1);
-         Real g = dl; Real p = (dl1-g) / (2.0*el); Real r = sqrt(p*p + 1.0);
+         Real g = dl; Real p = (dl1-g) / (2.0*el); Real r = sqrtf(p*p + 1.0);
          dl = el / (p < 0.0 ? p-r : p+r); Real h = g - dl; f += h;
          Real* dlx = &dl1; i = n-l-1; while (i--) *dlx++ -= h;
 
@@ -250,22 +250,22 @@ static void tql1(DiagonalMatrix& D, DiagonalMatrix& E)
             Real ei = E.element(i); Real di = D.element(i);
             Real& ei1 = E.element(i+1);
             g = c * ei; h = c * p;
-            if ( fabs(p) >= fabs(ei))
+            if ( fabsf(p) >= fabsf(ei))
             {
                REPORT
-               c = ei / p; r = sqrt(c*c + 1.0);
+               c = ei / p; r = sqrtf(c*c + 1.0);
                ei1 = s*p*r; s = c/r; c = 1.0/r;
             }
             else
             {
                REPORT
-               c = p / ei; r = sqrt(c*c + 1.0);
+               c = p / ei; r = sqrtf(c*c + 1.0);
                ei1 = s * ei * r; s = 1.0/r; c /= r;
             }
             p = c * di - s*g; D.element(i+1) = h + s * (c*g + s*di);
          }
          el = s*p; dl = c*p;
-         if (fabs(el) <= b) { REPORT test = true; break; }
+         if (fabsf(el) <= b) { REPORT test = true; break; }
       }
       if (!test) Throw ( ConvergenceException(D) );
       Real p = dl + f;

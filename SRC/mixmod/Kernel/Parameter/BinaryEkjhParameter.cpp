@@ -237,10 +237,10 @@ float BinaryEkjhParameter::getLogPdf(int iSample, int kCluster) const {
 		// iSample have major modality ?//
 		value = curSample->getDataValue(j);
 		if (value == _tabCenter[kCluster][j]) {
-			bernPdf += log(1.0 - _scatter[kCluster][j][value - 1]);
+			bernPdf += logf(1.0 - _scatter[kCluster][j][value - 1]);
 		}
 		else {
-			bernPdf += log(_scatter[kCluster][j][value - 1]);
+			bernPdf += logf(_scatter[kCluster][j][value - 1]);
 		}
 	}
 	return bernPdf;
@@ -320,7 +320,7 @@ float BinaryEkjhParameter::getLogLikelihoodOne() const {
 	//--------------------------------------------------//
 	for (i = 0; i < nbSample; i++) {
       pdf = computePdfOneCluster(data->_matrix[i], Center.get(), Scatter.get(), _tabNbModality);
-		logLikelihoodOne += log(pdf) * data->_weight[i];
+		logLikelihoodOne += logf(pdf) * data->_weight[i];
 	}
 
 	//delete[] Center;

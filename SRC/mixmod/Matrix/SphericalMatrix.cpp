@@ -53,9 +53,9 @@ SphericalMatrix::~SphericalMatrix() {
 float SphericalMatrix::determinant(Exception& errorType) {
 	float det;
 #ifdef __APPLE__
-	det = pow(_store, (int) _s_pbDimension);
+	det = powf(_store, (int) _s_pbDimension);
 #else
-	det = pow(_store, (float) _s_pbDimension);
+	det = powf(_store, (float) _s_pbDimension);
 #endif
 	if (det < minDeterminantValue) {
 		throw NumericException(dynamic_cast<NumericException&> (errorType));

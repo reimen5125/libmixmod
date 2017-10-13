@@ -113,9 +113,9 @@ public:
 		return _value->data();
 	}
 	
-	// return log(abs(det(M)))
+	// return logf(abs(det(M)))
 	float LogDeterminant() {
-		return log(_value->determinant());
+		return logf(_value->determinant());
 	}
 	
 	// get inverse

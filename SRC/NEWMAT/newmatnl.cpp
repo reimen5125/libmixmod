@@ -47,7 +47,7 @@ void FindMaximum2::Fit(ColumnVector& Theta, int n_it)
 	 if (conv) { TheState = Convergence; break; }
 	 if (counter++ > n_it) { TheState = Fail; break; }
 
-	 z = 1.0 / sqrt(d1);
+	 z = 1.0 / sqrtf(d1);
 	 H3 = H1 * z; K = (H3 - HP) * g; HP = H3;
 	 g = 0.0;                     // de-activate to use curved projection
 	 if (g==0.0) K1 = 0.0; else K1 = K * 0.2 + K1 * 0.6;
@@ -72,7 +72,7 @@ void FindMaximum2::Fit(ColumnVector& Theta, int n_it)
 	 z = d1 + d2 - 3.0 * (l2 - l1);
 	 w = z * z - d1 * d2;
 	 if (w < 0.0) { TheState = Extrapolate; break; }
-	 w = z + sqrt(w);
+	 w = z + sqrtf(w);
 	 if (1.5 * w + d1 < 0.0)
 	    { TheState = Extrapolate; break; }
 	 if (d2 > 0.0 && l2 > l1 && w > 0.0)
@@ -179,7 +179,7 @@ void NonLinearLeastSquares::MakeCovariance()
       UpperTriangularMatrix UI = U.i();
       Covariance << UI * UI.t() * errorvar;
       SE << Covariance;                 // get diagonals
-      for (int i = 1; i<=n_param; i++) SE(i) = sqrt(SE(i));
+      for (int i = 1; i<=n_param; i++) SE(i) = sqrtf(SE(i));
    }
 }
 
@@ -240,7 +240,7 @@ void MLE_D_FI::MakeCovariance()
       Covariance << LTI.t() * LTI;
       SE << Covariance;                // get diagonal
       int n = Covariance.Nrows();
-      for (int i=1; i <= n; i++) SE(i) = sqrt(SE(i));
+      for (int i=1; i <= n; i++) SE(i) = sqrtf(SE(i));
    }
 }
 

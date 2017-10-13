@@ -141,7 +141,7 @@ public:
 		return (*_value)(i,j);
 	}
 
-	// return log(abs(det(M)))
+	// return logf(abs(det(M)))
 	Real LogDeterminant()
 	{
 		itpp::Mat<Real> L(_value->rows(), _value->cols());
@@ -150,7 +150,7 @@ public:
 		itpp::lu(*_value, L, U, p);
 		Real logDet = 0.0;
 		for (int i=0; i<_value->rows(); i++)
-			logDet += log(fabs(U(i,i)));
+			logDet += logf(fabsf(U(i,i)));
 		return logDet;
 	}
 	

@@ -268,7 +268,7 @@ Model::~Model() {
 // get the log of N
 //------------
 float Model::getLogN() {
-	return log(_data->_weightTotal);
+	return logf(_data->_weightTotal);
 }
 
 //------------
@@ -481,11 +481,11 @@ float Model::getLogLikelihood(bool fikMustBeComputed) {
 		p_tabFik_i = *p_tabFik;
 		if (_tabZiKnown[i]) {
 			int ki = getKnownLabel(i); // la classe de l'individu i
-			logLikelihood += log(p_tabFik_i[ki]) * weight[i];
+			logLikelihood += logf(p_tabFik_i[ki]) * weight[i];
 		}
 		else {
 			if (_tabSumF[i] > 0)
-				logLikelihood += log(_tabSumF[i]) * weight[i];
+				logLikelihood += logf(_tabSumF[i]) * weight[i];
 		}
 		//cout<<"compute LL, with ind "<<i<<", LL = "<<logLikelihood<<endl;
 		p_tabFik++;
@@ -523,7 +523,7 @@ float Model::getCompletedLogLikelihood() {
 	for (i = 0; i < _nbSample; i++) {
 		ki = getLabelByMAPOrKnownPartition(i); // la classe de l'individu i
 		if (_tabFik[i][ki] > 0) {
-			cLogLikelihood += log(_tabFik[i][ki]) * _data->_weight[i];
+			cLogLikelihood += logf(_tabFik[i][ki]) * _data->_weight[i];
 		}
 	}
 
@@ -541,13 +541,13 @@ float Model::getEntropy() {
 	int k;
 	float entropy = 0;
 
-	// Compute entropy: sum[tik * log(tik)] //
+	// Compute entropy: sum[tik * logf(tik)] //
 	for (i = 0; i < _nbSample; i++) {
 		// ajout du 16/06/2004 : ligne suivante : on ajoute uniqt si le label est inconnu
     if (!_tabZiKnown[i]) {
       for (k = 0; k < _nbCluster; k++) {
         if (_tabTik[i][k] > 0 && _tabTik[i][k] != 1) {
-          entropy += _tabTik[i][k] * log(_tabTik[i][k]) * _data->_weight[i];
+          entropy += _tabTik[i][k] * logf(_tabTik[i][k]) * _data->_weight[i];
         }
       }
     }
@@ -566,7 +566,7 @@ vector< vector<float> > Model::getEntropyMatrix() {
   vector< vector<float> > entropyM(nbVariables, vector<float>(_nbCluster));
   vector< vector<float> > tabTikj(_nbSample, vector<float>(_nbCluster));
   float sum = 0.0;
-  float nlnk = _nbSample * log(_nbCluster);
+  float nlnk = _nbSample * logf(_nbCluster);
 
   for (int j = 0; j < nbVariables; j++) {
     if (isHeterogeneous(_modelType->_nameModel)) {
@@ -615,7 +615,7 @@ vector< vector<float> > Model::getEntropyMatrix() {
         for (int i = 0; i < _nbSample; i++) {
           for (int k = 0; k < _nbCluster; k++) {
             float ** store = gParameter->getTabSigma()[k]->storeToArray();
-            tabTikj[i][k] = gParameter->getTabProportion()[k] * 1.0/(sqrt(2.0*XEMPI)*sqrt(store[j - bPbDimension][j - bPbDimension])) * exp(-pow(tabData[i][j - bPbDimension] - gParameter->getTabMean()[k][j - bPbDimension],2)/(2*store[j - bPbDimension][j - bPbDimension]));
+            tabTikj[i][k] = gParameter->getTabProportion()[k] * 1.0/(sqrtf(2.0*XEMPI)*sqrtf(store[j - bPbDimension][j - bPbDimension])) * expf(-powf(tabData[i][j - bPbDimension] - gParameter->getTabMean()[k][j - bPbDimension],2)/(2*store[j - bPbDimension][j - bPbDimension]));
             sum += tabTikj[i][k];
             for (int l = 0; l < gPbDimension; l++) {
               delete[] store[l];
@@ -671,7 +671,7 @@ vector< vector<float> > Model::getEntropyMatrix() {
         for (int i = 0; i < _nbSample; i++) {
           for (int k = 0; k < _nbCluster; k++) {
             float ** store = gParameter->getTabSigma()[k]->storeToArray();
-            tabTikj[i][k] = gParameter->getTabProportion()[k] * (1.0/(sqrt(2.0*XEMPI*store[j][j])) * exp(-pow(tabData[i][j] - gParameter->getTabMean()[k][j],2)/(2*store[j][j])));
+            tabTikj[i][k] = gParameter->getTabProportion()[k] * (1.0/(sqrtf(2.0*XEMPI*store[j][j])) * expf(-powf(tabData[i][j] - gParameter->getTabMean()[k][j],2)/(2*store[j][j])));
             sum += tabTikj[i][k];
             for (int l = 0; l < nbVariables; l++) {
               delete[] store[l];
@@ -690,7 +690,7 @@ vector< vector<float> > Model::getEntropyMatrix() {
     for (int k = 0; k < _nbCluster; k++) {
       for (int i = 0; i < _nbSample; i++) {
         if (tabTikj[i][k] == 0.0) tabTikj[i][k] = 1.0;
-        entropyM[j][k] += - tabTikj[i][k] * log(tabTikj[i][k]);
+        entropyM[j][k] += - tabTikj[i][k] * logf(tabTikj[i][k]);
       }
       entropyM[j][k] = entropyM[j][k] / nlnk;
     }
@@ -1184,14 +1184,14 @@ void Model::oneRunOfSmallEM(ClusteringStrategyInit * clusteringStrategyInit, flo
 		break;
 	  case EPSILON :
 		logLikelihood = getLogLikelihood(true);  // true : to compute fik
-		eps = fabs(logLikelihood - lastLogLikelihood);
+		eps = fabsf(logLikelihood - lastLogLikelihood);
 		//continueAgain = (eps > strategyInit->getEpsilon());
   		// on ajoute un test pour ne pas faire trop d'iterations quand meme ....
 		continueAgain = (eps > clusteringStrategyInit->getEpsilon() && (nbIteration < maxNbIterationInInit));
 		break;
 	  case NBITERATION_EPSILON :
 		logLikelihood = getLogLikelihood(true);  // true : to compute fi
-		eps = fabs(logLikelihood - lastLogLikelihood);
+		eps = fabsf(logLikelihood - lastLogLikelihood);
 		continueAgain = ((eps > clusteringStrategyInit->getEpsilon()) && (nbIteration < clusteringStrategyInit->getNbIteration()));
 		break;
 		default : THROW(OtherException,internalMixmodError);

@@ -117,7 +117,7 @@ bool Algo::continueAgain() {
 						result = true;
 					}
 					else {
-						diff = fabs(_xml - _xml_old);
+						diff = fabsf(_xml - _xml_old);
 						result = (diff >= _epsilon);
 					}
 					if (!result) {
@@ -140,7 +140,7 @@ bool Algo::continueAgain() {
 						res2 = true;
 					}
 					else {
-						diff = fabs(_xml - _xml_old);
+						diff = fabsf(_xml - _xml_old);
 						res2 = (diff >= _epsilon);
 					};
 					result = (res1 && res2);

@@ -144,7 +144,7 @@ public:
 		//return gsl_matrix_get(_value, i, j); //Does not return a reference
 	}
 
-	// return log(abs(det(M)))
+	// return logf(abs(det(M)))
 	Real LogDeterminant()
 	{
 		int nrow = _value->size1;

@@ -37,7 +37,7 @@ public:
       { return numeric_limits<Real>::max_exponent; }
 
    static Real LnMaximum()       // natural log of maximum
-      { return (Real)log(Maximum()); }
+      { return (Real)logf(Maximum()); }
 
    static Real Minimum()         // minimum positive value
       { return numeric_limits<Real>::min(); } 
@@ -49,7 +49,7 @@ public:
       { return numeric_limits<Real>::min_exponent; }
 
    static Real LnMinimum()       // natural log of minimum
-      { return (Real)log(Minimum()); }
+      { return (Real)logf(Minimum()); }
 
    static int Radix()            // exponent radix
       { return numeric_limits<Real>::radix; }
@@ -93,7 +93,7 @@ public:
       { return FLT_MAX_EXP; }    // maximum binary exponent
 
    static Real LnMaximum()
-      { return (Real)log(Maximum()); } // natural log of maximum
+      { return (Real)logf(Maximum()); } // natural log of maximum
 
    static Real Minimum()
       { return FLT_MIN; }        // minimum positive value
@@ -105,7 +105,7 @@ public:
       { return FLT_MIN_EXP; }    // minimum binary exponent
 
    static Real LnMinimum()
-      { return (Real)log(Minimum()); } // natural log of minimum
+      { return (Real)logf(Minimum()); } // natural log of minimum
 
    static int Radix()
       { return FLT_RADIX; }      // exponent radix
@@ -143,7 +143,7 @@ public:
       { return DBL_MAX_EXP; }    // maximum binary exponent
 
    static Real LnMaximum()
-      { return (Real)log(Maximum()); } // natural log of maximum
+      { return (Real)logf(Maximum()); } // natural log of maximum
 
    static Real Minimum()
    {
@@ -161,7 +161,7 @@ public:
       { return DBL_MIN_EXP; }    // minimum binary exponent
 
    static Real LnMinimum()
-      { return (Real)log(Minimum()); } // natural log of minimum
+      { return (Real)logf(Minimum()); } // natural log of minimum
 
 
    static int Radix()
@@ -183,20 +183,20 @@ class FloatingPointPrecision
 public:
 
    static Real Epsilon()
-      { return pow(2.0,(int)(1-FSIGNIF)); }
+      { return powf(2.0,(int)(1-FSIGNIF)); }
                                    // smallest number such that 1+Eps!=Eps
 
    static Real Maximum()
       { return MAXFLOAT; }            // maximum value
 
    static Real LnMaximum()
-      { return (Real)log(Maximum()); }  // natural log of maximum
+      { return (Real)logf(Maximum()); }  // natural log of maximum
 
    static Real Minimum()
       { return MINFLOAT; }             // minimum positive value
 
    static Real LnMinimum()
-      { return (Real)log(Minimum()); }  // natural log of minimum
+      { return (Real)logf(Minimum()); }  // natural log of minimum
 
 };
 
@@ -210,7 +210,7 @@ class FloatingPointPrecision
 public:
 
    static Real Epsilon()
-      { return pow(2.0,(int)(1-DSIGNIF)); }
+      { return powf(2.0,(int)(1-DSIGNIF)); }
                                       // smallest number such that 1+Eps!=Eps
 
    static Real Maximum()

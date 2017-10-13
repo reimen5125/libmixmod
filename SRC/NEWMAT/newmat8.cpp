@@ -35,11 +35,11 @@ void CroutMatrix::ludcmp()
    Tracer trace( "Crout(ludcmp)" ); sing = false;
    Real* akk = store;                    // runs down diagonal
 
-   Real big = fabs(*akk); int mu = 0; Real* ai = akk; int k;
+   Real big = fabsf(*akk); int mu = 0; Real* ai = akk; int k;
 
    for (k = 1; k < nrows; k++)
    {
-      ai += nrows; const Real trybig = fabs(*ai);
+      ai += nrows; const Real trybig = fabsf(*ai);
       if (big < trybig) { big = trybig; mu = k; }
    }
 
@@ -49,11 +49,11 @@ void CroutMatrix::ludcmp()
       /*
       int mu1;
       {
-         Real big = fabs(*akk); mu1 = k; Real* ai = akk; int i;
+         Real big = fabsf(*akk); mu1 = k; Real* ai = akk; int i;
 
          for (i = k+1; i < nrows; i++)
          {
-            ai += nrows; const Real trybig = fabs(*ai);
+            ai += nrows; const Real trybig = fabsf(*ai);
             if (big < trybig) { big = trybig; mu1 = i; }
          }
       }
@@ -82,7 +82,7 @@ void CroutMatrix::ludcmp()
             if (l-- != 0)
             {
                *(++al) -= (mult * *(++aj));
-               const Real trybig = fabs(*al);
+               const Real trybig = fabsf(*al);
                if (big < trybig) { big = trybig; mu = nrows - i - 1; }
                while (l--) *(++al) -= (mult * *(++aj));
             }
@@ -159,7 +159,7 @@ Real GeneralMatrix::SumAbsoluteValue() const
 {
    REPORT
    Real sum = 0.0; int i = storage; Real* s = store;
-   while (i--) sum += fabs(*s++);
+   while (i--) sum += fabsf(*s++);
    ((GeneralMatrix&)*this).tDelete(); return sum;
 }
 
@@ -214,7 +214,7 @@ Real GeneralMatrix::MaximumAbsoluteValue() const
    REPORT
    if (storage == 0) NullMatrixError(this);
    Real maxval = 0.0; int l = storage; Real* s = store;
-   while (l--) { Real a = fabs(*s++); if (maxval < a) maxval = a; }
+   while (l--) { Real a = fabsf(*s++); if (maxval < a) maxval = a; }
    ((GeneralMatrix&)*this).tDelete(); return maxval;
 }
 
@@ -224,7 +224,7 @@ Real GeneralMatrix::MaximumAbsoluteValue1(int& i) const
    if (storage == 0) NullMatrixError(this);
    Real maxval = 0.0; int l = storage; Real* s = store; int li = storage;
    while (l--)
-      { Real a = fabs(*s++); if (maxval <= a) { maxval = a; li = l; }  }
+      { Real a = fabsf(*s++); if (maxval <= a) { maxval = a; li = l; }  }
    i = storage - li;
    ((GeneralMatrix&)*this).tDelete(); return maxval;
 }
@@ -233,8 +233,8 @@ Real GeneralMatrix::MinimumAbsoluteValue() const
 {
    REPORT
    if (storage == 0) NullMatrixError(this);
-   int l = storage - 1; Real* s = store; Real minval = fabs(*s++);
-   while (l--) { Real a = fabs(*s++); if (minval > a) minval = a; }
+   int l = storage - 1; Real* s = store; Real minval = fabsf(*s++);
+   while (l--) { Real a = fabsf(*s++); if (minval > a) minval = a; }
    ((GeneralMatrix&)*this).tDelete(); return minval;
 }
 
@@ -242,9 +242,9 @@ Real GeneralMatrix::MinimumAbsoluteValue1(int& i) const
 {
    REPORT
    if (storage == 0) NullMatrixError(this);
-   int l = storage - 1; Real* s = store; Real minval = fabs(*s++); int li = l;
+   int l = storage - 1; Real* s = store; Real minval = fabsf(*s++); int li = l;
    while (l--)
-      { Real a = fabs(*s++); if (minval >= a) { minval = a; li = l; }  }
+      { Real a = fabsf(*s++); if (minval >= a) { minval = a; li = l; }  }
    i = storage - li;
    ((GeneralMatrix&)*this).tDelete(); return minval;
 }
@@ -399,14 +399,14 @@ Real SymmetricMatrix::SumAbsoluteValue() const
    for (int i = 0; i<nr; i++)
    {
       int j = i;
-      while (j--) sum2 += fabs(*s++);
-      sum1 += fabs(*s++);
+      while (j--) sum2 += fabsf(*s++);
+      sum1 += fabsf(*s++);
    }
    ((GeneralMatrix&)*this).tDelete(); return sum1 + 2.0 * sum2;
 }
 
 Real IdentityMatrix::SumAbsoluteValue() const
-   { REPORT  return fabs(Trace()); }    // no need to do tDelete?
+   { REPORT  return fabsf(Trace()); }    // no need to do tDelete?
 
 Real SymmetricMatrix::Sum() const
 {
@@ -435,7 +435,7 @@ Real BaseMatrix::SumSquare() const
 }
 
 Real BaseMatrix::NormFrobenius() const
-   { REPORT  return sqrt(SumSquare()); }
+   { REPORT  return sqrtf(SumSquare()); }
 
 Real BaseMatrix::SumAbsoluteValue() const
 {
@@ -614,8 +614,8 @@ Real BaseMatrix::Trace() const
 
 void LogAndSign::operator*=(Real x)
 {
-   if (x > 0.0) { log_value += log(x); }
-   else if (x < 0.0) { log_value += log(-x); sign = -sign; }
+   if (x > 0.0) { log_value += logf(x); }
+   else if (x < 0.0) { log_value += logf(-x); sign = -sign; }
    else sign = 0;
 }
 
@@ -633,7 +633,7 @@ Real LogAndSign::Value() const
    Tracer et("LogAndSign::Value");
    if (log_value >= FloatingPointPrecision::LnMaximum())
       Throw(OverflowException("Overflow in exponential"));
-   return sign * exp(log_value);
+   return sign * expf(log_value);
 }
 
 LogAndSign::LogAndSign(Real f)
@@ -641,7 +641,7 @@ LogAndSign::LogAndSign(Real f)
    if (f == 0.0) { log_value = 0.0; sign = 0; return; }
    else if (f < 0.0) { sign = -1; f = -f; }
    else sign = 1;
-   log_value = log(f);
+   log_value = logf(f);
 }
 
 LogAndSign DiagonalMatrix::LogDeterminant() const

@@ -171,7 +171,7 @@ void GaussianEDDAParameter::getAllPdf(float** tabFik, float* tabProportion)const
 			}
 			// calcul de la norme (x-muk)'Sigma_k^{-1} (x-muk)
 			norme = SigmakMoins1->norme(xiMoinsMuk); // virtual !!
-			(*p_tabFik_i)[k] = InvPiInvDetProp * exp(-0.5 * norme);
+			(*p_tabFik_i)[k] = InvPiInvDetProp * expf(-0.5 * norme);
 
 			p_matrix++;
 			p_tabFik_i++;
@@ -207,7 +207,7 @@ float GaussianEDDAParameter::getPdf(Sample * x, int kCluster)const {
 	norme = Sigma_kMoins1->norme(xiMoinsMuk); // virtual
 
 	/* Compute normal density */
-	normPdf = invPi * _tabInvSqrtDetSigma[kCluster] * exp(-0.5 * norme);
+	normPdf = invPi * _tabInvSqrtDetSigma[kCluster] * expf(-0.5 * norme);
 
 	return normPdf;
 }
@@ -236,7 +236,7 @@ float GaussianEDDAParameter::getPdf(int iSample, int kCluster)const {
 	float normPdf;
 
 	// Compute normal density
-	normPdf = data->getInv2PiPow() * _tabInvSqrtDetSigma[kCluster] * exp(-0.5 * norme);
+	normPdf = data->getInv2PiPow() * _tabInvSqrtDetSigma[kCluster] * expf(-0.5 * norme);
 
 	return normPdf;
 }
@@ -248,7 +248,7 @@ void GaussianEDDAParameter::updateTabInvSigmaAndDet() {
 		NumericException error = NumericException(minDeterminantSigmaValueError);
 		detSigma = _tabSigma[k]->determinant(error);
 		_tabSigma[k]->inverse(_tabInvSigma[k]);
-		_tabInvSqrtDetSigma[k] = 1.0 / sqrt(detSigma);
+		_tabInvSqrtDetSigma[k] = 1.0 / sqrtf(detSigma);
 	}
 }
 
@@ -454,8 +454,8 @@ void GaussianEDDAParameter::computeTikUnderflow(int i, float ** tabTik) {
 
 		// compute lnFik[k]
 
-		lnFk[k] = log(_tabProportion[k]) - data->getHalfPbDimensionLog2Pi() 
-				- 0.5 * log(detSigma) - 0.5 * norme;
+		lnFk[k] = logf(_tabProportion[k]) - data->getHalfPbDimensionLog2Pi() 
+				- 0.5 * logf(detSigma) - 0.5 * norme;
 
 		p_tabMean++;
 	} // end for k
@@ -470,7 +470,7 @@ void GaussianEDDAParameter::computeTikUnderflow(int i, float ** tabTik) {
 	fkTPrim = 0.0;
 	for (k = 0; k < _nbCluster; k++) {
 		lnFkPrim[k] = lnFk[k] - lnFkMax;
-		fkPrim[k] = exp(lnFkPrim[k]);
+		fkPrim[k] = expf(lnFkPrim[k]);
 		fkTPrim += fkPrim[k];
 	}
 

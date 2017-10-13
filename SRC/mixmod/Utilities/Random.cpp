@@ -81,7 +81,7 @@ void randomize() {
 void antiRandomize(int seed) {
 	// bijection N-->N^2 by diagonals [TODO: check formulas]
 	//1) look for the largest n such that n(n+1)/2 <= seed
-	int n = (int)floor(0.5 * (-1.0 + sqrt(1.0 + 8.0 * seed)));
+	int n = (int)floor(0.5 * (-1.0 + sqrtf(1.0 + 8.0 * seed)));
 	//2) coordinates are seed-n(n+1)/2, (n+1)(n+2)/2-1-seed
 	z = seed - (n*(n+1))/2;
 	y = ((n+1)*(n+2))/2 - 1 - seed;

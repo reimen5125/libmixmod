@@ -236,7 +236,7 @@ float GaussianSphericalParameter::getLogLikelihoodOne() const {
 		logLikelihoodOne += norme * weight[i];
 	}
 
-	logLikelihoodOne += totalWeight * (data->getPbDimensionLog2Pi() + log(detSigma));
+	logLikelihoodOne += totalWeight * (data->getPbDimensionLog2Pi() + logf(detSigma));
 	logLikelihoodOne *= -0.5;
 
 	//delete[] Mean;

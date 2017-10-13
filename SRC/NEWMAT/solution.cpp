@@ -49,7 +49,7 @@ void OneDimSolve::LookAt(int V)
    if (!lim) Throw(SolutionException("Does not converge"));
    Last = V;
    Real yy = function(x[V]) - YY;
-   Finish = (fabs(yy) <= accY) || (Captured && fabs(x[L]-x[U]) <= accX );
+   Finish = (fabsf(yy) <= accY) || (Captured && fabsf(x[L]-x[U]) <= accX );
    y[V] = vpol*yy;
 }
 

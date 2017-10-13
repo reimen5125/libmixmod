@@ -33,7 +33,7 @@ void QRZT(Matrix& X, LowerTriangularMatrix& L)
    {
       Real sum = 0.0;
       Real* xi0=xi; k=n; while(k--) { sum += square(*xi++); }
-      sum = sqrt(sum);
+      sum = sqrtf(sum);
       L.element(i,i) = sum;
       if (sum==0.0) Throw(SingularException(L));
       Real* xj0=xi0; k=n; while(k--) { *xj0++ /= sum; }
@@ -79,7 +79,7 @@ void QRZ(Matrix& X, UpperTriangularMatrix& U)
 	{
 		Real sum = 0.0;
 		Real* xi = xi0; k=n; while(k--) { sum += square(*xi); xi+=s; }
-		sum = sqrt(sum);
+		sum = sqrtf(sum);
 		U.element(i,i) = sum;
 		if (sum==0.0) Throw(SingularException(U));
 		Real* xj0=xi0; k=n; while(k--) { *xj0 /= sum; xj0+=s; }
@@ -116,7 +116,7 @@ void QRZ(Matrix& X, UpperTriangularMatrix& U)
          xi += s; xj0 += s;
       }
 
-      Real sum = sqrt(*u0); *u0 = sum; u = u0+1;
+      Real sum = sqrtf(*u0); *u0 = sum; u = u0+1;
       if (sum == 0.0) Throw(SingularException(U));
       int J1 = J-1; j = J1; while(j--) *u++ /= sum;
 

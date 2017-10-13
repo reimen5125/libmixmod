@@ -319,15 +319,15 @@ float GaussianHDDAParameter::getPdf(int iSample, int kCluster)const {
 	float sum_lambda = 0.0;
 	for (int j = 0; j < _tabDk[kCluster]; j++) {
 		tabShapek_store[j] = 1 / _tabAkj[kCluster][j];
-		sum_lambda += log(_tabAkj[kCluster][j]);
+		sum_lambda += logf(_tabAkj[kCluster][j]);
 	}
 	for (int j = _tabDk[kCluster]; j < _pbDimension; j++) {
 		tabShapek_store[j] = 0.0;
 	}
 	A->compute_as_O_S_O(_tabQk[kCluster], tabShapek_store);
 
-	float constante = sum_lambda + (_pbDimension - _tabDk[kCluster]) * log(_tabBk[kCluster])
-			- 2 * log(tabProportion[kCluster]) + _pbDimension * log(2 * XEMPI);
+	float constante = sum_lambda + (_pbDimension - _tabDk[kCluster]) * logf(_tabBk[kCluster])
+			- 2 * logf(tabProportion[kCluster]) + _pbDimension * logf(2 * XEMPI);
 
 	//-----------soustraction des moyennes
 	for (int j = 0; j < _pbDimension; j++) {
@@ -351,8 +351,8 @@ float GaussianHDDAParameter::getPdf(int iSample, int kCluster)const {
 
 	//----------------calcul de normPdf---------
 	K = normeA + 1.0 / _tabBk[kCluster] * norme + constante;
-	//normPdf = exp(-1 / 2 * K);
-	normPdf = exp(-0.5 * K);
+	//normPdf = expf(-1 / 2 * K);
+	normPdf = expf(-0.5 * K);
 
 
 	delete Pk;
@@ -379,7 +379,7 @@ void GaussianHDDAParameter::getAllPdf(float ** tabFik, float * tabProportion)con
 
 	for (int i = 0; i < nbSample; i++) {
 		for (int k = 0; k < _nbCluster; k++) {
-			tabFik[i][k] = exp(-0.5 * Cost[k][i]);
+			tabFik[i][k] = expf(-0.5 * Cost[k][i]);
 			//cout<<" Cost[k][i] :  "<<Cost[k][i]<<endl;
 			//cout<<"tabFik[i][k] :  "<<tabFik[i][k]<<endl;
 		}
@@ -418,7 +418,7 @@ float GaussianHDDAParameter::getPdf(Sample * x, int kCluster)const {
 	float sum_lambda = 0.0;
 	for (int j = 0; j < _tabDk[kCluster]; j++) {
 		tabShapek_store[j] = 1 / _tabAkj[kCluster][j];
-		sum_lambda += log(_tabAkj[kCluster][j]);
+		sum_lambda += logf(_tabAkj[kCluster][j]);
 	}
 	for (int j = _tabDk[kCluster]; j < _pbDimension; j++) {
 		tabShapek_store[j] = 0.0;
@@ -426,8 +426,8 @@ float GaussianHDDAParameter::getPdf(Sample * x, int kCluster)const {
 
 	A->compute_as_O_S_O(_tabQk[kCluster], tabShapek_store);
 
-	float constante = sum_lambda + (_pbDimension - _tabDk[kCluster]) * log(_tabBk[kCluster])
-			- 2 * log(tabProportion[kCluster]) + _pbDimension * log(2 * XEMPI);
+	float constante = sum_lambda + (_pbDimension - _tabDk[kCluster]) * logf(_tabBk[kCluster])
+			- 2 * logf(tabProportion[kCluster]) + _pbDimension * logf(2 * XEMPI);
 
 	//-----------soustraction des moyennes
 	for (int j = 0; j < _pbDimension; j++) {
@@ -451,8 +451,8 @@ float GaussianHDDAParameter::getPdf(Sample * x, int kCluster)const {
 
 	//----------------calcul de normPdf---------
 	K = normeA + 1.0 / _tabBk[kCluster] * norme + constante;
-	//normPdf = exp(-1 / 2 * K);
-	normPdf = exp(-0.5*K);
+	//normPdf = expf(-1 / 2 * K);
+	normPdf = expf(-0.5*K);
 
 	delete Pk;
 	delete A;
@@ -782,7 +782,7 @@ float GaussianHDDAParameter::getLogLikelihoodOne()const {
 	  logLikelihoodOne += norme * weight[i];
 	}
 
-   logLikelihoodOne += totalWeight * ( data->getPbDimensionLog2Pi() + log(detSigma)) ;
+   logLikelihoodOne += totalWeight * ( data->getPbDimensionLog2Pi() + logf(detSigma)) ;
    logLikelihoodOne *= -0.5 ;
 
    delete W;
@@ -1134,7 +1134,7 @@ void GaussianHDDAParameter::computeTabDk() {
   for (int64_tk=0;k<_nbCluster;k++){
 	nbFreeParameter = (_pbDimension+1.0-1.0/_nbCluster)
              + _tabDk[k]*(_pbDimension-(_tabDk[k]+1.0)/2.0)+_tabDk[k]+2.0;
-	BIC_min[k] =  (-2*Lk_min[k] + nbFreeParameter * log(tabNk[k])) / (tabNk[k]);
+	BIC_min[k] =  (-2*Lk_min[k] + nbFreeParameter * logf(tabNk[k])) / (tabNk[k]);
    // cout<<"d  :  "<<1<<"  BIC_min["<<k<<"] :  "<<BIC_min[k]<<endl;
 	tabD_min[k] = _tabDk[k];
   }
@@ -1181,7 +1181,7 @@ for (int64_ti=2;i<_pbDimension;i++){
 	for (int64_tk=0;k<_nbCluster;k++){
 	 nbFreeParameter = (_pbDimension+1.0-1.0/_nbCluster)
            + _tabDk[k]*(_pbDimension-(_tabDk[k]+1.0)/2.0)+_tabDk[k]+2.0;
-	 BIC[k] = (-2*Lk[k] + nbFreeParameter * log(tabNk[k])) / (tabNk[k]);
+	 BIC[k] = (-2*Lk[k] + nbFreeParameter * logf(tabNk[k])) / (tabNk[k]);
 	 //cout<<"d  : "<<i<<"  BIC["<<k<<"] :  "<<BIC[k]<<endl;
 	 if (BIC[k] < BIC_min[k]){
 	   tabD_min[k] = i;
@@ -1264,14 +1264,14 @@ float** GaussianHDDAParameter::computeCost(GeneralMatrix ** tabQ)const {
 		float sum_lambda = 0.0;
 		for (j = 0; j < _tabDk[classe]; j++) {
 			tabShapek_store[j] = 1.0 / _tabAkj[classe][j];
-			sum_lambda += log(_tabAkj[classe][j]);
+			sum_lambda += logf(_tabAkj[classe][j]);
 		}
 		for (j = _tabDk[classe]; j < _pbDimension; j++) {
 			tabShapek_store[j] = 0.0;
 		}
 		A->compute_as_O_S_O(tabQ[classe], tabShapek_store);
-		float constante = sum_lambda + (_pbDimension - _tabDk[classe]) * log(_tabBk[classe])
-				- 2 * log(tabProportion[classe]) + _pbDimension * log(2 * XEMPI);
+		float constante = sum_lambda + (_pbDimension - _tabDk[classe]) * logf(_tabBk[classe])
+				- 2 * logf(tabProportion[classe]) + _pbDimension * logf(2 * XEMPI);
 
 		for (int sample = 0; sample < nbSample; sample++) {
 

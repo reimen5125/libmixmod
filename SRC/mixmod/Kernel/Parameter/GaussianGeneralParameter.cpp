@@ -628,7 +628,7 @@ void GaussianGeneralParameter::computeTabSigma_L_D_Ak_D() {
 
 			FOld = F;
 			F = flury(F);
-			diff = fabs(F - FOld);
+			diff = fabsf(F - FOld);
 			iter--;
 		}
 
@@ -679,7 +679,7 @@ void GaussianGeneralParameter::computeTabSigma_Lk_D_Ak_D() {
 		}
 		FOld = F;
 		F = flury(F);
-		diff = fabs(F - FOld);
+		diff = fabsf(F - FOld);
 		iter--;
 	}
 
@@ -845,12 +845,12 @@ float GaussianGeneralParameter::flury(float F) {
 				}
 
 				tmp = a - c;
-				eigenValueMoins = (a + c - sqrt(tmp * tmp + 4 * b * b)) / 2.0;
+				eigenValueMoins = (a + c - sqrtf(tmp * tmp + 4 * b * b)) / 2.0;
 
 				eigenVectorMoins_1 = b 
-						/ sqrt(b * b + (a - eigenValueMoins)*(a - eigenValueMoins));
+						/ sqrtf(b * b + (a - eigenValueMoins)*(a - eigenValueMoins));
 				eigenVectorMoins_2 = -(a - eigenValueMoins) 
-						/ sqrt(b * b + (a - eigenValueMoins)*(a - eigenValueMoins));
+						/ sqrtf(b * b + (a - eigenValueMoins)*(a - eigenValueMoins));
 
 				// remplir la colonne d'indice il avec Dlm * q1
 				il_p = il;
@@ -874,7 +874,7 @@ float GaussianGeneralParameter::flury(float F) {
 			F += _tabWk[k]->trace_this_O_Sm1_O(_tabOrientation[0], _tabShape[k]);
 		}
 
-		diff = fabs(F - FOld);
+		diff = fabsf(F - FOld);
 
 		iter++;
 	}
@@ -951,7 +951,7 @@ float GaussianGeneralParameter::getLogLikelihoodOne() const {
 		logLikelihoodOne += norme * weight[i];
 	}
 
-	logLikelihoodOne += totalWeight * (data->getPbDimensionLog2Pi() + log(detSigma));
+	logLikelihoodOne += totalWeight * (data->getPbDimensionLog2Pi() + logf(detSigma));
 	logLikelihoodOne *= -0.5;
 
 	//delete W;
