@@ -10,9 +10,14 @@ Main features:
 ----------------------------------------------------------------------
 
 To build Mixmod on UNIX system, type in BUILD directory:
+
 cd BUILD
 cmake .. -DCMAKE_INSTALL_PREFIX=$HOME/software/libmixmod
 make install
 
-To create the installation package, after the last instructions, type:
-cpack
+To run applications that use libmixmod, append these lines to your ~/.bashrc:
+
+export MIXMODDIR=$HOME/software/libmixmod
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$MIXMODDIR/lib
+
+And run `source ~/.bashrc` to apply the changes.
