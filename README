@@ -10,6 +10,7 @@ Main features:
 ----------------------------------------------------------------------
 
 To build Mixmod on UNIX system, type in BUILD directory:
+cd BUILD
 cmake .. -DCMAKE_INSTALL_PREFIX=$HOME/software/libmixmod
 make install
 
