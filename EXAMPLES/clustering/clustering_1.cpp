@@ -49,7 +49,7 @@ void clustering_1_example() {
 
 	// nbCluster contains the numbers of clusters to be tested.
 	// Here we assume that there are 2, 3 or 4 clusters.
-	vector<int64_t> nbCluster;
+	vector<int> nbCluster;
 	nbCluster.push_back (2);
 	nbCluster.push_back (3);
 	nbCluster.push_back (4);
@@ -106,7 +106,7 @@ void clustering_1_example() {
 		// print out parameters
 		param->edit();
 		// print out criterion values
-		for (int64_t iCriterion = 0; iCriterion < cInput->getCriterionName().size(); iCriterion++)
+		for (int iCriterion = 0; iCriterion < cInput->getCriterionName().size(); iCriterion++)
 			cMOutput->getCriterionOutput (cInput->getCriterionName (iCriterion)).editTypeAndValue (std::cout);
 	}
 	cout << "-----------------------------------------------------------------------" << endl;
@@ -126,8 +126,8 @@ void clustering_1_example() {
 //void clustering_1_example() {
 //    // Create clustering input from iris dataset.
 //    string file("../EXAMPLES/data/iris.train");
-//    int64_t nbClust_arr[] = {2, 3, 4};
-//    vector<int64_t> nbClust(nbClust_arr, nbClust_arr+3);
+//    int nbClust_arr[] = {2, 3, 4};
+//    vector<int> nbClust(nbClust_arr, nbClust_arr+3);
 //    XEM::ClusteringInput* cInput=getClusteringInput(file,nbClust);
 //
 //    // Remove defaults, and specify model + algorithms

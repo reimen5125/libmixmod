@@ -60,8 +60,8 @@ XEM::Parameter * createParameter ( int iNbCluster, int iPbDimension, XEM::ModelT
 
     XEM::Parameter * param = new XEM::GaussianGeneralParameter ( iNbCluster, iPbDimension, iModelType, proportions, means, variances );
     
-    for (int64_t k=0; k<iNbCluster; k++) {
-        for (int64_t p=0; p<iPbDimension; p++) delete[] variances[k][p];
+    for (int k=0; k<iNbCluster; k++) {
+        for (int p=0; p<iPbDimension; p++) delete[] variances[k][p];
         delete[] means[k];
         delete[] variances[k];
     }
@@ -95,7 +95,7 @@ void clustering_8_example() {
 
     // nbCluster contains the numbers of clusters to be tested.
     // Here we assume that there are 2, 3 or 4 clusters.
-    vector<int64_t> nbCluster;
+    vector<int> nbCluster;
     nbCluster.push_back (2);
     nbCluster.push_back (3);
     nbCluster.push_back (4);
@@ -156,7 +156,7 @@ void clustering_8_example() {
         // print out parameters
         param->edit();
         // print out criterion values
-        for ( int64_t iCriterion=0; iCriterion < cInput->getCriterionName().size(); iCriterion++ )
+        for ( int iCriterion=0; iCriterion < cInput->getCriterionName().size(); iCriterion++ )
             cMOutput->getCriterionOutput ( cInput->getCriterionName ( iCriterion ) ).editTypeAndValue ( std::cout );
     }
     cout<<"-----------------------------------------------------------------------"<<endl;

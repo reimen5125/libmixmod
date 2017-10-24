@@ -49,7 +49,7 @@ void clustering_9_example() {
 
     // nbCluster contains the numbers of clusters to be tested.
     // Here we assume that there are 3 or 4 clusters.
-    vector<int64_t> nbCluster;
+    vector<int> nbCluster;
     nbCluster.push_back (3);
     nbCluster.push_back (4);
 
@@ -61,9 +61,9 @@ void clustering_9_example() {
 
     cInput->getStrategy()->setStrategyInitName ( XEM::USER_PARTITION );
     // create (slightly wrong) labels (0 to 39: 1, 40 to 109: 2, 110 to 149: 3)
-    int64_t nbSample = cInput->getNbSample();
+    int nbSample = cInput->getNbSample();
     XEM::Label * labels = new XEM::Label ( nbSample );
-    std::vector<int64_t> vLabel ( nbSample );
+    std::vector<int> vLabel ( nbSample );
     for ( int i=0; i<40; i++ ) vLabel[i] = 1;
     for ( int i=40; i<110; i++ ) vLabel[i] = 2;
     for ( int i=110; i<150; i++ ) vLabel[i] = 3;
@@ -71,7 +71,7 @@ void clustering_9_example() {
     XEM::Partition * partition = new XEM::Partition ( labels, 3 );
     delete labels;
     cInput->getStrategy()->setInitPartition ( partition, 0 );
-    //delete partition; // should be called now, but only shallow copy in XEM::ClusteringStrategyInit::setPartition(XEM::Partition * part, int64_t position)
+    //delete partition; // should be called now, but only shallow copy in XEM::ClusteringStrategyInit::setPartition(XEM::Partition * part, int position)
                         // ==> cannot delete (TODO: deep copy in above method ?)
     
     // Finalize
@@ -121,7 +121,7 @@ void clustering_9_example() {
         // print out parameters
         param->edit();
         // print out criterion values
-        for ( int64_t iCriterion=0; iCriterion < cInput->getCriterionName().size(); iCriterion++ )
+        for ( int iCriterion=0; iCriterion < cInput->getCriterionName().size(); iCriterion++ )
             cMOutput->getCriterionOutput ( cInput->getCriterionName ( iCriterion ) ).editTypeAndValue ( std::cout );
     }
     cout<<"-----------------------------------------------------------------------"<<endl;

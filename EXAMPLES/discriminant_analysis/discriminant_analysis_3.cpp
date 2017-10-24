@@ -44,7 +44,7 @@ void discriminant_analysis_3_example() {
     string basePath("../EXAMPLES/data/");
     string learnFile("iris.train");
     string predictFile("iris.test");
-    int64_t nbCluster=3;
+    int nbCluster=3;
 
     //--------------------------
     //--------------------------
@@ -179,8 +179,8 @@ void discriminant_analysis_3_example() {
     XEM::LearnModelOutput * lMOutput = NULL;
 
     // TODO: next 3 lines should not be needed (always use vector ?)
-    int64_t* vLabel_p = lInput->getKnownLabelDescription()->getLabel()->getTabLabel();
-    vector<int64_t> vLabel;
+    int* vLabel_p = lInput->getKnownLabelDescription()->getLabel()->getTabLabel();
+    vector<int> vLabel;
     for (int j=0; j<lInput->getNbSample(); j++) vLabel.push_back(vLabel_p[j]);
 
 /*
@@ -228,7 +228,7 @@ void discriminant_analysis_3_example() {
 
         std::cout << "CV Error Rate:" << ( 1-lMOutput->getCVLabel()->getLabel()->getErrorRate ( vLabel ) ) *100 << "%" << std::endl;
 
-        int64_t ** classif = lMOutput->getCVLabel()->getLabel()->getClassificationTab ( vLabel, lMOutput->getNbCluster());
+        int ** classif = lMOutput->getCVLabel()->getLabel()->getClassificationTab ( vLabel, lMOutput->getNbCluster());
         /*cout<<"CV labels "<<endl;
         cout<<"----------"<<endl;
         lMOutput->getCVLabel()->getLabel()->edit(cout);*/
