@@ -291,7 +291,7 @@ void ClusteringMain::run(int seed, IoMode iomode, int verbose, int massiccc) {
     delete workingData;
     delete workingStrategy;
   }
-//delete vCriterion;
+  delete vCriterion;
 
   if (!atLeastOneModelOk){
     THROW(OtherException, AllModelsGotErros);
